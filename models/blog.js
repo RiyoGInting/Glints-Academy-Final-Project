@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   blog.init(
     {
+      id_user: DataTypes.INTEGER,
       title: DataTypes.STRING,
       article: DataTypes.STRING,
       blog_image: DataTypes.STRING,

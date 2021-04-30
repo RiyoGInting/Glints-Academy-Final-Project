@@ -13,6 +13,8 @@ module.exports = (sequelize, DataTypes) => {
   }
   transaction.init(
     {
+      id_user: DataTypes.INTEGER,
+      id_service: DataTypes.INTEGER,
       appointment_date: DataTypes.DATE,
       total_fee: DataTypes.DECIMAL,
       order_status: DataTypes.STRING,

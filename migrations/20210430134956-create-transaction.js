@@ -8,6 +8,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      id_user: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      id_service: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       appointment_date: {
         type: Sequelize.DATE,
         allowNull: false,

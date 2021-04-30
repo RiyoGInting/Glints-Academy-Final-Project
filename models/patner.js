@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   Patner.init(
     {
+      id_user: DataTypes.INTEGER,
       brand: DataTypes.STRING,
       business_address: DataTypes.JSON,
       verified_status: DataTypes.BOOLEAN,

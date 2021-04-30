@@ -13,6 +13,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   service.init(
     {
+      id_category: DataTypes.INTEGER,
+      id_patner: DataTypes.INTEGER,
+      id_review: DataTypes.INTEGER,
       service_name: DataTypes.STRING,
       service_fee: DataTypes.DECIMAL,
       description: DataTypes.STRING,

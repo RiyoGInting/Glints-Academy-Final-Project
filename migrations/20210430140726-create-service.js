@@ -8,6 +8,18 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      id_category: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      id_patner: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
+      id_review: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       service_name: {
         type: Sequelize.STRING,
         allowNull: false,

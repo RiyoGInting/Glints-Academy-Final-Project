@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   review.init(
     {
+      id_transaction: DataTypes.INTEGER,
       rating: DataTypes.INTEGER,
       review: DataTypes.STRING,
     },

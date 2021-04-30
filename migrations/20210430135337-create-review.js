@@ -8,6 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      id_transaction: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       rating: {
         type: Sequelize.INTEGER,
         allowNull: false,
