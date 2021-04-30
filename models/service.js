@@ -16,12 +16,13 @@ module.exports = (sequelize, DataTypes) => {
       service_name: DataTypes.STRING,
       service_fee: DataTypes.DECIMAL,
       description: DataTypes.STRING,
-      avgRating: DataTypes.DECIMAL,
+      avg_rating: DataTypes.DECIMAL,
     },
     {
       sequelize,
-      paranoid: true, // Activate soft delete
-      timestamps: true, // timestamps
+      paranoid: true,
+      timestamps: true,
+
       modelName: "service",
     }
   );

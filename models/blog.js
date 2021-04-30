@@ -15,13 +15,13 @@ module.exports = (sequelize, DataTypes) => {
     {
       title: DataTypes.STRING,
       article: DataTypes.STRING,
-      publish_date: DataTypes.DATE,
       blog_image: DataTypes.STRING,
     },
     {
       sequelize,
-      paranoid: true, // Activate soft delete
-      timestamps: true, // timestamps
+      paranoid: true,
+      timestamps: true,
+
       modelName: "blog",
     }
   );

@@ -20,9 +20,9 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      avgRating: {
+      avg_rating: {
         type: Sequelize.DECIMAL,
-        allowNull: false,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,

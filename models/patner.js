@@ -14,17 +14,18 @@ module.exports = (sequelize, DataTypes) => {
   Patner.init(
     {
       brand: DataTypes.STRING,
-      business_address: DataTypes.STRING,
+      business_address: DataTypes.JSON,
       verified_status: DataTypes.BOOLEAN,
       ktp_image: DataTypes.STRING,
-      bussines_location: DataTypes.JSON,
+      bussines_location: DataTypes.GEOMETRY,
       business_phone: DataTypes.STRING,
       partner_logo: DataTypes.STRING,
     },
     {
       sequelize,
-      paranoid: true, // Activate soft delete
-      timestamps: true, // timestamps
+      paranoid: true,
+      timestamps: true,
+
       modelName: "Patner",
     }
   );

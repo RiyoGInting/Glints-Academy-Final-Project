@@ -1,26 +1,38 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("blogs", {
+    await queryInterface.createTable("Patners", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      title: {
+      brand: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      article: {
+      business_address: {
+        type: Sequelize.JSON,
+        allowNull: true,
+      },
+      verified_status: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+      },
+      ktp_image: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      bussines_location: {
+        type: Sequelize.GEOMETRY,
+        allowNull: true,
+      },
+      business_phone: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      publish_date: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      blog_image: {
+      partner_logo: {
         type: Sequelize.STRING,
         allowNull: true,
       },
@@ -39,6 +51,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("blogs");
+    await queryInterface.dropTable("Patners");
   },
 };
