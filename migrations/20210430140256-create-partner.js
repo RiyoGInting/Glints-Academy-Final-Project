@@ -75,6 +75,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("patners");
+    await queryInterface.dropTable("partners");
   },
 };
