@@ -36,11 +36,18 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
-        let userSignUp = await user.create(req.body);
+        let find = await user.findOne({ where: { email: req.body.email } });
+        if (find) {
+          return res.status(409).json({
+            message: "email already in use",
+          });
+        } else {
+          let userSignUp = await user.create(req.body);
 
-        return done(null, userSignUp, {
-          message: "User can be created",
-        });
+          return done(null, userSignUp, {
+            message: "User can be created",
+          });
+        }
       } catch (e) {
         return done(null, false, {
           message: "This email is already in use",
