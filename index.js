@@ -6,7 +6,7 @@ const express = require("express");
 const app = express();
 
 // Import routes
-const userRoutes = require("./routes/userRoutes")
+// const userRoutes = require("./routes/userRoutes")
 
 //Set body parser for HTTP post operation
 app.use(express.json());
@@ -22,6 +22,7 @@ app.use(express.static("public"));
 require("./utils/associations");
 
 // app.use
-app.use("/user", userRoutes)
+// app.use("/user", userRoutes)
+
 // Server running
 app.listen(3000, () => console.log("server running on port 3000"));
