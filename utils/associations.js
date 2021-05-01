@@ -26,7 +26,7 @@ service.belongsTo(category, { foreignKey: "id_category" });
 
 // service and partner relationship
 partner.hasMany(service, { foreignKey: "id_partner" });
-service.belongsTo(patner, { foreignKey: "id_partner" });
+service.belongsTo(partner, { foreignKey: "id_partner" });
 
 // review and transaction relationship
 review.hasOne(transaction, { foreignKey: "id_transaction" });
