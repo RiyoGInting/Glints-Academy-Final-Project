@@ -8,9 +8,28 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      id_user: {
+      role: {
+        type: Sequelize.STRING,
         allowNull: false,
-        type: Sequelize.INTEGER,
+        defaultValue: "partner",
+      },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      phone_number: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true,
       },
       brand: {
         type: Sequelize.STRING,
@@ -35,6 +54,7 @@ module.exports = {
       business_phone: {
         type: Sequelize.STRING,
         allowNull: false,
+        unique: true,
       },
       partner_logo: {
         type: Sequelize.STRING,

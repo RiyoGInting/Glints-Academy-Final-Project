@@ -16,10 +16,6 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      id_review: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
       service_name: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -29,7 +25,7 @@ module.exports = {
         allowNull: false,
       },
       description: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
         allowNull: false,
       },
       avg_rating: {

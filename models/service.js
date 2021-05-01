@@ -15,10 +15,9 @@ module.exports = (sequelize, DataTypes) => {
     {
       id_category: DataTypes.INTEGER,
       id_partner: DataTypes.INTEGER,
-      id_review: DataTypes.INTEGER,
       service_name: DataTypes.STRING,
       service_fee: DataTypes.DECIMAL,
-      description: DataTypes.STRING,
+      description: DataTypes.TEXT,
       avg_rating: DataTypes.DECIMAL,
     },
     {

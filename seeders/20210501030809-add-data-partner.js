@@ -4,7 +4,11 @@ module.exports = {
   up: async (queryInterface, Sequelize) => {
     return queryInterface.bulkInsert("partners", [
       {
-        id_user: 1,
+        role: "partner",
+        name: "bro",
+        email: "userbro@cobamail.com",
+        password: "qwerty",
+        phone_number: "081234567895",
         brand: "partnerBrand",
         verified_status: true,
         business_phone: "123123",
@@ -12,7 +16,11 @@ module.exports = {
         updatedAt: new Date(),
       },
       {
-        id_user: 2,
+        role: "partner",
+        name: "bro 2",
+        email: "userbro2@cobamail.com",
+        password: "qwerty",
+        phone_number: "081234567899",
         brand: "partnerBrand2",
         verified_status: true,
         business_phone: "1231232",

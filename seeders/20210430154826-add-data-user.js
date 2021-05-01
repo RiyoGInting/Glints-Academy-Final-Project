@@ -21,7 +21,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     }, {
-      
+      role: "user",
       name: "Abah3",
       email: "user3@cobamail.com",
       password: "qwerty",
