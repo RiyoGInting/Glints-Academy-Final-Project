@@ -1,4 +1,4 @@
-const { partner, service, category } = require("../models");
+const { partner, service, category, Sequelize } = require("../models");
 
 class ServiceController {
   // Get all Service
@@ -108,32 +108,35 @@ class ServiceController {
     }
   }
 
-  // Get all Service by a Name/Keyword(search)
-  //   async searchByName(req, res) {
-  //     try {
-  //       let data = await service.findAll({
-  //         where: {
-  //           service_name: { [Op.like]: req.query.name },
-  //         },
-  //       });
+  //  Get all Service by a Name/Keyword(search)
+  async searchByName(req, res) {
+    try {
+      console.log(req.query);
+      let data = await service.findAll({
+        where: {
+          //service_name: req.query.name,
+          service_name: { [Sequelize.Op.like]: `%${req.query.name}%` },
+        },
+      });
+      console.log(data);
 
-  //       if (data.length === 0) {
-  //         return res.status(404).json({
-  //           message: "Data not found",
-  //         });
-  //       }
-  //       return res.status(200).json({
-  //         message: "Success",
-  //         data,
-  //       });
-  //     } catch (error) {
-  //         console.log(error)
-  //       return res.status(500).json({
-  //         message: "Internal Server Error",
-  //         error,
-  //       });
-  //     }
-  //   }
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "Data not found",
+        });
+      }
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error,
+      });
+    }
+  }
 
   // Create Service
   async create(req, res) {
