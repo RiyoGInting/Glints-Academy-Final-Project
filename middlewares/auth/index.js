@@ -94,7 +94,7 @@ passport.use(
 
         if (!userSignIn) {
           return done(null, false, {
-            message: "Email not found",
+            message: "Email or password is wrong",
           });
         }
 
@@ -102,7 +102,7 @@ passport.use(
 
         if (!validate) {
           return done(null, false, {
-            message: "Wrong password",
+            message: "Email or password is wrong",
           });
         }
 

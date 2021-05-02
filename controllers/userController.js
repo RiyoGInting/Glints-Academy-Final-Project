@@ -5,7 +5,7 @@ class UserController {
   getOne(req, res) {
     user
       .findOne({
-        where: { id: `${req.params.id}` },
+        where: { id: req.params.id },
         attributes: ["id", "name", "email", "phone_number", "address"], // just these attributes that showed
       })
       .then((data) => {
