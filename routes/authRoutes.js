@@ -8,5 +8,6 @@ const auth = require("../middlewares/auth/index");
 const router = express.Router();
 
 router.post("/signup", auth.signup, authController.getToken);
+router.post("/signin", auth.signin, authController.getToken);
 
 module.exports = router;
