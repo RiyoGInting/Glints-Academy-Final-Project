@@ -31,9 +31,40 @@ class UserController {
       });
   }
 
-  async updateProfile (req , res) {
-    
-  } 
+  // Update data
+  async update(req, res) {
+    let update = {
+      phone_number: req.body.phone_number,
+      address: req.body.address,
+    };
+
+    try {
+      // Transaksi table update data
+      let updatedData = await user.update(update, {
+        where: {
+          id: req.params.id,
+        },
+      });
+
+      // Find the updated transaksi
+      let data = await user.findOne({
+        where: { id: req.params.id },
+        attributes: ["phone_number", "address"], // just these attributes that showed
+      });
+
+      // If success
+      return res.status(201).json({
+        message: "Profile udpdated",
+        data,
+      });
+    } catch (err) {
+      // If error
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: err,
+      });
+    }
+  }
 }
 
 module.exports = new UserController();
