@@ -13,6 +13,6 @@ router.post(
   auth.signup,
   authController.getToken
 );
-router.post("/signin", auth.signin, authController.getToken);
+router.post("/signin", auth.adminOrUser, auth.signin, authController.getToken);
 
 module.exports = router;
