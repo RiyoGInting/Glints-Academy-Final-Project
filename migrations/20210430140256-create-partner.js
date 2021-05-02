@@ -20,7 +20,7 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
+        //unique: true,
       },
       password: {
         type: Sequelize.STRING,
@@ -29,7 +29,7 @@ module.exports = {
       phone_number: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
+        //unique: true,
       },
       brand: {
         type: Sequelize.STRING,
@@ -54,7 +54,7 @@ module.exports = {
       business_phone: {
         type: Sequelize.STRING,
         allowNull: false,
-        unique: true,
+        //unique: true,
       },
       partner_logo: {
         type: Sequelize.STRING,

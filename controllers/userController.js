@@ -30,6 +30,10 @@ class UserController {
         });
       });
   }
+
+  async updateProfile (req , res) {
+    
+  } 
 }
 
 module.exports = new UserController();

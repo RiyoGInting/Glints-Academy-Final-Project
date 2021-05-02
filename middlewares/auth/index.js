@@ -119,28 +119,24 @@ passport.use(
 );
 
 exports.signupPartner = (req, res, next) => {
-  passport.authenticate(
-    "signupPartner",
-    { session: false },
-    (err, partner, info) => {
-      if (err) {
-        return res.status(500).json({
-          message: "Internal Server Error",
-          error: err,
-        });
-      }
-
-      if (!partner) {
-        return res.status(401).json({
-          message: info.message,
-        });
-      }
-
-      req.partner = partner;
-
-      next();
+  passport.authenticate("signupPartner", { session: false }, (err, partner, info) => {
+    if (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: err,
+      });
     }
-  )(req, res, next);
+
+    if (!partner) {
+      return res.status(401).json({
+        message: info.message,
+      });
+    }
+
+    req.partner = partner;
+
+    next();
+  })(req, res, next);
 };
 
 passport.use(
@@ -166,7 +162,7 @@ passport.use(
           });
         }
       } catch (e) {
-        console.log(e);
+        console.log(e)
         return done(null, false, {
           message: "This email is already in use",
         });
@@ -176,28 +172,24 @@ passport.use(
 );
 
 exports.signinPartner = (req, res, next) => {
-  passport.authenticate(
-    "signinPartner",
-    { session: false },
-    (err, partner, info) => {
-      if (err) {
-        return res.status(500).json({
-          message: "Internal Server Error",
-          error: err,
-        });
-      }
-
-      if (!partner) {
-        return res.status(401).json({
-          message: info.message,
-        });
-      }
-
-      req.partner = partner;
-
-      next();
+  passport.authenticate("signinPartner", { session: false }, (err, partner, info) => {
+    if (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: err,
+      });
     }
-  )(req, res, next);
+
+    if (!partner) {
+      return res.status(401).json({
+        message: info.message,
+      });
+    }
+
+    req.partner = partner;
+
+    next();
+  })(req, res, next);
 };
 
 passport.use(
