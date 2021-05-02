@@ -56,3 +56,64 @@ passport.use(
     }
   )
 );
+
+exports.signin = (req, res, next) => {
+  passport.authenticate("signin", { session: false }, (err, user, info) => {
+    if (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: err,
+      });
+    }
+
+    if (!user) {
+      return res.status(401).json({
+        message: info.message,
+      });
+    }
+
+    req.user = user;
+
+    next();
+  })(req, res, next);
+};
+
+passport.use(
+  "signin",
+  new LocalStrategy(
+    {
+      usernameField: "email",
+      passwordField: "password",
+      passReqToCallback: true,
+    },
+    async (req, email, password, done) => {
+      try {
+        let userSignIn = await user.findOne({
+          where: { email: req.body.email },
+        });
+
+        if (!userSignIn) {
+          return done(null, false, {
+            message: "Email not found",
+          });
+        }
+
+        let validate = await bcrypt.compare(password, userSignIn.password);
+
+        if (!validate) {
+          return done(null, false, {
+            message: "Wrong password",
+          });
+        }
+
+        return done(null, userSignIn, {
+          message: "User can sign in",
+        });
+      } catch (e) {
+        return done(null, false, {
+          message: "User can't sign in",
+        });
+      }
+    }
+  )
+);
