@@ -231,3 +231,54 @@ passport.use(
     }
   )
 );
+
+exports.adminOrUser = (req, res, next) => {
+  passport.authorize("adminOrUser", (err, user, info) => {
+    if (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: err.message,
+      });
+    }
+
+    if (!user) {
+      return res.status(403).json({
+        message: info.message,
+      });
+    }
+
+    req.user = user;
+
+    next();
+  })(req, res, next);
+};
+
+passport.use(
+  "adminOrUser",
+  new JWTstrategy(
+    {
+      secretOrKey: process.env.JWT_SECRET,
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+    },
+    async (token, done) => {
+      try {
+        let userSignIn = await user.findOne({ _id: token.user.id });
+
+        if (
+          userSignIn.role.includes("user") ||
+          userSignIn.role.includes("admin")
+        ) {
+          return done(null, token.user);
+        }
+
+        return done(null, false, {
+          message: "You're not authorized",
+        });
+      } catch (e) {
+        return done(null, false, {
+          message: "You're not authorized",
+        });
+      }
+    }
+  )
+);
