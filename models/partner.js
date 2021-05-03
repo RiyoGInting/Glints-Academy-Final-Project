@@ -18,10 +18,24 @@ module.exports = (sequelize, DataTypes) => {
       brand: DataTypes.STRING,
       business_address: DataTypes.JSON,
       verified_status: DataTypes.BOOLEAN,
-      ktp_image: DataTypes.STRING,
+      ktp_image: {
+        type: DataTypes.STRING,
+        //Set custom getter for book image using URL
+        get() {
+          const ktpImage = this.getDataValue("ktp_image");
+          return "/images/" + ktpImage;
+        },
+      },
       bussines_location: DataTypes.GEOMETRY,
       business_phone: DataTypes.STRING,
-      partner_logo: DataTypes.STRING,
+      partner_logo: {
+        type: DataTypes.STRING,
+        //Set custom getter for book image using URL
+        get() {
+          const logo = this.getDataValue("partner_logo");
+          return "/images/" + logo;
+        },
+      },
       role: DataTypes.STRING,
       name: DataTypes.STRING,
       email: DataTypes.STRING,

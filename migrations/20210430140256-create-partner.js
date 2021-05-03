@@ -42,6 +42,7 @@ module.exports = {
       verified_status: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
+        defaultValue: false,
       },
       ktp_image: {
         type: Sequelize.STRING,

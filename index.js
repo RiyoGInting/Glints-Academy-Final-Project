@@ -3,6 +3,7 @@ require("dotenv").config({
 });
 
 const express = require("express");
+const fileUpload = require("express-fileupload");
 const app = express();
 
 // Import routes
@@ -11,6 +12,7 @@ const authRoutes = require("./routes/authRoutes");
 
 //Set body parser for HTTP post operation
 app.use(express.json());
+app.use(fileUpload());
 app.use(
   express.urlencoded({
     extended: true,
