@@ -22,7 +22,6 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       paranoid: true,
       timestamps: true,
-
       modelName: "blog",
     }
   );
