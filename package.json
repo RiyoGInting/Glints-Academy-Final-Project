@@ -38,6 +38,7 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "sequelize": "^6.6.2",
+    "sequelize-cli": "^6.2.0",
     "validator": "^13.6.0",
     "xss-clean": "^0.1.1"
   }
