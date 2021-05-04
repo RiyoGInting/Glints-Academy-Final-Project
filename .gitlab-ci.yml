@@ -4,9 +4,9 @@ stages:
   - deploy
 
 # Config cache
-#cache:
- # paths:
-  #  - node_modules/
+cache:
+  paths:
+    - node_modules/
 
     # Test job
     #test:
