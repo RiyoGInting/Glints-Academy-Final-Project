@@ -29,14 +29,14 @@ module.exports = {
       phone_number: {
         type: Sequelize.STRING,
         allowNull: false,
-        //unique: true,
+        unique: true,
       },
       brand: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       business_address: {
-        type: Sequelize.JSON,
+        type: Sequelize.STRING,
         allowNull: true,
       },
       verified_status: {
@@ -49,13 +49,13 @@ module.exports = {
         allowNull: true,
       },
       bussines_location: {
-        type: Sequelize.GEOMETRY,
+        type: Sequelize.JSON,
         allowNull: true,
       },
       business_phone: {
         type: Sequelize.STRING,
         allowNull: false,
-        //unique: true,
+        unique: true,
       },
       partner_logo: {
         type: Sequelize.STRING,

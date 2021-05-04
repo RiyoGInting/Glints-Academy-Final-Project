@@ -20,6 +20,7 @@
   },
   "homepage": "https://gitlab.com/binarxglints_batch11/finalproject/team-d/backend#readme",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.14.0",
     "bcrypt": "^5.0.1",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",

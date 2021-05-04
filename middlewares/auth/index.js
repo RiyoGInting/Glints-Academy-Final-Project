@@ -153,22 +153,15 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
-        let find = await partner.findOne({ where: { email: req.body.email } });
-        if (find) {
-          return res.status(409).json({
-            message: "email already in use",
-          });
-        } else {
-          let partnerSignUp = await partner.create(req.body);
+        let partnerSignUp = await partner.create(req.body);
 
-          return done(null, partnerSignUp, {
-            message: "User Partner can be created",
-          });
-        }
+        return done(null, partnerSignUp, {
+          message: "User Partner can be created",
+        });
       } catch (e) {
         console.log(e);
         return done(null, false, {
-          message: "This email is already in use",
+          message: "User Partner cant be created",
         });
       }
     }
@@ -296,7 +289,6 @@ passport.use(
 exports.admin = (req, res, next) => {
   //it will go to ../middlewares/auth/index.js -> passport.user("signup")
   passport.authorize("admin", (err, user, info) => {
-    
     // if error
     if (err) {
       return res.status(500).json({
@@ -322,11 +314,11 @@ exports.admin = (req, res, next) => {
 
 passport.use(
   "admin",
-  new JWTStrategy(
+  new JWTstrategy(
     {
       //to extract the value of token
       secretOrKey: process.env.JWT_SECRET, //jwt key
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), //get token from bearer
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(), //get token from bearer
     },
 
     async (token, done) => {
@@ -354,7 +346,6 @@ passport.use(
 exports.partner = (req, res, next) => {
   //it will go to ../middlewares/auth/index.js -> passport.user("signup")
   passport.authorize("partner", (err, user, info) => {
-    
     // if error
     if (err) {
       return res.status(500).json({
@@ -380,19 +371,24 @@ exports.partner = (req, res, next) => {
 
 passport.use(
   "partner",
-  new JWTStrategy(
+  new JWTstrategy(
     {
       //to extract the value of token
       secretOrKey: process.env.JWT_SECRET, //jwt key
-      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), //get token from bearer
+      jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(), //get token from bearer
     },
 
     async (token, done) => {
       try {
         console.log(token);
-        const partnerLogin = await partner.findOne({ where: { id: token.partner.id } });
+        const partnerLogin = await partner.findOne({
+          where: { id: token.partner.id },
+        });
         //if user not admin
-        if (partnerLogin.role.includes("partner") && userLogin.verified_status.includes(1) ) {
+        if (
+          partnerLogin.role.includes("partner") &&
+          userLogin.verified_status.includes(1)
+        ) {
           return done(null, token);
         }
 
@@ -408,5 +404,3 @@ passport.use(
     }
   )
 );
-
-

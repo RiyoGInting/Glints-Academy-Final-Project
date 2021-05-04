@@ -5,7 +5,7 @@ require("dotenv").config({
 const fs = require("fs");
 const path = require("path");
 const express = require("express");
-const fileUpload = require ("express-fileupload")
+const fileUpload = require("express-fileupload");
 
 //const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
@@ -19,8 +19,9 @@ const app = express();
 
 // Import routes
 const userRoutes = require("./routes/userRoutes");
+const partnerRoutes = require("./routes/partnerRoutes");
 const authRoutes = require("./routes/authRoutes");
-// const userRoutes = require("./routes/userRoutes")
+
 const categoryRoute = require("./routes/categoryRoute");
 const serviceRoute = require("./routes/serviceRoute");
 
@@ -33,7 +34,7 @@ app.use(
   })
 );
 
-app.use(fileUpload())
+app.use(fileUpload());
 
 // Sanitize data
 //app.use(mongoSanitize());
@@ -84,7 +85,7 @@ require("./utils/associations");
 // app.use
 app.use("/user", userRoutes);
 app.use("/auth", authRoutes);
-// app.use("/user", userRoutes)
+app.use("/partner", partnerRoutes);
 app.use("/category", categoryRoute);
 app.use("/service", serviceRoute);
 
