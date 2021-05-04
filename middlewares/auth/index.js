@@ -119,24 +119,28 @@ passport.use(
 );
 
 exports.signupPartner = (req, res, next) => {
-  passport.authenticate("signupPartner", { session: false }, (err, partner, info) => {
-    if (err) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err,
-      });
+  passport.authenticate(
+    "signupPartner",
+    { session: false },
+    (err, partner, info) => {
+      if (err) {
+        return res.status(500).json({
+          message: "Internal Server Error",
+          error: err,
+        });
+      }
+
+      if (!partner) {
+        return res.status(401).json({
+          message: info.message,
+        });
+      }
+
+      req.partner = partner;
+
+      next();
     }
-
-    if (!partner) {
-      return res.status(401).json({
-        message: info.message,
-      });
-    }
-
-    req.partner = partner;
-
-    next();
-  })(req, res, next);
+  )(req, res, next);
 };
 
 passport.use(
@@ -162,7 +166,7 @@ passport.use(
           });
         }
       } catch (e) {
-        console.log(e)
+        console.log(e);
         return done(null, false, {
           message: "This email is already in use",
         });
@@ -172,24 +176,28 @@ passport.use(
 );
 
 exports.signinPartner = (req, res, next) => {
-  passport.authenticate("signinPartner", { session: false }, (err, partner, info) => {
-    if (err) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err,
-      });
+  passport.authenticate(
+    "signinPartner",
+    { session: false },
+    (err, partner, info) => {
+      if (err) {
+        return res.status(500).json({
+          message: "Internal Server Error",
+          error: err,
+        });
+      }
+
+      if (!partner) {
+        return res.status(401).json({
+          message: info.message,
+        });
+      }
+
+      req.partner = partner;
+
+      next();
     }
-
-    if (!partner) {
-      return res.status(401).json({
-        message: info.message,
-      });
-    }
-
-    req.partner = partner;
-
-    next();
-  })(req, res, next);
+  )(req, res, next);
 };
 
 passport.use(
@@ -288,11 +296,7 @@ passport.use(
 exports.admin = (req, res, next) => {
   //it will go to ../middlewares/auth/index.js -> passport.user("signup")
   passport.authorize("admin", (err, user, info) => {
-    //after go to ../middlewares/auth/index.js -> passport.user("signup")
-    //it will bring the variable from done() function
-    // like err = null, user = false, info = {message: "user cant be created"}
-    //or err = null, user = userSignUp, info =  {message: "user cant be created"}
-
+    
     // if error
     if (err) {
       return res.status(500).json({
@@ -320,26 +324,23 @@ passport.use(
   "admin",
   new JWTStrategy(
     {
-
       //to extract the value of token
       secretOrKey: process.env.JWT_SECRET, //jwt key
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), //get token from bearer
     },
-    
+
     async (token, done) => {
-      
       try {
         console.log(token);
-        const userLogin = await user.findOne({ _id: token.id });
+        const userLogin = await user.findOne({ where: { id: token.user.id } });
         //if user not admin
         if (userLogin.role.includes("admin")) {
           return done(null, token);
         }
-       
+
         return done(null, false, {
-          message: 'youre not authorized',
-        })
-      
+          message: "youre not authorized",
+        });
       } catch (e) {
         //find user
         return done(null, false, {
@@ -349,3 +350,63 @@ passport.use(
     }
   )
 );
+
+exports.partner = (req, res, next) => {
+  //it will go to ../middlewares/auth/index.js -> passport.user("signup")
+  passport.authorize("partner", (err, user, info) => {
+    
+    // if error
+    if (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: err,
+      });
+    }
+
+    //if user is false
+    if (!partner) {
+      return res.status(403).json({
+        message: info.message,
+      });
+    }
+    //make req.user that will save the user value
+    // and it will bring to controller
+    req.partner = partner;
+
+    //next to authController.getToken
+    next();
+  })(req, res, next);
+};
+
+passport.use(
+  "partner",
+  new JWTStrategy(
+    {
+      //to extract the value of token
+      secretOrKey: process.env.JWT_SECRET, //jwt key
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(), //get token from bearer
+    },
+
+    async (token, done) => {
+      try {
+        console.log(token);
+        const partnerLogin = await partner.findOne({ where: { id: token.partner.id } });
+        //if user not admin
+        if (partnerLogin.role.includes("partner") && userLogin.verified_status.includes(1) ) {
+          return done(null, token);
+        }
+
+        return done(null, false, {
+          message: "youre not authorized",
+        });
+      } catch (e) {
+        //find user
+        return done(null, false, {
+          message: "You're Not Authorized",
+        });
+      }
+    }
+  )
+);
+
+

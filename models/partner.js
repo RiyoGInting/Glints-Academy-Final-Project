@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   Partner.init(
     {
       brand: DataTypes.STRING,
-      business_address: DataTypes.JSON,
+      business_address: DataTypes.STRING,
       verified_status: DataTypes.BOOLEAN,
       ktp_image: {
         type: DataTypes.STRING,
@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
           return "/images/" + ktpImage;
         },
       },
-      bussines_location: DataTypes.GEOMETRY,
+      bussines_location: DataTypes.JSON,
       business_phone: DataTypes.STRING,
       partner_logo: {
         type: DataTypes.STRING,
