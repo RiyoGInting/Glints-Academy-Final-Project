@@ -69,6 +69,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      service_fee: {
+        type: Sequelize.DECIMAL,
+        allowNull: false,
+      },
       service_description: {
         type: Sequelize.TEXT,
         allowNull: true,
