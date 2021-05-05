@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       id_category: DataTypes.INTEGER,
       service: DataTypes.STRING,
+      service_fee: DataTypes.DECIMAL,
       service_description: DataTypes.TEXT,
       avg_rating: DataTypes.INTEGER,
       brand: DataTypes.STRING,
@@ -30,7 +31,12 @@ module.exports = (sequelize, DataTypes) => {
           return "/images/" + ktpImage;
         },
       },
-      bussines_location: DataTypes.JSON,
+      bussines_location: {
+        type: DataTypes.JSON,
+        set(value) {
+          this.setDataValue("bussines_location", JSON.stringify(value));
+        },
+      },
       business_phone: DataTypes.STRING,
       partner_logo: {
         type: DataTypes.STRING,
