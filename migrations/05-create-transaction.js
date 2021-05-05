@@ -20,6 +20,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: false,
       },
+      total_item: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
       total_fee: {
         type: Sequelize.DECIMAL,
         allowNull: false,
