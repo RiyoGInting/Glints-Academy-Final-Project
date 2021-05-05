@@ -30,7 +30,12 @@ module.exports = (sequelize, DataTypes) => {
           return "/images/" + ktpImage;
         },
       },
-      bussines_location: DataTypes.JSON,
+      bussines_location: {
+        type: DataTypes.JSON,
+        set(value) {
+          this.setDataValue("bussines_location", JSON.stringify(value));
+        },
+      },
       business_phone: DataTypes.STRING,
       partner_logo: {
         type: DataTypes.STRING,
