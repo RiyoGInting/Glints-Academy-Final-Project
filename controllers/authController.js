@@ -5,7 +5,7 @@ class AuthController {
     try {
       const body = {
         user: {
-          id: req.user._id,
+          id: req.user.id,
         },
       };
 
@@ -29,7 +29,7 @@ class AuthController {
     try {
       const body = {
         partner: {
-          id: req.partner._id,
+          id: req.partner.id,
         },
       };
 

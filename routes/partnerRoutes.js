@@ -6,8 +6,9 @@ const authValidator = require("../middlewares/validators/authValidator");
 // import validators
 
 // import controllers
-const userController = require("../controllers/userController");
-router.get("/:id", auth.adminOrUser, userController.getOne);
-router.put("/:id", auth.adminOrUser, userController.update);
+const partnerController = require("../controllers/partnerController");
+
+router.get("/:id", partnerController.getOnePartner);
+router.put("/:id", auth.admin, partnerController.updateVerifiedPartner);
 
 module.exports = router;

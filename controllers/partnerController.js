@@ -1,18 +1,26 @@
-const { user } = require("../models");
+const { partner, category } = require("../models");
 
-class UserController {
+class PartnerController {
   // Get One transaksi
-  getOne(req, res) {
-    user
+  getOnePartner(req, res) {
+    partner
       .findOne({
         where: { id: req.params.id },
-        attributes: ["id", "name", "email", "phone_number", "address"], // just these attributes that showed
+        attributes: [
+          "id",
+          "brand",
+          "email",
+          ["phone_number", "owner_phone_number"],
+          "business_address",
+          "business_phone",
+          "partner_logo",
+        ], // just these attributes that showed
       })
       .then((data) => {
         // If transaksi not found
         if (!data) {
           return res.status(404).json({
-            message: "User Not Found",
+            message: "Partner Not Found",
           });
         }
 
@@ -32,16 +40,14 @@ class UserController {
   }
 
   // Update data
-  async update(req, res) {
+  async updateVerifiedPartner(req, res) {
     let update = {
-      phone_number: req.body.phone_number,
-      address: req.body.address,
-      password: req.body.password,
+      verified_status: req.body.verified_status,
     };
 
     try {
       // Transaksi table update data
-      let updatedData = await user.update(update, {
+      let updatedData = await partner.update(update, {
         where: {
           id: req.params.id,
         },
@@ -50,12 +56,12 @@ class UserController {
       // Find the updated transaksi
       let data = await user.findOne({
         where: { id: req.params.id },
-        attributes: ["phone_number", "address", "password"], // just these attributes that showed
+        attributes: ["brand", "name", "verified_status"], // just these attributes that showed
       });
 
       // If success
       return res.status(201).json({
-        message: "Profile udpdated",
+        message: "Status udpdated",
         data,
       });
     } catch (err) {
@@ -68,4 +74,4 @@ class UserController {
   }
 }
 
-module.exports = new UserController();
+module.exports = new PartnerController();

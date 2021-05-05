@@ -8,6 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      id_category: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       role: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -20,7 +24,7 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
         allowNull: false,
-        //unique: true,
+        unique: true,
       },
       password: {
         type: Sequelize.STRING,
@@ -29,35 +33,48 @@ module.exports = {
       phone_number: {
         type: Sequelize.STRING,
         allowNull: false,
-        //unique: true,
+        unique: true,
       },
       brand: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       business_address: {
-        type: Sequelize.JSON,
+        type: Sequelize.STRING,
         allowNull: true,
       },
       verified_status: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
+        defaultValue: false,
       },
       ktp_image: {
         type: Sequelize.STRING,
         allowNull: true,
       },
       bussines_location: {
-        type: Sequelize.GEOMETRY,
+        type: Sequelize.JSON,
         allowNull: true,
       },
       business_phone: {
         type: Sequelize.STRING,
         allowNull: false,
-        //unique: true,
+        unique: true,
       },
       partner_logo: {
         type: Sequelize.STRING,
+        allowNull: true,
+      },
+      service: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      service_description: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      avg_rating: {
+        type: Sequelize.INTEGER,
         allowNull: true,
       },
       createdAt: {
