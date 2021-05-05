@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("partners", {
+    await queryInterface.createTable("users", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -11,7 +11,7 @@ module.exports = {
       role: {
         type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: "partner",
+        defaultValue: "user",
       },
       name: {
         type: Sequelize.STRING,
@@ -20,43 +20,25 @@ module.exports = {
       email: {
         type: Sequelize.STRING,
         allowNull: false,
-        //unique: true,
+        unique: true,
       },
       password: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      phone_number: {
-        type: Sequelize.STRING,
-        allowNull: false,
-        //unique: true,
-      },
-      brand: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      business_address: {
+      location: {
         type: Sequelize.JSON,
         allowNull: true,
       },
-      verified_status: {
-        type: Sequelize.BOOLEAN,
-        allowNull: false,
-      },
-      ktp_image: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      bussines_location: {
-        type: Sequelize.GEOMETRY,
-        allowNull: true,
-      },
-      business_phone: {
+      phone_number: {
         type: Sequelize.STRING,
         allowNull: false,
-        //unique: true,
       },
-      partner_logo: {
+      address: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      photo_profile: {
         type: Sequelize.STRING,
         allowNull: true,
       },
@@ -75,6 +57,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("partners");
+    await queryInterface.dropTable("users");
   },
 };

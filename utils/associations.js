@@ -3,7 +3,6 @@ const {
   category,
   partner,
   review,
-  service,
   transaction,
   user,
 } = require("../models");
@@ -12,21 +11,18 @@ const {
 user.hasMany(transaction, { foreignKey: "id_user" });
 transaction.belongsTo(user, { foreignKey: "id_user" });
 
-// transaction and service relationship
-service.hasMany(transaction, { foreignKey: "id_service" });
-transaction.belongsTo(service, { foreignKey: "id_service" });
+// transaction and partner relationship
+partner.hasMany(transaction, { foreignKey: "id_partner" });
+transaction.belongsTo(partner, { foreignKey: "id_partner" });
 
 // blog and user relationship
 user.hasMany(blog, { foreignKey: "id_user" });
 blog.belongsTo(user, { foreignKey: "id_user" });
 
-//  service and category relationship
-category.hasMany(service, { foreignKey: "id_category" });
-service.belongsTo(category, { foreignKey: "id_category" });
+//  partner and category relationship
+category.hasMany(partner, { foreignKey: "id_category" });
+partner.belongsTo(category, { foreignKey: "id_category" });
 
-// service and partner relationship
-partner.hasMany(service, { foreignKey: "id_partner" });
-service.belongsTo(partner, { foreignKey: "id_partner" });
 
 // review and transaction relationship
 review.hasOne(transaction, { foreignKey: "id_transaction" });

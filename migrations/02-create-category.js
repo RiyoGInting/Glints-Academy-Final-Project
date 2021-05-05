@@ -1,36 +1,20 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("services", {
+    await queryInterface.createTable("categories", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      id_category: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
-      id_partner: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
-      service_name: {
+      category_name: {
         type: Sequelize.STRING,
-        allowNull: false,
-      },
-      service_fee: {
-        type: Sequelize.DECIMAL,
         allowNull: false,
       },
       description: {
         type: Sequelize.TEXT,
         allowNull: false,
-      },
-      avg_rating: {
-        type: Sequelize.DECIMAL,
-        allowNull: true,
       },
       createdAt: {
         allowNull: false,
@@ -47,6 +31,6 @@ module.exports = {
     });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("services");
+    await queryInterface.dropTable("categories");
   },
 };
