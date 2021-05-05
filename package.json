@@ -4,7 +4,7 @@
   "description": "TechStop Backend",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "cross-env NODE_ENV=test jest --testTimeout=100000 --coverage --forceExit",
     "dev": "NODE_ENV=development nodemon index.js",
     "stop": "NODE_ENV=production forever stop index.js || true",
     "start": "NODE_ENV=production forever start index.js"
@@ -42,5 +42,10 @@
     "sequelize-cli": "^6.2.0",
     "validator": "^13.6.0",
     "xss-clean": "^0.1.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^26.6.3",
+    "supertest": "^6.1.3"
   }
 }
