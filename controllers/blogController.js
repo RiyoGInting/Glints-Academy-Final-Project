@@ -158,4 +158,4 @@ class BlogController {
   } // end of Delete
 }
 
-module.exports = new TransaksiController();
+module.exports = new BlogController();
