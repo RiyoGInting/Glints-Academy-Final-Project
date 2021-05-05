@@ -12,7 +12,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      id_service: {
+      id_partner: {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
