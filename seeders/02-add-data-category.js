@@ -8,7 +8,7 @@ module.exports = {
       createdAt: new Date(),
       updatedAt: new Date(),
     }, {
-      category_name: 'AC',
+      category_name: 'Automotive',
       description: 'categoryDescription',
       createdAt: new Date(),
       updatedAt: new Date(),
