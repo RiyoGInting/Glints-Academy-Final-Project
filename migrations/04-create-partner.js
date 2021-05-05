@@ -90,6 +90,20 @@ module.exports = {
         type: Sequelize.DATE,
       },
     });
+
+    // Make id_category foreign key
+    await queryInterface.addConstraint("partners", {
+      fields: ["id_category"],
+      type: "foreign key",
+      name: "custom_fkey_id_category",
+      references: {
+        //Required field
+        table: "categories",
+        field: "id",
+      },
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    });
   },
   down: async (queryInterface, Sequelize) => {
     await queryInterface.dropTable("partners");

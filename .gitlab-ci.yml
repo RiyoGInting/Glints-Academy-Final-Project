@@ -63,4 +63,4 @@ deploy:
     - npm run stop
     - npm run start
   only:
-    - rhidyat
+    - master

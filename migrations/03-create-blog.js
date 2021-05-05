@@ -1,7 +1,7 @@
 "use strict";
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable("transactions", {
+    await queryInterface.createTable("blogs", {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -12,31 +12,15 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
-      id_partner: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-      },
-      appointment_date: {
-        type: Sequelize.DATE,
-        allowNull: false,
-      },
-      total_fee: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-      },
-      order_status: {
+      title: {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      payment_status: {
-        type: Sequelize.STRING,
+      article: {
+        type: Sequelize.TEXT,
         allowNull: false,
       },
-      payment_type: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
-      payment_proof: {
+      blog_image: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -53,8 +37,22 @@ module.exports = {
         type: Sequelize.DATE,
       },
     });
+
+    // Make id_user foreign key
+    await queryInterface.addConstraint("blogs", {
+      fields: ["id_user"],
+      type: "foreign key",
+      name: "custom_fkey_id_user",
+      references: {
+        //Required field
+        table: "users",
+        field: "id",
+      },
+      onDelete: "cascade",
+      onUpdate: "cascade",
+    });
   },
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable("transactions");
+    await queryInterface.dropTable("blogs");
   },
 };
