@@ -12,8 +12,8 @@ const blogController = require("../controllers/blogController");
 // Get All, Get One, Create, Update, Delete
 router.get("/", blogController.getAll);
 router.get("/:id", blogController.getOne);
-router.post("/", imageUpload, blogValidator.create, blogController.create);
-router.put("/:id", blogValidator.update, blogController.update);
-router.delete("/:id", blogController.delete);
+router.post("/", auth.admin, imageUpload, blogValidator.create, blogController.create);
+router.put("/:id", auth.admin, blogValidator.update, blogController.update);
+router.delete("/:id", auth.admin, blogController.delete);
 
 module.exports = router; // Export router
