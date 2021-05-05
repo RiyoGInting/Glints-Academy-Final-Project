@@ -11,11 +11,11 @@ exports.uploadBlogImage = (req, res, next) => {
         return res.status(400).json({ message: "Blog image must be an image" });
       }
 
-      // Check file size (max 1MB)
-      if (file.size > 1500000) {
+      // Check file size (max 1 MB)
+      if (file.size > 1000000) {
         return res
           .status(400)
-          .json({ message: "Blog image must be less than 1.5 MB" });
+          .json({ message: "Blog image must be less than 1 MB" });
       }
 
       // Create custom filename

@@ -4,7 +4,11 @@ class BlogController {
   // Get All blog data
   async getAll(req, res) {
     try {
-      let data = await blog.findAll();
+      let data = await blog.findAll({
+        // pagination (still need to edit)
+        limit: parseInt(req.query.limit),
+        offset: (parseInt(req.query.page) - 1) * parseInt(req.query.limit),
+      });
 
       if (data.length === 0) {
         return res.status(404).json({
