@@ -8,6 +8,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      id_category: {
+        allowNull: false,
+        type: Sequelize.INTEGER,
+      },
       role: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -59,6 +63,18 @@ module.exports = {
       },
       partner_logo: {
         type: Sequelize.STRING,
+        allowNull: true,
+      },
+      service: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      service_description: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
+      avg_rating: {
+        type: Sequelize.INTEGER,
         allowNull: true,
       },
       createdAt: {

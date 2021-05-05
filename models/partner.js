@@ -15,6 +15,10 @@ module.exports = (sequelize, DataTypes) => {
   }
   Partner.init(
     {
+      id_category: DataTypes.INTEGER,
+      service: DataTypes.STRING,
+      service_description: DataTypes.TEXT,
+      avg_rating: DataTypes.INTEGER,
       brand: DataTypes.STRING,
       business_address: DataTypes.STRING,
       verified_status: DataTypes.BOOLEAN,
