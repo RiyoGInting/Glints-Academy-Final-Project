@@ -9,5 +9,6 @@ const authValidator = require("../middlewares/validators/authValidator");
 const userController = require("../controllers/userController");
 router.get("/:id", auth.adminOrUser, userController.getOne);
 router.put("/:id", auth.adminOrUser, userController.update);
+router.post("/verifyEmail", userController.verifyEmail);
 
 module.exports = router;

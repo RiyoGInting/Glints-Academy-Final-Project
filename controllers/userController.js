@@ -1,7 +1,8 @@
 const { user } = require("../models");
+const nodemailer = require("nodemailer");
 
 class UserController {
-  // Get One transaksi
+  // Get One User
   getOne(req, res) {
     user
       .findOne({
@@ -9,7 +10,6 @@ class UserController {
         attributes: ["id", "name", "email", "phone_number", "address"], // just these attributes that showed
       })
       .then((data) => {
-        // If transaksi not found
         if (!data) {
           return res.status(404).json({
             message: "User Not Found",
@@ -31,7 +31,34 @@ class UserController {
       });
   }
 
-  // Update data
+  // verify email user
+  async verifyEmail(req, res) {
+    const { email } = req.body;
+
+    // create reusable transporter object
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD,
+      },
+    });
+
+    let mailOptions = {
+      from: "Admin",
+      to: `${email}`,
+      subject: "email verification",
+      text: `Please click on this link to continue your registrations
+        https://techstop.gabatch11.my.id/signup`,
+    };
+
+    // send mail with defined transport object
+    let info = await transporter.sendMail(mailOptions);
+
+    res.send(`email has been sent to ${email} please check your email`);
+  }
+
+  // Update data user
   async update(req, res) {
     let update = {
       phone_number: req.body.phone_number,
@@ -40,14 +67,13 @@ class UserController {
     };
 
     try {
-      // Transaksi table update data
       let updatedData = await user.update(update, {
         where: {
           id: req.params.id,
         },
       });
 
-      // Find the updated transaksi
+      // Find the updated
       let data = await user.findOne({
         where: { id: req.params.id },
         attributes: ["phone_number", "address", "password"], // just these attributes that showed
