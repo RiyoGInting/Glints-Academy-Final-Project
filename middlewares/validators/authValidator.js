@@ -9,7 +9,7 @@ exports.signup = async (req, res, next) => {
     }
 
     if (!validator.isAlpha(req.body.name, ["en-US"], { ignore: " " })) {
-      errors.push("Name must be a valid alpha");
+      errors.push("Name can not contain number");
     }
 
     // complete password parameter
