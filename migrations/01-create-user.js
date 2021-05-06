@@ -43,7 +43,7 @@ module.exports = {
         allowNull: true,
       },
       otp_code: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DECIMAL,
         allowNull: false,
       },
       status_verified: {

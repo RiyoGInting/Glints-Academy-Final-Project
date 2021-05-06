@@ -45,7 +45,6 @@ module.exports = {
       },
       verified_status: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
         defaultValue: false,
       },
       ktp_image: {
@@ -80,6 +79,14 @@ module.exports = {
       avg_rating: {
         type: Sequelize.INTEGER,
         allowNull: true,
+      },
+      otp_code: {
+        type: Sequelize.DECIMAL,
+        allowNull: false,
+      },
+      otp_verified_status: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
       },
       createdAt: {
         allowNull: false,
