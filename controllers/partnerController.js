@@ -1,6 +1,28 @@
 const { partner, category } = require("../models");
 
 class PartnerController {
+
+  async getAll(req, res) {
+    try {
+      let data = await partner.findAll();
+
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "Data not found",
+        });
+      }
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (error) {
+      console.log(error)
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error,
+      });
+    }
+  }
   // Get One transaksi
   getOnePartner(req, res) {
     partner

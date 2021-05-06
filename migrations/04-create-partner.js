@@ -52,7 +52,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      bussines_location: {
+      business_location: {
         type: Sequelize.JSON,
         allowNull: true,
       },
@@ -68,6 +68,10 @@ module.exports = {
       service: {
         type: Sequelize.STRING,
         allowNull: true,
+      },
+      service_fee: {
+        type: Sequelize.DECIMAL,
+        allowNull: false,
       },
       service_description: {
         type: Sequelize.TEXT,

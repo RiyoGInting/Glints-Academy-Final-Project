@@ -17,6 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       id_category: DataTypes.INTEGER,
       service: DataTypes.STRING,
+      service_fee: DataTypes.DECIMAL,
       service_description: DataTypes.TEXT,
       avg_rating: DataTypes.INTEGER,
       brand: DataTypes.STRING,
@@ -26,18 +27,33 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         //Set custom getter for book image using URL
         get() {
-          const ktpImage = this.getDataValue("ktp_image");
-          return "/images/" + ktpImage;
+          const ktp_image = this.getDataValue("ktp_image");
+
+          if (!ktp_image) {
+            return ktp_image;
+          }
+
+          return process.env.S3_URL + "/" + ktp_image;
         },
       },
-      bussines_location: DataTypes.JSON,
+      business_location: {
+        type: DataTypes.JSON,
+        set(value) {
+          this.setDataValue("bussines_location", JSON.stringify(value));
+        },
+      },
       business_phone: DataTypes.STRING,
       partner_logo: {
         type: DataTypes.STRING,
         //Set custom getter for book image using URL
         get() {
           const logo = this.getDataValue("partner_logo");
-          return "/images/" + logo;
+
+          if (!logo) {
+            return logo;
+          }
+
+          return process.env.S3_URL + "/" + logo;
         },
       },
       role: DataTypes.STRING,
