@@ -42,14 +42,6 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      otp_code: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
-      status_verified: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
