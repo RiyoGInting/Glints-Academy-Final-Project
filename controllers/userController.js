@@ -64,6 +64,7 @@ class UserController {
       phone_number: req.body.phone_number,
       address: req.body.address,
       password: req.body.password,
+      name: req.body.name,
     };
 
     try {
@@ -76,7 +77,7 @@ class UserController {
       // Find the updated
       let data = await user.findOne({
         where: { id: req.params.id },
-        attributes: ["phone_number", "address", "password", "otp_code"], // just these attributes that showed
+        attributes: ["name", "phone_number", "address", "password"], // just these attributes that showed
       });
 
       // If success
