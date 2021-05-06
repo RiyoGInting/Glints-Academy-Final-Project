@@ -46,7 +46,7 @@ exports.uploadKTP = async (req, res, next) => {
     // If image was uploaded
     if (req.files) {
       const file = req.files.ktp_image;
-
+      console.log(file)
       // Make sure image is photo
       if (!file.mimetype.startsWith("image")) {
         errors.push("File must be an image");

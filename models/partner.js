@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
           return process.env.S3_URL + "/" + ktp_image;
         },
       },
-      bussines_location: {
+      business_location: {
         type: DataTypes.JSON,
         set(value) {
           this.setDataValue("bussines_location", JSON.stringify(value));

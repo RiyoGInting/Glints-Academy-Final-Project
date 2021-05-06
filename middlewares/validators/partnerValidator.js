@@ -5,7 +5,7 @@ module.exports.create = async (req, res, next) => {
   try {
     let errors = [];
     // Find Category
-    let findCategory = await pemasok.findOne({
+    let findCategory = await category.findOne({
       where: {
         id: req.body.id_category,
       },
