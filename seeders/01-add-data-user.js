@@ -9,6 +9,8 @@ module.exports = {
       password: "qwerty",
       phone_number: "081234567890",
       address:"jl, mangga",
+      otp_code: 234343,
+      status_verified: "false",
       createdAt: new Date(),
       updatedAt: new Date(),
     }, {
@@ -18,6 +20,8 @@ module.exports = {
       password: "qwerty",
       phone_number: "081234567891",
       address:"jl, mangga 2",
+      otp_code: 234943,
+      status_verified: "false",
       createdAt: new Date(),
       updatedAt: new Date(),
     }, {
@@ -27,6 +31,8 @@ module.exports = {
       password: "qwerty",
       phone_number: "081234567892",
       address:"jl, mangga 3",
+      otp_code: 238943,
+      status_verified: "false",
       createdAt: new Date(),
       updatedAt: new Date(),
     }])

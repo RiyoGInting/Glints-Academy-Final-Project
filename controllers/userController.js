@@ -49,7 +49,7 @@ class UserController {
       to: `${email}`,
       subject: "email verification",
       text: `Please click on this link to continue your registrations
-        https://techstop.gabatch11.my.id/signup`,
+        https://techstop.gabatch11.my.id/signup?email=${email}`,
     };
 
     // send mail with defined transport object
@@ -76,7 +76,7 @@ class UserController {
       // Find the updated
       let data = await user.findOne({
         where: { id: req.params.id },
-        attributes: ["phone_number", "address", "password"], // just these attributes that showed
+        attributes: ["phone_number", "address", "password", "otp_code"], // just these attributes that showed
       });
 
       // If success
