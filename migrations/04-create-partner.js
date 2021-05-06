@@ -80,14 +80,6 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
-      otp_code: {
-        type: Sequelize.DECIMAL,
-        allowNull: false,
-      },
-      otp_verified_status: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

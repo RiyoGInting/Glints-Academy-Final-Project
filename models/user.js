@@ -31,8 +31,6 @@ module.exports = (sequelize, DataTypes) => {
       location: DataTypes.JSON,
       phone_number: DataTypes.STRING,
       address: DataTypes.STRING,
-      otp_code: DataTypes.DECIMAL,
-      status_verified: DataTypes.BOOLEAN
     },
     {
       sequelize,

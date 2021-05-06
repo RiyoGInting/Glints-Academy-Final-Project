@@ -68,8 +68,6 @@ module.exports = (sequelize, DataTypes) => {
         },
       },
       phone_number: DataTypes.STRING,
-      otp_code: DataTypes.DECIMAL,
-      otp_verified_status: DataTypes.BOOLEAN,
     },
     {
       sequelize,
