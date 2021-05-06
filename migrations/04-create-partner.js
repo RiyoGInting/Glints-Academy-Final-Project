@@ -52,7 +52,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      bussines_location: {
+      business_location: {
         type: Sequelize.JSON,
         allowNull: true,
       },
