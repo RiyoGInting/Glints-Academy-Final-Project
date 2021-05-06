@@ -23,8 +23,8 @@ const partnerRoutes = require("./routes/partnerRoutes");
 const authRoutes = require("./routes/authRoutes");
 
 const categoryRoute = require("./routes/categoryRoute");
-
-
+// CORS
+app.use(cors());
 //Set body parser for HTTP post operation
 app.use(express.json());
 app.use(fileUpload());
@@ -33,8 +33,6 @@ app.use(
     extended: true,
   })
 );
-
-app.use(fileUpload());
 
 // Sanitize data
 //app.use(mongoSanitize());
@@ -59,8 +57,7 @@ app.use(
   })
 );
 
-// CORS
-app.use(cors());
+
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
@@ -87,7 +84,6 @@ app.use("/user", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/partner", partnerRoutes);
 app.use("/category", categoryRoute);
-
 
 // Server running
 app.listen(3000, () => console.log("server running on port 3000"));
