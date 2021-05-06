@@ -42,7 +42,7 @@ exports.uploadKTP = async (req, res, next) => {
   try {
     // Initialita
     let errors = [];
-
+    console.log("AAAAAAAAAAA")
     // If image was uploaded
     if (req.files) {
       const file = req.files.ktp_image;
