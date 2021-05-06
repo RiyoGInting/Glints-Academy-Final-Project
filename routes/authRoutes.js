@@ -4,15 +4,16 @@ const passport = require("passport");
 const authValidator = require("../middlewares/validators/authValidator");
 const authController = require("../controllers/authController");
 const upload = require("../middlewares/uploads/uploadFlow");
+const partnerValidator = require("../middlewares/validators/partnerValidator")
 
 const auth = require("../middlewares/auth/index");
 const router = express.Router();
 
 router.post(
   "/signup/partner",
-  upload.uploadKtp,
-  upload.uploadLogo,
   authValidator.signup,
+  partnerValidator.create,
+  upload.uploadKTP,
   auth.signupPartner,
   authController.getTokenPartner
 );
