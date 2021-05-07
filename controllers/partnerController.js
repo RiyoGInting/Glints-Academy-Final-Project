@@ -36,6 +36,7 @@ class PartnerController {
           "business_address",
           "business_phone",
           "partner_logo",
+          "avg_rating",
         ], // just these attributes that showed
       })
       .then((data) => {
@@ -66,7 +67,7 @@ class PartnerController {
     let update = {
       verified_status: req.body.verified_status,
     };
-
+    console.log(update)
     try {
       // Transaksi table update data
       let updatedData = await partner.update(update, {
@@ -76,9 +77,9 @@ class PartnerController {
       });
 
       // Find the updated transaksi
-      let data = await user.findOne({
+      let data = await partner.findOne({
         where: { id: req.params.id },
-        attributes: ["brand", "name", "verified_status"], // just these attributes that showed
+        attributes: ["brand", ["name", "owner_name"], "verified_status"], // just these attributes that showed
       });
 
       // If success
@@ -88,7 +89,9 @@ class PartnerController {
       });
     } catch (err) {
       // If error
+      console.log(err)
       return res.status(500).json({
+    
         message: "Internal Server Error",
         error: err,
       });

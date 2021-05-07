@@ -10,8 +10,13 @@ const partnerController = require("../controllers/partnerController");
 
 router.get("/", partnerController.getAll);
 router.get("/getOne/:id", partnerController.getOnePartner);
-router.put("/:id", auth.admin, partnerController.updateVerifiedPartner);
 router.get("/searchByName", partnerController.searchByName);
 router.get("/searchByFilter", partnerController.searchByFilter);
+router.get("/:id", partnerController.getOnePartner);
+router.put(
+  "/adminVerified/:id",
+  auth.admin,
+  partnerController.updateVerifiedPartner
+);
 
 module.exports = router;

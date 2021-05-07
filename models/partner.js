@@ -22,7 +22,7 @@ module.exports = (sequelize, DataTypes) => {
       avg_rating: DataTypes.INTEGER,
       brand: DataTypes.STRING,
       business_address: DataTypes.STRING,
-      verified_status: DataTypes.BOOLEAN,
+      verified_status: DataTypes.ENUM("not_verified", "verified"),
       ktp_image: {
         type: DataTypes.STRING,
         //Set custom getter for book image using URL
