@@ -36,6 +36,7 @@ class PartnerController {
           "business_address",
           "business_phone",
           "partner_logo",
+          "avg_rating",
         ], // just these attributes that showed
       })
       .then((data) => {
