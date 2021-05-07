@@ -153,6 +153,7 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
+        console.log(req.body.ktp_image)
         let partnerSignUp = await partner.create(req.body);
 
         return done(null, partnerSignUp, {

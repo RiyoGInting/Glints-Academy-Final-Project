@@ -45,14 +45,13 @@ module.exports = {
       },
       verified_status: {
         type: Sequelize.BOOLEAN,
-        allowNull: false,
         defaultValue: false,
       },
       ktp_image: {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      bussines_location: {
+      business_location: {
         type: Sequelize.JSON,
         allowNull: true,
       },

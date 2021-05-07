@@ -27,11 +27,16 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         //Set custom getter for book image using URL
         get() {
-          const ktpImage = this.getDataValue("ktp_image");
-          return "/images/" + ktpImage;
+          const ktp_image = this.getDataValue("ktp_image");
+
+          if (!ktp_image) {
+            return ktp_image;
+          }
+
+          return process.env.S3_URL + "/" + ktp_image;
         },
       },
-      bussines_location: {
+      business_location: {
         type: DataTypes.JSON,
         set(value) {
           this.setDataValue("bussines_location", JSON.stringify(value));
@@ -43,7 +48,12 @@ module.exports = (sequelize, DataTypes) => {
         //Set custom getter for book image using URL
         get() {
           const logo = this.getDataValue("partner_logo");
-          return "/images/" + logo;
+
+          if (!logo) {
+            return logo;
+          }
+
+          return process.env.S3_URL + "/" + logo;
         },
       },
       role: DataTypes.STRING,
