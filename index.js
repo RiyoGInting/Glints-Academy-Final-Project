@@ -23,10 +23,8 @@ const partnerRoutes = require("./routes/partnerRoutes");
 const authRoutes = require("./routes/authRoutes");
 const transactionRoutes = require("./routes/transactionRoute");
 const categoryRoute = require("./routes/categoryRoute");
-
 const blogRoutes = require("./routes/blogRoutes");
 
-const categoryRoute = require("./routes/categoryRoute");
 // CORS
 app.use(cors());
 //Set body parser for HTTP post operation
