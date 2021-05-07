@@ -1,4 +1,4 @@
-const { partner, category } = require("../models");
+const { partner, category, Sequelize } = require("../models");
 const { Op } = require("sequelize");
 
 class PartnerController {
@@ -67,7 +67,7 @@ class PartnerController {
     let update = {
       verified_status: req.body.verified_status,
     };
-    console.log(update)
+    console.log(update);
     try {
       // Transaksi table update data
       let updatedData = await partner.update(update, {
@@ -89,9 +89,8 @@ class PartnerController {
       });
     } catch (err) {
       // If error
-      console.log(err)
+      console.log(err);
       return res.status(500).json({
-    
         message: "Internal Server Error",
         error: err,
       });
@@ -100,9 +99,10 @@ class PartnerController {
 
   async searchByName(req, res) {
     try {
+      console.log("asds")
       let data = await partner.findAll({
         where: {
-          service: req.query.service,
+          service: { [Sequelize.Op.like]: `%${req.query.service}%` },
         },
         attributes: ["brand", "service", "service_fee", "business_address"],
       });

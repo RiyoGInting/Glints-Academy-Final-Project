@@ -49,7 +49,7 @@ class UserController {
       to: `${email}`,
       subject: "email verification",
       text: `Please click on this link to continue your registrations
-        https://techstop.gabatch11.my.id/signup?email=${email}`,
+      https://tech-stop.herokuapp.com/UserFormRegistration`,
     };
 
     // send mail with defined transport object
