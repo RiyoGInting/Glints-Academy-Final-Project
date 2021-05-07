@@ -53,7 +53,6 @@ module.exports = {
           "done"
         ),
         allowNull: false,
-        defaultValue: "waiting",
       },
       appointment_hours: {
         type: Sequelize.TIME,
@@ -62,21 +61,6 @@ module.exports = {
       appointment_address: {
         type: Sequelize.STRING,
         allowNull: false,
-        defaultValue: "pending",
-      },
-      expired_payment: {
-        type: Sequelize.DATE,
-        allowNull: true,
-        defaultValue: new Date(Date.now() + 10 * 60 * 1000), //10 menit
-        type: Sequelize.DATE,
-      },
-      token: {
-        allowNull: true,
-        type: Sequelize.STRING,
-      },
-      redirect_url: {
-        allowNull: true,
-        type: Sequelize.STRING,
       },
       payment_status: {
         type: Sequelize.ENUM("pending", "failed", "success"),

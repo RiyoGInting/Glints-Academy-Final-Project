@@ -10,31 +10,12 @@ const transactionValidator = require("../middlewares/validators/transactionValid
 // Import controller
 const transactionController = require("../controllers/transactionController");
 
-//user
-router.route("/").get(auth.adminOrUser, transactionController.getAllByUser);
+// Router
 router
   .route("/")
-  .post(
-    //auth.adminOrUser,
-    transactionValidator.validator,
-    transactionController.create
-  );
+  .post(transactionValidator.validator, transactionController.create);
 router
   .route("/:id")
-  .get(auth.adminOrUser, transactionController.getOneByUser)
-  .put(
-    //auth.adminOrUser,
-    transactionValidator.validator,
-    transactionController.update
-  );
-
-//partner
-// router
-//   .route("/partner")
-//   .get(auth.partner, transactionController.getAllByPartner);
-// router
-//   .route("/partner/:id")
-//   .get(auth.partner, transactionController.getOneByPartner)
-//   .put(auth.partner, transactionController.updateStatus);
+  .put(transactionValidator.validator, transactionController.update);
 
 module.exports = router; // Export router
