@@ -1,7 +1,7 @@
 const { partner, category } = require("../models");
+const { Op } = require("sequelize");
 
 class PartnerController {
-
   async getAll(req, res) {
     try {
       let data = await partner.findAll();
@@ -16,7 +16,7 @@ class PartnerController {
         data,
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return res.status(500).json({
         message: "Internal Server Error",
         error,
@@ -91,6 +91,63 @@ class PartnerController {
       return res.status(500).json({
         message: "Internal Server Error",
         error: err,
+      });
+    }
+  }
+
+  async searchByName(req, res) {
+    try {
+      let data = await partner.findAll({
+        where: {
+          service: req.query.service,
+        },
+        attributes: ["brand", "service", "service_fee", "business_address"],
+      });
+
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "Data not found",
+        });
+      }
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        err,
+      });
+    }
+  }
+
+  async searchByFilter(req, res) {
+    try {
+      let data = await partner.findAll({
+        where: {
+          [Op.or]: [
+            { service: req.query.service },
+            { business_address: req.query.business_address },
+          ],
+        },
+        attributes: ["brand", "service", "service_fee", "business_address"],
+      });
+
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "Data not found",
+        });
+      }
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        err,
       });
     }
   }
