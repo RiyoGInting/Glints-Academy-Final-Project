@@ -97,7 +97,6 @@ describe("/signin POST", () => {
       email: "user@gmail.com",
       password: "User123#",
     });
-
     expect(res.statusCode).toEqual(200);
     expect(res.body).toBeInstanceOf(Object);
     expect(res.body.message).toEqual("Success");
@@ -111,7 +110,6 @@ describe("/signin POST", () => {
       email: "user@gmail123.com",
       password: "User123#",
     });
-
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
     expect(res.body.message).toEqual("Email or password is wrong");
@@ -122,7 +120,6 @@ describe("/signin POST", () => {
       email: "user@gmail.com",
       password: "User123###",
     });
-
     expect(res.statusCode).toEqual(401);
     expect(res.body).toBeInstanceOf(Object);
     expect(res.body.message).toEqual("Email or password is wrong");
