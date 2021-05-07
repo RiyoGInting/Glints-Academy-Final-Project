@@ -4,7 +4,11 @@ class ServiceController {
   // Get all Service
   async getAll(req, res) {
     try {
-      let data = await service.findAll();
+      //pagination
+      let data = await service.findAll({
+        limit: parseInt(req.query.limit),
+        offset: (parseInt(req.query.page) - 1) * parseInt(req.query.limit),
+      });
 
       if (data.length === 0) {
         return res.status(404).json({
@@ -63,6 +67,8 @@ class ServiceController {
         where: {
           id_partner: req.params.id,
         },
+        limit: parseInt(req.query.limit),
+        offset: (parseInt(req.query.page) - 1) * parseInt(req.query.limit),
       });
 
       if (data.length === 0) {
@@ -89,6 +95,8 @@ class ServiceController {
         where: {
           id_category: req.params.id,
         },
+        limit: parseInt(req.query.limit),
+        offset: (parseInt(req.query.page) - 1) * parseInt(req.query.limit),
       });
 
       if (data.length === 0) {
@@ -111,14 +119,13 @@ class ServiceController {
   //  Get all Service by a Name/Keyword(search)
   async searchByName(req, res) {
     try {
-      console.log(req.query);
       let data = await service.findAll({
         where: {
-          //service_name: req.query.name,
           service_name: { [Sequelize.Op.like]: `%${req.query.name}%` },
         },
+        limit: parseInt(req.query.limit),
+        offset: (parseInt(req.query.page) - 1) * parseInt(req.query.limit),
       });
-      console.log(data);
 
       if (data.length === 0) {
         return res.status(404).json({
