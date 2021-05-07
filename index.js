@@ -21,6 +21,7 @@ const app = express();
 const userRoutes = require("./routes/userRoutes");
 const partnerRoutes = require("./routes/partnerRoutes");
 const authRoutes = require("./routes/authRoutes");
+const blogRoutes = require("./routes/blogRoutes");
 
 const categoryRoute = require("./routes/categoryRoute");
 // CORS
@@ -84,6 +85,7 @@ app.use("/user", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/partner", partnerRoutes);
 app.use("/category", categoryRoute);
+app.use("/blog", blogRoutes);
 
 // Server running
 if (process.env.NODE_ENV !== "test") {

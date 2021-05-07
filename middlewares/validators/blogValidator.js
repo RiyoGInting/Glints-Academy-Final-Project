@@ -17,6 +17,8 @@ module.exports.create = async (req, res, next) => {
       });
     }
 
+    req.body.directory = "partner";
+    
     // It means that will be go to the next middleware
     next();
   } catch (e) {
