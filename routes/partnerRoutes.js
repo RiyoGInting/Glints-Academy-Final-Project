@@ -8,7 +8,7 @@ const authValidator = require("../middlewares/validators/authValidator");
 // import controllers
 const partnerController = require("../controllers/partnerController");
 
-router.get("/", partnerController.getAll);
+router.get("/",auth.partner, partnerController.getAll);
 router.get("/getOne/:id", partnerController.getOnePartner);
 router.get("/searchByName", partnerController.searchByName);
 router.get("/searchByFilter", partnerController.searchByFilter);
