@@ -16,7 +16,7 @@ test:
   stage: test
   # Config to use GitLab Shared Runner with Executor Docker
   tags:
-    - riyo
+    - ci-cd-techstop
   script:
     - echo "MYSQL_USERNAME"=$MYSQL_USERNAME > .env.test
     - echo "MYSQL_DATABASE"=$MYSQL_DATABASE_TEST >> .env.test
