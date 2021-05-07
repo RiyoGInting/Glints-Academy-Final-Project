@@ -23,7 +23,6 @@ blog.belongsTo(user, { foreignKey: "id_user" });
 category.hasMany(partner, { foreignKey: "id_category" });
 partner.belongsTo(category, { foreignKey: "id_category" });
 
-
 // review and transaction relationship
-review.hasOne(transaction, { foreignKey: "id_transaction" });
-transaction.belongsTo(review, { foreignKey: "id_transaction" });
+transaction.hasOne(review, { foreignKey: "id_transaction" });
+review.belongsTo(transaction, { foreignKey: "id_transaction" });

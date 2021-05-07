@@ -74,7 +74,7 @@ class BlogController {
         include: [
           {
             model: user,
-            attributes: ["nama"],
+            attributes: ["name"],
           },
         ],
       });
