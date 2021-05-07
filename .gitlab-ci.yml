@@ -33,7 +33,7 @@ test:
     - npm run test
   # Defines the names of branches and tags the job runs for
   only:
-    - riyo
+    - master
 
 # Deploy job
 deploy:
@@ -62,4 +62,4 @@ deploy:
     - npm run stop
     - npm run start
   only:
-    - riyo
+    - master
