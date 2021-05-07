@@ -28,6 +28,10 @@ module.exports = {
         type: Sequelize.DATE,
         allowNull: true,
       },
+      appointment_hours: {
+        type: Sequelize.TIME,
+        allowNull: true,
+      },
       appointment_date: {
         type: Sequelize.DATE,
         allowNull: false,
