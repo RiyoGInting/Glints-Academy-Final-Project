@@ -100,7 +100,7 @@ exports.uploadBlogImage = async (req, res, next) => {
   try {
     // Initialita
     let errors = [];
-    console.log("AAAAAAAAAAA")
+    
     // If image was uploaded
     if (req.files) {
       const file = req.files.blog_image;

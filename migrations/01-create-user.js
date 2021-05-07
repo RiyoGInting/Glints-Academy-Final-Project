@@ -34,8 +34,12 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      address: {
+      city_or_regional: {
         type: Sequelize.STRING,
+        allowNull: false,
+      },
+      postal_code: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       photo_profile: {
