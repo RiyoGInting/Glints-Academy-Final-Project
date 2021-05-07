@@ -21,9 +21,8 @@ const app = express();
 const userRoutes = require("./routes/userRoutes");
 const partnerRoutes = require("./routes/partnerRoutes");
 const authRoutes = require("./routes/authRoutes");
-
+const transactionRoutes = require("./routes/transactionRoute");
 const categoryRoute = require("./routes/categoryRoute");
-
 
 //Set body parser for HTTP post operation
 app.use(express.json());
@@ -87,7 +86,7 @@ app.use("/user", userRoutes);
 app.use("/auth", authRoutes);
 app.use("/partner", partnerRoutes);
 app.use("/category", categoryRoute);
-
+app.use("/transaction", transactionRoutes);
 
 // Server running
 app.listen(3000, () => console.log("server running on port 3000"));

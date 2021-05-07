@@ -31,18 +31,34 @@ module.exports = {
       order_status: {
         type: Sequelize.STRING,
         allowNull: false,
+        defaultValue: "waiting",
       },
       payment_status: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM("pending", "failed", "success"),
         allowNull: false,
+        defaultValue: "pending",
+      },
+      expired_payment: {
+        type: Sequelize.DATE,
+        allowNull: true,
+        defaultValue: new Date(Date.now() + 10 * 60 * 1000), //10 menit
+        type: Sequelize.DATE,
+      },
+      token: {
+        allowNull: true,
+        type: Sequelize.STRING,
+      },
+      redirect_url: {
+        allowNull: true,
+        type: Sequelize.STRING,
       },
       payment_type: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       payment_proof: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
