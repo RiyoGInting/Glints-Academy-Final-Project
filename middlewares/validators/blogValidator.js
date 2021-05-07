@@ -17,6 +17,8 @@ module.exports.create = async (req, res, next) => {
       });
     }
 
+    req.body.directory = "blog";
+    
     // It means that will be go to the next middleware
     next();
   } catch (e) {
