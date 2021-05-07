@@ -16,6 +16,18 @@ module.exports = {
         allowNull: false,
         type: Sequelize.INTEGER,
       },
+      token: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      redirect_url: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      expired_payment: {
+        type: Sequelize.DATE,
+        allowNull: true,
+      },
       appointment_date: {
         type: Sequelize.DATE,
         allowNull: false,
@@ -29,20 +41,34 @@ module.exports = {
         allowNull: false,
       },
       order_status: {
+        type: Sequelize.ENUM(
+          "waiting",
+          "accepted",
+          "cancelled",
+          "on process",
+          "done"
+        ),
+        allowNull: false,
+      },
+      appointment_hours: {
+        type: Sequelize.TIME,
+        allowNull: false,
+      },
+      appointment_address: {
         type: Sequelize.STRING,
         allowNull: false,
       },
       payment_status: {
-        type: Sequelize.STRING,
-        allowNull: false,
+        type: Sequelize.ENUM("pending", "failed", "success"),
+        allowNull: true,
       },
       payment_type: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       payment_proof: {
         type: Sequelize.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
