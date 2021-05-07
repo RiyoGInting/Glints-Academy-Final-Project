@@ -31,12 +31,10 @@ cache:
    - NODE_ENV=test npx sequelize db:migrate # create migration
    - NODE_ENV=test npx sequelize db:seed:all # seed all seeders data
    - npm run test
-  
   # Defines the names of branches and tags the job runs for
  only:
-  #  - ci-cd-techStop
     - riyo
-
+    
 # Deploy job
 deploy:
   type: deploy
