@@ -1,6 +1,6 @@
 # We have 2 stage Test and Deploy
 stages:
-  #- test
+  - test
   - deploy
 
 # Config cache
@@ -8,33 +8,33 @@ cache:
   paths:
     - node_modules/
 
-    # Test job
-    #test:
-    # Docker image
-    # image: node:14-alpine
-    # Attach Test job to Test stage
-    #stage: test
-    # Config to use GitLab Shared Runner with Executor Docker
-    #tags:
-    # - gitlab-org-docker
-    #script:
-    # - echo "MYSQL_USERNAME"=$MYSQL_USERNAME > .env.test
-    # - echo "MYSQL_DATABASE"=$MYSQL_DATABASE_TEST >> .env.test
-    # - echo "MYSQL_HOST"=$MYSQL_HOST >> .env.test
+# Test job
+test:
+  # Docker image
+  image: node:latest
+  # Attach Test job to Test stage
+  stage: test
+  # Config to use GitLab Shared Runner with Executor Docker
+  tags:
+    - ci-cd-techstop
+  script:
+    - echo "MYSQL_USERNAME"=$MYSQL_USERNAME > .env.test
+    - echo "MYSQL_DATABASE"=$MYSQL_DATABASE_TEST >> .env.test
+    - echo "MYSQL_HOST"=$MYSQL_HOST >> .env.test
    # - echo "S3_ACCESS_KEY"=$S3_ACCESS_KEY >> .env.test
    # - echo "S3_SECRET_KEY"=$S3_SECRET_KEY >> .env.test
    # - echo "S3_BUCKET"=$S3_BUCKET_TEST >> .env.test
    # - echo "S3_URL"=$S3_URL_TEST >> .env.test
-   # - yarn install
-   # - NODE_ENV=test npx sequelize db:drop # drop database before testing
-   # - NODE_ENV=test npx sequelize db:create # create database test
-   # - NODE_ENV=test npx sequelize db:migrate # create migration
-   # - NODE_ENV=test npx sequelize db:seed:all # seed all seeders data
-   # - yarn run test
-   # - NODE_ENV=test npx sequelize db:drop # drop database after testing
+    - rm -rf node_modules package-lock.json && npm install
+    - npm install
+    - NODE_ENV=test npx sequelize db:drop # drop database before testing
+    - NODE_ENV=test npx sequelize db:create # create database test
+    - NODE_ENV=test npx sequelize db:migrate # create migration
+    - NODE_ENV=test npx sequelize db:seed:all # seed all seeders data
+    - npm run test
   # Defines the names of branches and tags the job runs for
- # only:
-  #  - ci-cd-techStop
+  only:
+    - riyo
 
 # Deploy job
 deploy:
@@ -52,10 +52,10 @@ deploy:
     - echo "MYSQL_PASSWORD"=$MYSQL_PASSWORD >> .env.production
     - echo "MYSQL_DATABASE"=$MYSQL_DATABASE_PRODUCTION >> .env.production
     - echo "MYSQL_HOST"=$MYSQL_HOST >> .env.production
-    #- echo "S3_ACCESS_KEY"=$S3_ACCESS_KEY >> .env.production
-    #- echo "S3_SECRET_KEY"=$S3_SECRET_KEY >> .env.production
-    #- echo "S3_BUCKET"=$S3_BUCKET_PRODUCTION >> .env.production
-    #- echo "S3_URL"=$S3_URL_PRODUCTION >> .env.production
+    - echo "S3_ACCESS_KEY"=$S3_ACCESS_KEY >> .env.production
+    - echo "S3_SECRET_KEY"=$S3_SECRET_KEY >> .env.production
+    - echo "S3_BUCKET"=$S3_BUCKET_PRODUCTION >> .env.production
+    - echo "S3_URL"=$S3_URL_PRODUCTION >> .env.production
     - npm install
     - NODE_ENV=production npx sequelize db:create # create database test
     - NODE_ENV=production npx sequelize db:migrate # create migration
@@ -63,4 +63,4 @@ deploy:
     - npm run stop
     - npm run start
   only:
-    - master
+    - riyo
