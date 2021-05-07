@@ -8,16 +8,16 @@ cache:
   paths:
     - node_modules/
 
-    # Test job
-    test:
-    # Docker image
-    image: node:latest
-    # Attach Test job to Test stage
-    stage: test
-    # Config to use GitLab Shared Runner with Executor Docker
-    tags:
-    - gitlab-org-docker
-    script:
+# Test job
+test:
+  # Docker image
+  image: node:latest
+  # Attach Test job to Test stage
+  stage: test
+  # Config to use GitLab Shared Runner with Executor Docker
+  tags:
+    - riyo
+  script:
     - echo "MYSQL_USERNAME"=$MYSQL_USERNAME > .env.test
     - echo "MYSQL_DATABASE"=$MYSQL_DATABASE_TEST >> .env.test
     - echo "MYSQL_HOST"=$MYSQL_HOST >> .env.test
@@ -25,16 +25,16 @@ cache:
    # - echo "S3_SECRET_KEY"=$S3_SECRET_KEY >> .env.test
    # - echo "S3_BUCKET"=$S3_BUCKET_TEST >> .env.test
    # - echo "S3_URL"=$S3_URL_TEST >> .env.test
-   - npm install
-   - NODE_ENV=test npx sequelize db:drop # drop database before testing
-   - NODE_ENV=test npx sequelize db:create # create database test
-   - NODE_ENV=test npx sequelize db:migrate # create migration
-   - NODE_ENV=test npx sequelize db:seed:all # seed all seeders data
-   - npm run test
+    - npm install
+    - NODE_ENV=test npx sequelize db:drop # drop database before testing
+    - NODE_ENV=test npx sequelize db:create # create database test
+    - NODE_ENV=test npx sequelize db:migrate # create migration
+    - NODE_ENV=test npx sequelize db:seed:all # seed all seeders data
+    - npm run test
   # Defines the names of branches and tags the job runs for
- only:
+  only:
     - riyo
-    
+
 # Deploy job
 deploy:
   type: deploy
