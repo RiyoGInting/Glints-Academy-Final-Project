@@ -52,10 +52,10 @@ deploy:
     - echo "MYSQL_PASSWORD"=$MYSQL_PASSWORD >> .env.production
     - echo "MYSQL_DATABASE"=$MYSQL_DATABASE_PRODUCTION >> .env.production
     - echo "MYSQL_HOST"=$MYSQL_HOST >> .env.production
-    #- echo "S3_ACCESS_KEY"=$S3_ACCESS_KEY >> .env.production
-    #- echo "S3_SECRET_KEY"=$S3_SECRET_KEY >> .env.production
-    #- echo "S3_BUCKET"=$S3_BUCKET_PRODUCTION >> .env.production
-    #- echo "S3_URL"=$S3_URL_PRODUCTION >> .env.production
+    - echo "S3_ACCESS_KEY"=$S3_ACCESS_KEY >> .env.production
+    - echo "S3_SECRET_KEY"=$S3_SECRET_KEY >> .env.production
+    - echo "S3_BUCKET"=$S3_BUCKET_PRODUCTION >> .env.production
+    - echo "S3_URL"=$S3_URL_PRODUCTION >> .env.production
     - npm install
     - NODE_ENV=production npx sequelize db:create # create database test
     - NODE_ENV=production npx sequelize db:migrate # create migration
