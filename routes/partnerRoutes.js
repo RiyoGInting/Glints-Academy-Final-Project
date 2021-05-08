@@ -2,7 +2,10 @@ const express = require("express");
 const router = express.Router();
 
 const auth = require("../middlewares/auth");
-const authValidator = require("../middlewares/validators/authValidator");
+
+const { uploadKTP, uploadLogo } = require("../middlewares/uploads/uploadFlow");
+const partnerValidator = require("../middlewares/validators/partnerValidator");
+
 // import validators
 
 // import controllers
@@ -21,4 +24,19 @@ router.put(
   partnerController.updateVerifiedPartner
 );
 
+router.put(
+  "/updateService/:id",
+  auth.partner,
+  partnerValidator.updateService,
+  uploadLogo,
+  partnerController.updateProfileService
+);
+
+router.put(
+  "/updateProfile/:id",
+  auth.partner,
+  partnerValidator.update,
+  uploadLogo,
+  partnerController.updateProfile
+);
 module.exports = router;
