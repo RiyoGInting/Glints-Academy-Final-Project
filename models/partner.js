@@ -58,6 +58,8 @@ module.exports = (sequelize, DataTypes) => {
       role: DataTypes.STRING,
       name: DataTypes.STRING,
       email: DataTypes.STRING,
+      ktp_address: DataTypes.STRING,
+      owner_address: DataTypes.STRING,
       password: {
         type: DataTypes.STRING,
         set(val) {

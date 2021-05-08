@@ -4,13 +4,16 @@ const { Op } = require("sequelize");
 class PartnerController {
   async getAll(req, res) {
     try {
-      let data = await partner.findAll();
+      let data = await partner.findAll({
+        where: { verified_status: req.query.verified_status },
+      });
 
       if (data.length === 0) {
         return res.status(404).json({
           message: "Data not found",
         });
       }
+
       return res.status(200).json({
         message: "Success",
         data,
@@ -23,7 +26,8 @@ class PartnerController {
       });
     }
   }
-  // Get One transaksi
+
+  // Get One 
   getOnePartner(req, res) {
     partner
       .findOne({
@@ -40,7 +44,45 @@ class PartnerController {
         ], // just these attributes that showed
       })
       .then((data) => {
-        // If transaksi not found
+        // If  not found
+        if (!data) {
+          return res.status(404).json({
+            message: "Partner Not Found",
+          });
+        }
+
+        // If success
+        return res.status(200).json({
+          message: "Success",
+          data: data,
+        });
+      })
+      .catch((e) => {
+        // If error
+        return res.status(500).json({
+          message: "Internal Server Error",
+          error: e.message,
+        });
+      });
+  }
+
+  getOnePartnerProfile(req, res) {
+    partner
+      .findOne({
+        where: { id: req.params.id },
+        attributes: [
+          "id",
+          "brand_service_name",
+          "service_fee",
+          "service_description",
+        ], // just these attributes that showed
+        include: [
+          // Include is join
+          { model: category, attributes: ["category_name"] },
+        ],
+      })
+      .then((data) => {
+        // If  not found
         if (!data) {
           return res.status(404).json({
             message: "Partner Not Found",
@@ -69,14 +111,14 @@ class PartnerController {
     };
     console.log(update);
     try {
-      // Transaksi table update data
+      //  table update data
       let updatedData = await partner.update(update, {
         where: {
           id: req.params.id,
         },
       });
 
-      // Find the updated transaksi
+      // Find the updated 
       let data = await partner.findOne({
         where: { id: req.params.id },
         attributes: [
@@ -100,6 +142,143 @@ class PartnerController {
       });
     }
   }
+
+  async updatePhoto(req, res) {
+    let update = {
+      partner_logo: req.body.partner_logo,
+    };
+    console.log(update);
+    try {
+      //  table update data
+      let updatedData = await partner.update(update, {
+        where: {
+          id: req.params.id,
+        },
+      });
+
+      // Find the updated 
+      let data = await partner.findOne({
+        where: { id: req.params.id },
+        attributes: [
+          "partner_logo"
+        ], // just these attributes that showed
+      });
+
+      // If success
+      return res.status(201).json({
+        message: "Status udpdated",
+        data,
+      });
+    } catch (err) {
+      // If error
+      console.log(err);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: err,
+      });
+    }
+  }
+
+
+  async updateProfileService(req, res) {
+    let update = {
+      id_category: req.body.id_category,
+      brand_service_name: req.body.brand_service_name,
+      service_fee: req.body.service_fee,
+      service_description: req.body.service_description,
+      business_address: req.body.business_address,
+      business_phone: req.body.business_phone,
+      partner_logo: req.body.partner_logo,
+    };
+
+    try {
+      //  table update data
+      let updatedData = await partner.update(update, {
+        where: {
+          id: req.params.id,
+        },
+      });
+
+      // Find the updated 
+      let data = await partner.findOne({
+        where: { id: req.params.id },
+        attributes: [
+          "id",
+          "brand_service_name",
+          "service_fee",
+          "service_description",
+          "business_address",
+          "business_phone",
+          "partner_logo",
+        ], // just these attributes that showed
+        include: [
+          // Include is join
+          { model: category, attributes: ["category_name"] },
+        ],
+      });
+
+      // If success
+      return res.status(201).json({
+        message: "Success",
+        data,
+      });
+    } catch (e) {
+      // If error
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: e.message,
+      });
+    }
+  }
+
+  async updateProfile(req, res) {
+    let update = {
+      name: req.body.name,
+      phone_number: req.body.phone_number,
+      ktp_address: req.body.ktp_address,
+      owner_address: req.body.owner_address,
+      partner_logo: req.body.partner_logo,
+    };
+
+    try {
+      //  table update data
+      let updatedData = await partner.update(update, {
+        where: {
+          id: req.params.id,
+        },
+      });
+
+      // Find the updated 
+      let data = await partner.findOne({
+        where: { id: req.params.id },
+        attributes: [
+          "id",
+          "name",
+          "phone_number",
+          "ktp_address",
+          "owner_address",
+          "partner_logo",
+        ], // just these attributes that showed
+        include: [
+          // Include is join
+          { model: category, attributes: ["category_name"] },
+        ],
+      });
+
+      // If success
+      return res.status(201).json({
+        message: "Success",
+        data,
+      });
+    } catch (e) {
+      // If error
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: e.message,
+      });
+    }
+  }
+
 
   async searchByName(req, res) {
     try {
