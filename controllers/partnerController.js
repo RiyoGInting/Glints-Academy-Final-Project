@@ -1,4 +1,4 @@
-const { partner, category } = require("../models");
+const { partner, category, Sequelize } = require("../models");
 const { Op } = require("sequelize");
 
 class PartnerController {
@@ -145,9 +145,12 @@ class PartnerController {
 
   async searchByName(req, res) {
     try {
+      console.log("asds");
       let data = await partner.findAll({
         where: {
-          brand_service_name: req.query.brand_service_name,
+          brand_service_name: {
+            [Sequelize.Op.like]: `%${req.query.brand_service_name}%`,
+          },
         },
         attributes: ["brand_service_name", "service_fee", "business_address"],
       });
@@ -175,8 +178,9 @@ class PartnerController {
       let data = await partner.findAll({
         where: {
           [Op.or]: [
-            { brand_service_name: req.query.brand_service_name },
+            { service_fee: req.query.service_fee },
             { business_address: req.query.business_address },
+            { avg_rating: req.query.avg_rating },
           ],
         },
         attributes: ["brand_service_name", "service_fee", "business_address"],
