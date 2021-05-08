@@ -3,7 +3,7 @@ const passport = require("passport");
 
 const authValidator = require("../middlewares/validators/authValidator");
 const authController = require("../controllers/authController");
-const {uploadKTP}= require("../middlewares/uploads/uploadFlow");
+const {uploadKTP, uploadLogo}= require("../middlewares/uploads/uploadFlow");
 const partnerValidator = require("../middlewares/validators/partnerValidator")
 
 const auth = require("../middlewares/auth/index");
@@ -14,6 +14,7 @@ router.post(
   authValidator.signup,
   partnerValidator.create,
   uploadKTP,
+  uploadLogo,
   auth.signupPartner,
   authController.getTokenPartner
 );
