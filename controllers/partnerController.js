@@ -4,13 +4,16 @@ const { Op } = require("sequelize");
 class PartnerController {
   async getAll(req, res) {
     try {
-      let data = await partner.findAll();
+      let data = await partner.findAll({
+        where: { verified_status: req.query.verified_status },
+      });
 
       if (data.length === 0) {
         return res.status(404).json({
           message: "Data not found",
         });
       }
+
       return res.status(200).json({
         message: "Success",
         data,
@@ -23,6 +26,7 @@ class PartnerController {
       });
     }
   }
+
   // Get One transaksi
   getOnePartner(req, res) {
     partner
@@ -38,6 +42,44 @@ class PartnerController {
           "partner_logo",
           "avg_rating",
         ], // just these attributes that showed
+      })
+      .then((data) => {
+        // If transaksi not found
+        if (!data) {
+          return res.status(404).json({
+            message: "Partner Not Found",
+          });
+        }
+
+        // If success
+        return res.status(200).json({
+          message: "Success",
+          data: data,
+        });
+      })
+      .catch((e) => {
+        // If error
+        return res.status(500).json({
+          message: "Internal Server Error",
+          error: e.message,
+        });
+      });
+  }
+
+  getOnePartnerProfile(req, res) {
+    partner
+      .findOne({
+        where: { id: req.params.id },
+        attributes: [
+          "id",
+          "brand_service_name",
+          "service_fee",
+          "service_description",
+        ], // just these attributes that showed
+        include: [
+          // Include is join
+          { model: category, attributes: ["category_name"] },
+        ],
       })
       .then((data) => {
         // If transaksi not found

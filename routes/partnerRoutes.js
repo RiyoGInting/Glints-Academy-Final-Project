@@ -9,10 +9,12 @@ const authValidator = require("../middlewares/validators/authValidator");
 const partnerController = require("../controllers/partnerController");
 
 router.get("/", partnerController.getAll);
+router.get("/adminVerified/", auth.admin, partnerController.getAll);
 router.get("/getOne/:id", partnerController.getOnePartner);
+router.get("/profileService/:id", partnerController.getOnePartnerProfile);
 router.get("/searchByName", partnerController.searchByName);
 router.get("/searchByFilter", partnerController.searchByFilter);
-//router.get("/:id", partnerController.getOnePartner);
+
 router.put(
   "/adminVerified/:id",
   auth.admin,
