@@ -106,11 +106,7 @@ class PartnerController {
       console.log("asds")
       let data = await partner.findAll({
         where: {
-<<<<<<< HEAD
           service: { [Sequelize.Op.like]: `%${req.query.service}%` },
-=======
-          brand_service_name: req.query.brand_service_name,
->>>>>>> 2cb7fad1483724b69a5ec304f19fe1ba708e4791
         },
         attributes: ["brand_service_name", "service_fee", "business_address"],
       });
