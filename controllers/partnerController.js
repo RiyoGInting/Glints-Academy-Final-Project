@@ -103,10 +103,10 @@ class PartnerController {
 
   async searchByName(req, res) {
     try {
-      console.log("asds")
+      console.log("asds");
       let data = await partner.findAll({
         where: {
-          service: { [Sequelize.Op.like]: `%${req.query.service}%` },
+          brand_service_name: { [Sequelize.Op.like]: `%${req.query.brand_service_name}%` },
         },
         attributes: ["brand_service_name", "service_fee", "business_address"],
       });
@@ -134,8 +134,9 @@ class PartnerController {
       let data = await partner.findAll({
         where: {
           [Op.or]: [
-            { brand_service_name: req.query.brand_service_name },
+            { service_fee: req.query.service_fee },
             { business_address: req.query.business_address },
+            { avg_rating: req.query.avg_rating },
           ],
         },
         attributes: ["brand_service_name", "service_fee", "business_address"],

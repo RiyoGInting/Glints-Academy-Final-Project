@@ -7,7 +7,14 @@ class UserController {
     user
       .findOne({
         where: { id: req.params.id },
-        attributes: ["id", "name", "email", "phone_number", "address"], // just these attributes that showed
+        attributes: [
+          "id",
+          "name",
+          "email",
+          "phone_number",
+          "city_or_regional",
+          "postal_code",
+        ], 
       })
       .then((data) => {
         if (!data) {
