@@ -58,7 +58,6 @@ deploy:
     - npm install
     - NODE_ENV=production npx sequelize db:create # create database test
     - NODE_ENV=production npx sequelize db:migrate # create migration
-    - NODE_ENV=production npx sequelize db:seed --seed 02-add-data-category
     # Restart NodeJS service
     - npm run stop
     - npm run start
