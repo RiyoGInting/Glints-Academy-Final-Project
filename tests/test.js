@@ -7,7 +7,7 @@ beforeAll(async () => {
   await user.destroy({ where: {}, force: true });
 });
 
-// test auth
+// auth test
 describe("Auth Test", () => {
   describe("/signup POST", () => {
     it("It should get a token from user sign up user", async () => {
@@ -95,7 +95,6 @@ describe("Auth Test", () => {
   });
 });
 
-// test users
 describe("/signin POST", () => {
   it("It should get a token", async () => {
     const res = await request(app).post("/auth/signin").send({
@@ -130,3 +129,21 @@ describe("/signin POST", () => {
     expect(res.body.message).toEqual("Email or password is wrong");
   });
 });
+
+// user test
+describe("User Test", () => {
+  describe("/user/", () => {
+    it("It should get one user", async () => {
+      const res = await request(app)
+        .get("/user/1")
+        .set("Authorization", `bearer ${token}`)
+        .send({});
+
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toBeInstanceOf(Object);
+      expect(res.body.message).toEqual("Success");
+      expect(res.body).toHaveProperty("data");
+    });
+  });
+});
+
