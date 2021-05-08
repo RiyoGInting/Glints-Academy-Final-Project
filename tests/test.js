@@ -17,7 +17,8 @@ describe("Auth Test", () => {
         password: "User123#",
         confirmPassword: "User123#",
         phone_number: "08123456789",
-        address: "indonesia",
+        city_or_regional: "indonesia",
+        postal_code: 123456,
       });
 
       expect(res.statusCode).toEqual(200);
@@ -33,7 +34,8 @@ describe("Auth Test", () => {
         password: "User123#",
         confirmPassword: "User123#",
         phone_number: "08123456789",
-        address: "indonesia",
+        city_or_regional: "indonesia",
+        postal_code: 123456,
       });
 
       expect(res.statusCode).toEqual(401);
@@ -48,7 +50,8 @@ describe("Auth Test", () => {
         password: "User123#",
         confirmPassword: "User123#",
         phone_number: "08123456789",
-        address: "indonesia",
+        city_or_regional: "indonesia",
+        postal_code: 123456,
       });
 
       expect(res.statusCode).toEqual(400);
@@ -63,7 +66,8 @@ describe("Auth Test", () => {
         password: "User123#",
         confirmPassword: "User123#",
         phone_number: "08123456789",
-        address: "indonesia",
+        city_or_regional: "indonesia",
+        postal_code: 123456,
       });
 
       expect(res.statusCode).toEqual(400);
@@ -78,7 +82,8 @@ describe("Auth Test", () => {
         password: "pass",
         confirmPassword: "User123#",
         phone_number: "08123456789",
-        address: "indonesia",
+        city_or_regional: "indonesia",
+        postal_code: 123456,
       });
 
       expect(res.statusCode).toEqual(400);

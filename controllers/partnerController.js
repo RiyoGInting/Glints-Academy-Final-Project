@@ -1,7 +1,7 @@
-const { partner, category } = require("../models");
+const { partner, category, Sequelize } = require("../models");
+const { Op } = require("sequelize");
 
 class PartnerController {
-
   async getAll(req, res) {
     try {
       let data = await partner.findAll();
@@ -16,7 +16,7 @@ class PartnerController {
         data,
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return res.status(500).json({
         message: "Internal Server Error",
         error,
@@ -30,12 +30,13 @@ class PartnerController {
         where: { id: req.params.id },
         attributes: [
           "id",
-          "brand",
+          "brand_service_name",
           "email",
           ["phone_number", "owner_phone_number"],
           "business_address",
           "business_phone",
           "partner_logo",
+          "avg_rating",
         ], // just these attributes that showed
       })
       .then((data) => {
@@ -66,7 +67,7 @@ class PartnerController {
     let update = {
       verified_status: req.body.verified_status,
     };
-
+    console.log(update);
     try {
       // Transaksi table update data
       let updatedData = await partner.update(update, {
@@ -76,9 +77,13 @@ class PartnerController {
       });
 
       // Find the updated transaksi
-      let data = await user.findOne({
+      let data = await partner.findOne({
         where: { id: req.params.id },
-        attributes: ["brand", "name", "verified_status"], // just these attributes that showed
+        attributes: [
+          "brand_service_name",
+          ["name", "owner_name"],
+          "verified_status",
+        ], // just these attributes that showed
       });
 
       // If success
@@ -88,9 +93,69 @@ class PartnerController {
       });
     } catch (err) {
       // If error
+      console.log(err);
       return res.status(500).json({
         message: "Internal Server Error",
         error: err,
+      });
+    }
+  }
+
+  async searchByName(req, res) {
+    try {
+      console.log("asds");
+      let data = await partner.findAll({
+        where: {
+          brand_service_name: { [Sequelize.Op.like]: `%${req.query.brand_service_name}%` },
+        },
+        attributes: ["brand_service_name", "service_fee", "business_address"],
+      });
+
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "Data not found",
+        });
+      }
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        err,
+      });
+    }
+  }
+
+  async searchByFilter(req, res) {
+    try {
+      let data = await partner.findAll({
+        where: {
+          [Op.or]: [
+            { service_fee: req.query.service_fee },
+            { business_address: req.query.business_address },
+            { avg_rating: req.query.avg_rating },
+          ],
+        },
+        attributes: ["brand_service_name", "service_fee", "business_address"],
+      });
+
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "Data not found",
+        });
+      }
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        err,
       });
     }
   }

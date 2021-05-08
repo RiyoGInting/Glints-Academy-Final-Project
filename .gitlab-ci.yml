@@ -26,7 +26,6 @@ test:
    # - echo "S3_BUCKET"=$S3_BUCKET_TEST >> .env.test
    # - echo "S3_URL"=$S3_URL_TEST >> .env.test
     - rm -rf node_modules package-lock.json && npm install
-    - npm install
     - NODE_ENV=test npx sequelize db:drop # drop database before testing
     - NODE_ENV=test npx sequelize db:create # create database test
     - NODE_ENV=test npx sequelize db:migrate # create migration
@@ -34,7 +33,7 @@ test:
     - npm run test
   # Defines the names of branches and tags the job runs for
   only:
-    - riyo
+    - master
 
 # Deploy job
 deploy:
@@ -63,4 +62,4 @@ deploy:
     - npm run stop
     - npm run start
   only:
-    - riyo
+    - master
