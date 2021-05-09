@@ -44,7 +44,7 @@ exports.uploadKTP = async (req, res, next) => {
     let errors = [];
     
     // If image was uploaded
-    if (req.files) {
+    if (req.files === req.files.ktp_image) {
       const file = req.files.ktp_image;
 
       // Make sure image is photo
@@ -90,6 +90,7 @@ exports.uploadKTP = async (req, res, next) => {
 
     next();
   } catch (e) {
+    console.log("jjjjj")
     return res.status(500).json({
       message: e.message,
     });
@@ -102,7 +103,7 @@ exports.uploadLogo = async (req, res, next) => {
     let errors = [];
     
     // If image was uploaded
-    if (req.files) {
+    if (req.files === req.files.partner_logo) {
       const file = req.files.partner_logo;
 
       // Make sure image is photo
@@ -148,6 +149,7 @@ exports.uploadLogo = async (req, res, next) => {
 
     next();
   } catch (e) {
+    console.log("aaaaa")
     return res.status(500).json({
       message: e.message,
     });
