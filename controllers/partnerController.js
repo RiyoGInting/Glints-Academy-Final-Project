@@ -27,7 +27,7 @@ class PartnerController {
     }
   }
 
-  // Get One 
+  // Get One
   getOnePartner(req, res) {
     partner
       .findOne({
@@ -118,7 +118,7 @@ class PartnerController {
         },
       });
 
-      // Find the updated 
+      // Find the updated
       let data = await partner.findOne({
         where: { id: req.params.id },
         attributes: [
@@ -156,12 +156,10 @@ class PartnerController {
         },
       });
 
-      // Find the updated 
+      // Find the updated
       let data = await partner.findOne({
         where: { id: req.params.id },
-        attributes: [
-          "partner_logo"
-        ], // just these attributes that showed
+        attributes: ["partner_logo"], // just these attributes that showed
       });
 
       // If success
@@ -178,7 +176,6 @@ class PartnerController {
       });
     }
   }
-
 
   async updateProfileService(req, res) {
     let update = {
@@ -199,7 +196,7 @@ class PartnerController {
         },
       });
 
-      // Find the updated 
+      // Find the updated
       let data = await partner.findOne({
         where: { id: req.params.id },
         attributes: [
@@ -248,7 +245,7 @@ class PartnerController {
         },
       });
 
-      // Find the updated 
+      // Find the updated
       let data = await partner.findOne({
         where: { id: req.params.id },
         attributes: [
@@ -278,7 +275,6 @@ class PartnerController {
       });
     }
   }
-
 
   async searchByName(req, res) {
     try {
@@ -319,12 +315,22 @@ class PartnerController {
 
   async searchByFilter(req, res) {
     try {
-      const { limit, page } = req.query;
+      const { page } = req.query;
+      const limit = 9;
       let data = await partner.findAndCountAll({
         where: {
           [Op.and]: [
-            { service_fee: req.body.service_fee },
-            { business_address: req.body.business_address },
+            { service_fee: { [Sequelize.Op.gte]: req.body.min_price || 0 } },
+            {
+              service_fee: {
+                [Sequelize.Op.lte]: req.body.max_price || 9999999999,
+              },
+            },
+            {
+              business_address: {
+                [Sequelize.Op.like]: `%${req.body.business_address}%`,
+              },
+            },
             // { avg_rating: req.body.avg_rating },
           ],
         },
