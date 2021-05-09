@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
             return ktp_image;
           }
 
-          return process.env.S3_URL + "/" + ktp_image;
+          return `${process.env.S3_URL}/${photo_profile}`;
         },
       },
       business_location: {
@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
             return logo;
           }
 
-          return process.env.S3_URL + "/" + logo;
+          return `${process.env.S3_URL}/${photo_profile}`;
         },
       },
       role: DataTypes.STRING,
