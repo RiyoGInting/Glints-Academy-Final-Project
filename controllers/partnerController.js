@@ -282,14 +282,21 @@ class PartnerController {
 
   async searchByName(req, res) {
     try {
-      console.log("asds");
-      let data = await partner.findAll({
+      const { limit, page } = req.query;
+      let data = await partner.findAndCountAll({
         where: {
           brand_service_name: {
             [Sequelize.Op.like]: `%${req.query.brand_service_name}%`,
           },
         },
-        attributes: ["brand_service_name", "service_fee", "business_address"],
+        limit: parseInt(limit),
+        offset: (parseInt(page) - 1) * parseInt(limit),
+        attributes: [
+          "id",
+          "brand_service_name",
+          "service_fee",
+          "business_address",
+        ],
       });
 
       if (data.length === 0) {
@@ -312,15 +319,23 @@ class PartnerController {
 
   async searchByFilter(req, res) {
     try {
-      let data = await partner.findAll({
+      const { limit, page } = req.query;
+      let data = await partner.findAndCountAll({
         where: {
-          [Op.or]: [
-            { service_fee: req.query.service_fee },
-            { business_address: req.query.business_address },
-            { avg_rating: req.query.avg_rating },
+          [Op.and]: [
+            { service_fee: req.body.service_fee },
+            { business_address: req.body.business_address },
+            // { avg_rating: req.body.avg_rating },
           ],
         },
-        attributes: ["brand_service_name", "service_fee", "business_address"],
+        limit: parseInt(limit),
+        offset: (parseInt(page) - 1) * parseInt(limit),
+        attributes: [
+          "id",
+          "brand_service_name",
+          "service_fee",
+          "business_address",
+        ],
       });
 
       if (data.length === 0) {
