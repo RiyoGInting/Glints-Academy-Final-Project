@@ -3,7 +3,7 @@ const router = express.Router();
 
 const auth = require("../middlewares/auth");
 const userValidator = require("../middlewares/validators/userValidator");
-// import validators
+const { uploadPhoto } = require("../middlewares/uploads/uploadFlow");
 
 // import controllers
 const userController = require("../controllers/userController");
@@ -12,6 +12,7 @@ router.put(
   "/:id",
   auth.adminOrUser,
   userValidator.updateUser,
+  uploadPhoto,
   userController.update
 );
 router.post(

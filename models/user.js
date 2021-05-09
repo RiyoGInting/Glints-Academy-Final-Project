@@ -17,7 +17,19 @@ module.exports = (sequelize, DataTypes) => {
     {
       role: DataTypes.STRING,
       name: DataTypes.STRING,
-      photo_profile: DataTypes.STRING,
+      photo_profile: {
+        type: DataTypes.STRING,
+        //Set custom getter for book image using URL
+        get() {
+          const photo_profile = this.getDataValue("photo_profile");
+
+          if (!photo_profile) {
+            return photo_profile;
+          }
+
+          return process.env.S3_URL + "/" + photo_profile;
+        },
+      },
       email: DataTypes.STRING,
       password: {
         type: DataTypes.STRING,
