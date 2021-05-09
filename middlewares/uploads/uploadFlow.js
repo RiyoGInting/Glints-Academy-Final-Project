@@ -42,9 +42,9 @@ exports.uploadKTP = async (req, res, next) => {
   try {
     // Initialita
     let errors = [];
-    
+
     // If image was uploaded
-    if (req.files) {
+    if (req.files.ktp_image) {
       const file = req.files.ktp_image;
 
       // Make sure image is photo
@@ -90,6 +90,7 @@ exports.uploadKTP = async (req, res, next) => {
 
     next();
   } catch (e) {
+    console.log("jjjjj")
     return res.status(500).json({
       message: e.message,
     });
@@ -102,7 +103,7 @@ exports.uploadLogo = async (req, res, next) => {
     let errors = [];
     
     // If image was uploaded
-    if (req.files) {
+    if (req.files.partner_logo) {
       const file = req.files.partner_logo;
 
       // Make sure image is photo
@@ -148,6 +149,7 @@ exports.uploadLogo = async (req, res, next) => {
 
     next();
   } catch (e) {
+    console.log("aaaaa")
     return res.status(500).json({
       message: e.message,
     });
@@ -158,11 +160,11 @@ exports.uploadBlogImage = async (req, res, next) => {
   try {
     // Initialita
     let errors = [];
-    
+
     // If image was uploaded
     if (req.files) {
       const file = req.files.blog_image;
-      console.log(file)
+      console.log(file);
       // Make sure image is photo
       if (!file.mimetype.startsWith("image")) {
         errors.push("File must be an image");
@@ -197,6 +199,64 @@ exports.uploadBlogImage = async (req, res, next) => {
 
       // Upload image to /public/images
       req.body.blog_image = await run(
+        req.body.directory,
+        file.name,
+        file.data,
+        file.mimetype
+      );
+    }
+
+    next();
+  } catch (e) {
+    return res.status(500).json({
+      message: e.message,
+    });
+  }
+};
+
+exports.uploadPhoto = async (req, res, next) => {
+  try {
+    // Initialita
+    let errors = [];
+
+    // If image was uploaded
+    if (req.files) {
+      const file = req.files.photo_profile;
+
+      // Make sure image is photo
+      if (!file.mimetype.startsWith("image")) {
+        errors.push("File must be an image");
+      }
+
+      // If errors length > 0, it will make errors message
+      if (errors.length > 0) {
+        // Because bad request
+        return res.status(400).json({
+          message: errors.join(", "),
+        });
+      }
+
+      // Check file size (max 1MB)
+      if (file.size > 1000000) {
+        errors.push("Image must be less than 1MB");
+      }
+
+      // If errors length > 0, it will make errors message
+      if (errors.length > 0) {
+        // Because bad request
+        return res.status(400).json({
+          message: errors.join(", "),
+        });
+      }
+
+      // Create custom filename
+      let fileName = crypto.randomBytes(16).toString("hex");
+
+      // Rename the file
+      file.name = `${fileName}${path.parse(file.name).ext}`;
+
+      // Upload image to /public/images
+      req.body.photo_profile = await run(
         req.body.directory,
         file.name,
         file.data,

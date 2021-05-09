@@ -30,7 +30,7 @@ exports.updateUser = async (req, res, next) => {
       errors.push("Name can not contain number");
     }
 
-    if (!validator.isNumeric(req.body.postal_code)) {
+    if (req.body.postal_code && !validator.isNumeric(req.body.postal_code)) {
       errors.push("postal code must be a number");
     }
 
@@ -39,6 +39,7 @@ exports.updateUser = async (req, res, next) => {
         message: errors.join(", "),
       });
     }
+    req.body.directory = "user";
     next();
   } catch (error) {
     return res.status(500).json({
