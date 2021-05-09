@@ -12,12 +12,12 @@ const transactionController = require("../controllers/transactionController");
 
 // Router
 // Get All & Get One for Users 
-router.get("/", auth.adminOrUser, transactionController.getAll);
-router.get("/:id", auth.adminOrUser, transactionController.getOne);
+router.get("/", auth.adminOrUser, transactionController.getAllUser);
+router.get("/:id", auth.adminOrUser, transactionController.getOneUser);
 
 // Get All & Get One for Partners
-router.get("/", auth.partner, transactionController.getAll);
-router.get("/:id", auth.partner, transactionController.getOne);
+router.get("/", auth.partner, transactionController.getAllPartner);
+router.get("/:id", auth.partner, transactionController.getOnePartner);
 
 router
   .route("/accept/:id")

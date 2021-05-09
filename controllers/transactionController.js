@@ -2,6 +2,160 @@ const midtransClient = require("midtrans-client");
 const { partner, user, category, transaction } = require("../models");
 
 class TransactionController {
+  // Get all transaction data (for user)
+  async getAllUser(req, res) {
+    try {
+      let data = await transaction.findAll({
+        where: { id: req.body.id_user },
+        // pagination
+        limit: parseInt(req.query.limit),
+        offset: (parseInt(req.query.page) - 1) * parseInt(req.query.limit),
+      });
+
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "No transactions found",
+        });
+      }
+      // if successful
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error,
+      });
+    }
+  }
+
+  // Get all transaction data (for partner)
+  async getAllPartner(req, res) {
+    try {
+      let data = await transaction.findAll({
+        where: { id: req.body.id_partner },
+        // pagination
+        limit: parseInt(req.query.limit),
+        offset: (parseInt(req.query.page) - 1) * parseInt(req.query.limit),
+      });
+
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "No transactions found",
+        });
+      }
+      // if successful
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error,
+      });
+    }
+  }
+
+  // Get One Transaction (User)
+  async getOneUser(req, res) {
+    try {
+      let data = await transaction.findOne({
+        where: {
+          id: req.params.id,
+        },
+        include: [
+          {
+            model: user,
+            attributes: [
+              "name",
+              "phone_number",
+              "city_or_regional",
+              "postal_code",
+              "location",
+            ],
+          },
+          {
+            model: partner,
+            attributes: ["brand", "business_phone"],
+          },
+        ],
+      });
+
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "No transaction found",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error,
+      });
+    }
+  }
+
+  // Get One Transaction (Partner)
+  async getOnePartner(req, res) {
+    try {
+      let data = await transaction.findOne({
+        where: {
+          id: req.params.id,
+        },
+        attributes: [
+          "id_user",
+          "id_partner",
+          "appointment_date",
+          "total_fee",
+          "order_status",
+          "payment_status",
+        ],
+        include: [
+          {
+            model: user,
+            attributes: [
+              "name",
+              "phone_number",
+              "city_or_regional",
+              "postal_code",
+              "location",
+            ],
+          },
+          {
+            model: partner,
+            attributes: ["brand", "business_phone"],
+          },
+        ],
+      });
+
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "No transaction found",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error,
+      });
+    }
+  }
+
   // Create Transaction
   async create(req, res) {
     try {
