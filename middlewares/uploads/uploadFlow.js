@@ -44,7 +44,7 @@ exports.uploadKTP = async (req, res, next) => {
     let errors = [];
 
     // If image was uploaded
-    if (req.files === req.files.ktp_image) {
+    if (req.files.ktp_image) {
       const file = req.files.ktp_image;
 
       // Make sure image is photo
@@ -103,7 +103,7 @@ exports.uploadLogo = async (req, res, next) => {
     let errors = [];
     
     // If image was uploaded
-    if (req.files === req.files.partner_logo) {
+    if (req.files.partner_logo) {
       const file = req.files.partner_logo;
 
       // Make sure image is photo
