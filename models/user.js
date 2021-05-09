@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
             return photo_profile;
           }
 
-          return process.env.S3_URL + "/" + photo_profile;
+          return `${process.env.S3_URL}/${photo_profile}`;
         },
       },
       email: DataTypes.STRING,
