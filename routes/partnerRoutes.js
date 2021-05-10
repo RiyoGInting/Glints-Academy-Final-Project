@@ -17,6 +17,11 @@ router.get("/getOne/:id", partnerController.getOnePartner);
 router.get("/profileService/:id", partnerController.getOnePartnerProfile);
 router.get("/searchByName", partnerController.searchByName);
 router.get("/searchByFilter", partnerController.searchByFilter);
+router.post(
+  "/verifyEmailPartner",
+  partnerValidator.verifyEmailPartner,
+  partnerController.verifyEmailPartner
+);
 
 router.put(
   "/adminVerified/:id",
