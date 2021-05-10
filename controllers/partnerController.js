@@ -279,12 +279,20 @@ class PartnerController {
 
   async searchByName(req, res) {
     try {
-      const { limit, page } = req.query;
+      const { page } = req.query;
+      const limit = 12;
       let data = await partner.findAndCountAll({
         where: {
-          brand_service_name: {
-            [Sequelize.Op.like]: `%${req.query.brand_service_name}%`,
-          },
+          [Op.and]: [
+            {
+              brand_service_name: {
+                [Sequelize.Op.like]: `%${req.query.brand_service_name}%`,
+              },
+            },
+            {
+              verified_status: "verified",
+            },
+          ],
         },
         limit: parseInt(limit),
         offset: (parseInt(page) - 1) * parseInt(limit),
@@ -317,7 +325,7 @@ class PartnerController {
   async searchByFilter(req, res) {
     try {
       const { page } = req.query;
-      const limit = 9;
+      const limit = 12;
       let data = await partner.findAndCountAll({
         where: {
           [Op.and]: [
@@ -331,6 +339,9 @@ class PartnerController {
               business_address: {
                 [Sequelize.Op.like]: `%${req.body.business_address}%`,
               },
+            },
+            {
+              verified_status: "verified",
             },
             // { avg_rating: req.body.avg_rating },
           ],
