@@ -1,5 +1,6 @@
 const { partner, category, Sequelize } = require("../models");
 const { Op } = require("sequelize");
+const nodemailer = require("nodemailer");
 
 class PartnerController {
   async getAll(req, res) {
@@ -358,6 +359,42 @@ class PartnerController {
       return res.status(500).json({
         message: "Internal Server Error",
         err,
+      });
+    }
+  }
+
+  // verify email partner
+  async verifyEmailPartner(req, res) {
+    try {
+      const { email } = req.body;
+
+      // create reusable transporter object
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.PASSWORD,
+        },
+      });
+
+      let mailOptions = {
+        from: "Admin",
+        to: `${email}`,
+        subject: "email verification",
+        text: `Please click on this link to continue your registrations as a partner
+        https://tech-stop.herokuapp.com/PartnerFormRegistration`,
+      };
+
+      // send mail with defined transport object
+      let info = await transporter.sendMail(mailOptions);
+
+      return res.status(200).json({
+        message: `Email has been sent to ${email} please check your email or spam to continue registration`,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: err,
       });
     }
   }
