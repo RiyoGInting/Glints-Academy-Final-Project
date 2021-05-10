@@ -13,7 +13,8 @@ const transactionController = require("../controllers/transactionController");
 // Router
 router
   .route("/")
-  .post(transactionValidator.validator, transactionController.create);
+  .post(transactionValidator.validator, transactionController.createPayment);
+router.post("/pay", transactionController.paymentHandle);
 router
   .route("/:id")
   .put(transactionValidator.validator, transactionController.update);
