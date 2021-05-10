@@ -52,7 +52,7 @@ module.exports = (sequelize, DataTypes) => {
             return logo;
           }
 
-          return `${process.env.S3_URL}/${partner_logo}`;
+          return `${process.env.S3_URL}/${logo}`;
         },
       },
       role: DataTypes.STRING,
