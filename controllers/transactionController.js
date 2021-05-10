@@ -169,7 +169,7 @@ class TransactionController {
           data = await transaction.update(
             {
               status: "success",
-              payment_type:req.body.payment_type,
+              payment_type: req.body.payment_type,
               expiredPayment: null,
             },
             {
@@ -252,7 +252,7 @@ class TransactionController {
         data,
       });
     } catch (e) {
-      console.error(e);
+      // console.error(e);
       return res.status(500).json({
         message: "Internal Server Error",
       });
@@ -260,8 +260,37 @@ class TransactionController {
   }
   async statusUpdate(req, res) {
     try {
-
-    } catch (error) {}
+      // data.order_status = "on process";
+      let data = await transaction.findOne({
+        where: { id: req.params.id },
+      });
+      const order_status = data.order_status;
+      if (order_status == "waiting") {
+        data = await transaction.update(
+          { order_status: "accepted" },
+          { where: { id: req.params.id } }
+        );
+      } else if (order_status == "accepted") {
+        data = await transaction.update(
+          { order_status: "on process" },
+          { where: { id: req.params.id } }
+        );
+      } else if (order_status == "on process") {
+        data = await transaction.update(
+          { order_status: "done" },
+          { where: { id: req.params.id } }
+        );
+      }
+      return res.status(200).json({
+        message: "success",
+        data,
+      });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({
+        message: "Internal Server Error",
+      });
+    }
   }
   // Update Transaction
   async update(req, res) {

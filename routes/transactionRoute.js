@@ -15,6 +15,7 @@ router
   .route("/")
   .post(transactionValidator.validator, transactionController.createPayment);
 router.post("/pay", transactionController.paymentHandle);
+router.put("/status/:id", transactionController.statusUpdate);
 router
   .route("/:id")
   .put(transactionValidator.validator, transactionController.update);
