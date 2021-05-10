@@ -1,6 +1,6 @@
 const midtransClient = require("midtrans-client");
 const moment = require("moment-timezone");
-const { partner, user, category, transaction } = require("../models");
+const { partner, user, transaction } = require("../models");
 
 class TransactionController {
   // Create Transaction
@@ -32,6 +32,7 @@ class TransactionController {
           id: newData.id,
         },
         attributes: [
+          "id",
           "createdAt",
           "appointment_date",
           "appointment_address",
@@ -43,6 +44,7 @@ class TransactionController {
           {
             model: user,
             attributes: [
+              ["id", "id_user"],
               "name",
               "phone_number",
               "city_or_regional",
@@ -51,7 +53,11 @@ class TransactionController {
           },
           {
             model: partner,
-            attributes: ["brand_service_name", "business_phone"],
+            attributes: [
+              ["id", "id_partner"],
+              "brand_service_name",
+              "business_phone",
+            ],
           },
         ],
       });
@@ -82,7 +88,7 @@ class TransactionController {
       let total = findPartner.service_fee * req.body.total_item;
 
       // update data
-      let newData = await transaction.update(
+      await transaction.update(
         {
           appointment_date: req.body.appointment_date,
           appointment_hours: req.body.appointment_hours,
@@ -103,6 +109,7 @@ class TransactionController {
           id: req.params.id,
         },
         attributes: [
+          "id",
           "createdAt",
           "appointment_date",
           "appointment_address",
@@ -114,6 +121,7 @@ class TransactionController {
           {
             model: user,
             attributes: [
+              ["id", "id_user"],
               "name",
               "phone_number",
               "city_or_regional",
@@ -122,7 +130,11 @@ class TransactionController {
           },
           {
             model: partner,
-            attributes: ["brand_service_name", "business_phone"],
+            attributes: [
+              ["id", "id_partner"],
+              "brand_service_name",
+              "business_phone",
+            ],
           },
         ],
       });
@@ -149,7 +161,7 @@ class TransactionController {
   async cancelTransaction(req, res) {
     try {
       // update status
-      let newData = await transaction.update(
+      await transaction.update(
         {
           order_status: "cancelled",
         },
@@ -166,6 +178,7 @@ class TransactionController {
           id: req.params.id,
         },
         attributes: [
+          "id",
           "createdAt",
           "appointment_date",
           "appointment_address",
@@ -177,6 +190,7 @@ class TransactionController {
           {
             model: user,
             attributes: [
+              ["id", "id_user"],
               "name",
               "phone_number",
               "city_or_regional",
@@ -185,7 +199,11 @@ class TransactionController {
           },
           {
             model: partner,
-            attributes: ["brand_service_name", "business_phone"],
+            attributes: [
+              ["id", "id_partner"],
+              "brand_service_name",
+              "business_phone",
+            ],
           },
         ],
       });
@@ -219,7 +237,7 @@ class TransactionController {
         .replace("Z", "");
 
       // update status
-      let updateStatusAccepted = await transaction.update(
+      await transaction.update(
         {
           order_status: "accepted",
           expired_payment: expiredPayment,
@@ -235,28 +253,12 @@ class TransactionController {
         where: {
           id: req.params.id,
         },
-        attributes: [
-          "createdAt",
-          "appointment_date",
-          "appointment_address",
-          "total_item",
-          "total_fee",
-          "order_status",
-        ],
         include: [
           {
             model: user,
-            attributes: [
-              "name",
-              "email",
-              "phone_number",
-              "city_or_regional",
-              "postal_code",
-            ],
           },
           {
             model: partner,
-            attributes: ["brand_service_name", "business_phone"],
           },
         ],
       });
@@ -311,6 +313,38 @@ class TransactionController {
         where: {
           id: req.params.id,
         },
+        attributes: [
+          "id",
+          "createdAt",
+          "appointment_date",
+          "appointment_address",
+          "total_item",
+          "total_fee",
+          "order_status",
+          "expired_payment",
+          "token",
+          "redirect_url"
+        ],
+        include: [
+          {
+            model: user,
+            attributes: [
+              ["id", "id_user"],
+              "name",
+              "phone_number",
+              "city_or_regional",
+              "postal_code",
+            ],
+          },
+          {
+            model: partner,
+            attributes: [
+              ["id", "id_partner"],
+              "brand_service_name",
+              "business_phone",
+            ],
+          },
+        ],
       });
 
       // If success
@@ -349,6 +383,7 @@ class TransactionController {
             {
               payment_status: "success",
               order_status: "on process",
+              payment_type: req.body.payment_type,
               expired_payment: null,
             },
             {
@@ -364,6 +399,7 @@ class TransactionController {
             {
               payment_status: "success",
               order_status: "on process",
+              payment_type: req.body.payment_type,
               expired_payment: null,
             },
             {
@@ -380,6 +416,7 @@ class TransactionController {
           {
             payment_status: "success",
             order_status: "on process",
+            payment_type: req.body.payment_type,
             expired_payment: null,
           },
           {
