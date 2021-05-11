@@ -16,7 +16,7 @@ class CategoryController {
         data,
       });
     } catch (error) {
-      console.log(error)
+      console.log(error);
       return res.status(500).json({
         message: "Internal Server Error",
         error,
@@ -24,11 +24,11 @@ class CategoryController {
     }
   }
 
-
   async getOne(req, res) {
     try {
-      let data = await categories.findAll({
-        attributes: ["id", "category_name", "description", "category_image"],
+      let data = await category.findAll({
+        attributes: ["id", "category_name", "description"],
+        where: { id: req.params.id },
       });
 
       if (data.length === 0) {
