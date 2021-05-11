@@ -1,5 +1,6 @@
 const { partner, category, Sequelize } = require("../models");
 const { Op } = require("sequelize");
+const nodemailer = require("nodemailer");
 
 class PartnerController {
   async getAll(req, res) {
@@ -278,12 +279,20 @@ class PartnerController {
 
   async searchByName(req, res) {
     try {
-      const { limit, page } = req.query;
+      const { page } = req.query;
+      const limit = 12;
       let data = await partner.findAndCountAll({
         where: {
-          brand_service_name: {
-            [Sequelize.Op.like]: `%${req.query.brand_service_name}%`,
-          },
+          [Op.and]: [
+            {
+              brand_service_name: {
+                [Sequelize.Op.like]: `%${req.query.brand_service_name}%`,
+              },
+            },
+            {
+              verified_status: "verified",
+            },
+          ],
         },
         limit: parseInt(limit),
         offset: (parseInt(page) - 1) * parseInt(limit),
@@ -316,7 +325,7 @@ class PartnerController {
   async searchByFilter(req, res) {
     try {
       const { page } = req.query;
-      const limit = 9;
+      const limit = 12;
       let data = await partner.findAndCountAll({
         where: {
           [Op.and]: [
@@ -330,6 +339,9 @@ class PartnerController {
               business_address: {
                 [Sequelize.Op.like]: `%${req.body.business_address}%`,
               },
+            },
+            {
+              verified_status: "verified",
             },
             // { avg_rating: req.body.avg_rating },
           ],
@@ -358,6 +370,42 @@ class PartnerController {
       return res.status(500).json({
         message: "Internal Server Error",
         err,
+      });
+    }
+  }
+
+  // verify email partner
+  async verifyEmailPartner(req, res) {
+    try {
+      const { email } = req.body;
+
+      // create reusable transporter object
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.EMAIL,
+          pass: process.env.PASSWORD,
+        },
+      });
+
+      let mailOptions = {
+        from: "Admin",
+        to: `${email}`,
+        subject: "email verification",
+        text: `Please click on this link to continue your registrations as a partner
+        https://tech-stop.herokuapp.com/PartnerFormRegistration`,
+      };
+
+      // send mail with defined transport object
+      let info = await transporter.sendMail(mailOptions);
+
+      return res.status(200).json({
+        message: `Email has been sent to ${email} please check your email or spam to continue registration`,
+      });
+    } catch (err) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: err,
       });
     }
   }

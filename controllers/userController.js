@@ -64,7 +64,7 @@ class UserController {
       let info = await transporter.sendMail(mailOptions);
 
       return res.status(200).json({
-        message: `Email has been sent to ${email} please check your email`,
+        message: `Email has been sent to ${email} please check your email or spam to continue registration`,
       });
     } catch (err) {
       return res.status(500).json({
@@ -94,7 +94,13 @@ class UserController {
       // Find the updated
       let data = await user.findOne({
         where: { id: req.params.id },
-        attributes: ["name", "phone_number", "city_or_regional", "postal_code", "photo_profile"], // just these attributes that showed
+        attributes: [
+          "name",
+          "phone_number",
+          "city_or_regional",
+          "postal_code",
+          "photo_profile",
+        ], // just these attributes that showed
       });
 
       // If success

@@ -1,4 +1,4 @@
-const { partner,category } = require("../../models"); // Import all models
+const { partner, category } = require("../../models"); // Import all models
 const validator = require("validator");
 
 module.exports.create = async (req, res, next) => {
@@ -122,3 +122,24 @@ module.exports.update = async (req, res, next) => {
   }
 };
 
+exports.verifyEmailPartner = async (req, res, next) => {
+  try {
+    let errors = [];
+
+    if (!validator.isEmail(req.body.email)) {
+      errors.push("Please insert a valid email");
+    }
+
+    if (errors.length > 0) {
+      return res.status(400).json({
+        message: errors.join(", "),
+      });
+    }
+    next();
+  } catch (error) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error,
+    });
+  }
+};
