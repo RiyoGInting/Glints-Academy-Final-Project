@@ -229,12 +229,13 @@ class TransactionController {
   // Accept Transaction
   async acceptTransaction(req, res, next) {
     try {
-      // expired time
+      // expired time 5 minutes after accepted
       let expiredPayment = moment(Date.now() + 5 * 60 * 1000)
         .tz("UTC")
         .format()
         .replace("T", " ")
         .replace("Z", "");
+      console.log(expiredPayment);
 
       // update status
       await transaction.update(
@@ -323,7 +324,7 @@ class TransactionController {
           "order_status",
           "expired_payment",
           "token",
-          "redirect_url"
+          "redirect_url",
         ],
         include: [
           {
@@ -384,7 +385,6 @@ class TransactionController {
               payment_status: "success",
               order_status: "on process",
               payment_type: req.body.payment_type,
-              expired_payment: null,
             },
             {
               where: {
@@ -400,7 +400,6 @@ class TransactionController {
               payment_status: "success",
               order_status: "on process",
               payment_type: req.body.payment_type,
-              expired_payment: null,
             },
             {
               where: {
@@ -417,7 +416,6 @@ class TransactionController {
             payment_status: "success",
             order_status: "on process",
             payment_type: req.body.payment_type,
-            expired_payment: null,
           },
           {
             where: {
@@ -448,7 +446,6 @@ class TransactionController {
         data = await transaction.update(
           {
             payment_status: "pending",
-            expired_payment: null,
           },
           {
             where: {
