@@ -392,7 +392,7 @@ passport.use(
           partnerLogin.role.includes("partner") &&
           partnerLogin.verified_status.includes("verified")
         ) {
-          return done(null, token);
+          return done(null, token.partner);
         }
 
         return done(null, false, {

@@ -45,21 +45,17 @@ module.exports.updateService = async (req, res, next) => {
   try {
     let errors = [];
     // Find Category
-    let findDataUpdate = Promise.all([
+    let findDataUpdate = await Promise.all([
       category.findOne({
         where: { id: req.body.id_category },
       }),
-      partner.findOne({
-        where: { id: req.params.id },
-      }),
+      
     ]);
 
-    if (!findData[0]) {
+    if (!findDataUpdate[0]) {
       errors.push("Category not found");
     }
-    if (!findData[1]) {
-      errors.push("Partner not found");
-    }
+
     // Check harga is number
     if (!validator.isNumeric(req.body.service_fee)) {
       errors.push("Service Fee must be a number");
@@ -140,6 +136,18 @@ exports.verifyEmailPartner = async (req, res, next) => {
     return res.status(500).json({
       message: "Internal Server Error",
       error,
+    });
+  }
+};
+
+exports.updateLogo = async (req, res, next) => {
+  try {
+    req.body.directory = "partner";
+    next();
+  } catch (e) {
+    return res.status(500).json({
+      message: "Internal Server Error",
+      e,
     });
   }
 };
