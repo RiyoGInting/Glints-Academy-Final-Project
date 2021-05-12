@@ -32,7 +32,7 @@ class PartnerController {
   getOnePartner(req, res) {
     partner
       .findOne({
-        where: { id: req.params.id },
+        where: { id: req.partner.id },
         attributes: [
           "id",
           "brand_service_name",

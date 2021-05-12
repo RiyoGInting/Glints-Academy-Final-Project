@@ -13,7 +13,7 @@ const partnerController = require("../controllers/partnerController");
 
 router.get("/", partnerController.getAll);
 router.get("/adminVerified/", auth.admin, partnerController.getAll);
-router.get("/getOne/:id", partnerController.getOnePartner);
+router.get("/getOne/", auth.partner, partnerController.getOnePartner);
 router.get(
   "/profileService/:id",
   auth.partner,
