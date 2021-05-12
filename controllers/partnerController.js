@@ -70,7 +70,7 @@ class PartnerController {
   getOnePartnerProfile(req, res) {
     partner
       .findOne({
-        where: { id: req.params.id },
+        where: { id: req.partner.id },
         attributes: [
           "id",
           "brand_service_name",
@@ -153,13 +153,13 @@ class PartnerController {
       //  table update data
       let updatedData = await partner.update(update, {
         where: {
-          id: req.params.id,
+          id: req.partner.id,
         },
       });
 
       // Find the updated
       let data = await partner.findOne({
-        where: { id: req.params.id },
+        where: { id: req.partner.id },
         attributes: ["partner_logo"], // just these attributes that showed
       });
 
@@ -193,13 +193,13 @@ class PartnerController {
       //  table update data
       let updatedData = await partner.update(update, {
         where: {
-          id: req.params.id,
+          id: req.partner.id,
         },
       });
 
       // Find the updated
       let data = await partner.findOne({
-        where: { id: req.params.id },
+        where: { id: req.partner.id },
         attributes: [
           "id",
           "brand_service_name",
@@ -242,13 +242,13 @@ class PartnerController {
       //  table update data
       let updatedData = await partner.update(update, {
         where: {
-          id: req.params.id,
+          id: req.partner.id,
         },
       });
 
       // Find the updated
       let data = await partner.findOne({
-        where: { id: req.params.id },
+        where: { id: req.partner.id },
         attributes: [
           "id",
           "name",

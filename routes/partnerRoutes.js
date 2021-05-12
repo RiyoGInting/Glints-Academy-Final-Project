@@ -14,7 +14,11 @@ const partnerController = require("../controllers/partnerController");
 router.get("/", partnerController.getAll);
 router.get("/adminVerified/", auth.admin, partnerController.getAll);
 router.get("/getOne/:id", partnerController.getOnePartner);
-router.get("/profileService/:id", partnerController.getOnePartnerProfile);
+router.get(
+  "/profileService/:id",
+  auth.partner,
+  partnerController.getOnePartnerProfile
+);
 router.get("/searchByName", partnerController.searchByName);
 router.get("/searchByFilter", partnerController.searchByFilter);
 router.post(
@@ -30,7 +34,7 @@ router.put(
 );
 
 router.put(
-  "/updateService/:id",
+  "/updateService/",
   auth.partner,
   partnerValidator.updateService,
   uploadLogo,
@@ -38,10 +42,17 @@ router.put(
 );
 
 router.put(
-  "/updateProfile/:id",
+  "/updateProfile/",
   auth.partner,
   partnerValidator.update,
   uploadLogo,
   partnerController.updateProfile
+);
+
+router.put(
+  "/updateLogoPartner/",
+  auth.partner,
+  partnerValidator.updateLogo,
+  partnerController.updatePhoto
 );
 module.exports = router;
