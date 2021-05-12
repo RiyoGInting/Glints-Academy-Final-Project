@@ -46,7 +46,7 @@ class ReviewController {
     }
   }
 
-  async getRating(req, res) {
+  async averageRating(req, res) {
     try {
       let data = await partner.findAll({
         where: { id: req.params.id },
@@ -65,8 +65,8 @@ class ReviewController {
         ],
       });
 
+      // count average rating
       const transactionData = data[0].transactions;
-
       const ratings = [];
 
       transactionData.forEach((element) => {
@@ -88,10 +88,33 @@ class ReviewController {
         averageRating = ratings[0].toString();
       }
 
+      // count detail rating
+      let detailReview = {
+        fiveStar: 0,
+        fourStar: 0,
+        threeStar: 0,
+        twoStar: 0,
+        oneStar: 0,
+      };
+
+      ratings.forEach((element) => {
+        if (element == 5) {
+          detailReview.fiveStar += 1;
+        } else if (element == 4) {
+          detailReview.fourStar += 1;
+        } else if (element == 3) {
+          detailReview.threeStar += 1;
+        } else if (element == 2) {
+          detailReview.twoStar += 1;
+        } else if (element == 1) {
+          detailReview.oneStar += 1;
+        }
+      });
+
       return res.status(200).json({
         message: "Success",
         averageRating,
-        // data,
+        detailReview,
       });
     } catch (err) {
       return res.status(500).json({
