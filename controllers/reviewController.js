@@ -2,27 +2,6 @@
 const { review, transaction, user, partner } = require("../models");
 
 class ReviewController {
-  async getAll(req, res) {
-    try {
-      let data = await review.findAll();
-
-      if (data.length === 0) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
-      }
-      return res.status(200).json({
-        message: "Success",
-        data,
-      });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
-    }
-  }
-
   // Create Data
   async create(req, res) {
     try {
@@ -87,18 +66,31 @@ class ReviewController {
       });
 
       const transactionData = data[0].transactions;
+
       const ratings = [];
 
-      transactionData.forEach((element) => ratings.push(element.review.rating));
-      const totalData = ratings.length;
+      transactionData.forEach((element) => {
+        if (element.review != null) {
+          ratings.push(element.review.rating);
+        }
+      });
 
-      const reducer = (accumulator, currentValue) => accumulator + currentValue;
-      const sumRatings = ratings.reduce(reducer) / totalData;
-      const averageRating = sumRatings.toFixed(1);
+      const totalData = ratings.length;
+      let averageRating;
+
+      if (ratings.length > 1) {
+        const reducer = (accumulator, currentValue) =>
+          accumulator + currentValue;
+        const sumRatings = ratings.reduce(reducer) / totalData;
+        averageRating = sumRatings.toFixed(1);
+      } else if ((ratings.length = 1)) {
+        averageRating = ratings[0];
+      }
+
       return res.status(200).json({
         message: "Success",
         averageRating,
-        data,
+        // data,
       });
     } catch (err) {
       return res.status(500).json({
