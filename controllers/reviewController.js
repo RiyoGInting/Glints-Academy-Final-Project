@@ -77,14 +77,15 @@ class ReviewController {
 
       const totalData = ratings.length;
       let averageRating;
-
-      if (ratings.length > 1) {
+      if (ratings.length == 0) {
+        averageRating = "0";
+      } else if (ratings.length > 1) {
         const reducer = (accumulator, currentValue) =>
           accumulator + currentValue;
         const sumRatings = ratings.reduce(reducer) / totalData;
         averageRating = sumRatings.toFixed(1);
       } else if ((ratings.length = 1)) {
-        averageRating = ratings[0];
+        averageRating = ratings[0].toString();
       }
 
       return res.status(200).json({
