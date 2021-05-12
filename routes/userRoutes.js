@@ -7,6 +7,8 @@ const { uploadPhoto } = require("../middlewares/uploads/uploadFlow");
 
 // import controllers
 const userController = require("../controllers/userController");
+
+router.get("/", auth.adminOrUser, userController.getUser);
 router.get("/:id", auth.adminOrUser, userController.getOne);
 router.put(
   "/:id",
