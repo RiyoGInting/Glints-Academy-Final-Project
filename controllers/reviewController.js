@@ -2,9 +2,9 @@
 const { review, transaction, user, partner } = require("../models");
 
 class ReviewController {
-  // Create Data
   async create(req, res) {
     try {
+      // create review
       let createdData = await review.create({
         id_transaction: req.query.id_transaction,
         rating: req.body.rating,
@@ -25,11 +25,64 @@ class ReviewController {
               },
               {
                 model: partner,
-                attributes: ["name"],
+                attributes: ["id", "name"],
               },
             ],
           },
         ],
+      });
+
+      // find partner to count average rating
+      let dataPartner = await partner.findAll({
+        where: { id: data.transaction.partner.id },
+        attributes: ["brand_service_name", "avg_rating"],
+        include: [
+          {
+            model: transaction,
+            attributes: ["id"],
+            include: [
+              {
+                model: review,
+                attributes: ["rating"],
+              },
+            ],
+          },
+        ],
+      });
+      // // count average rating
+      const transactionData = dataPartner[0].transactions;
+      const ratings = [];
+
+      transactionData.forEach((element) => {
+        if (element.review != null) {
+          ratings.push(element.review.rating);
+        }
+      });
+
+      const totalData = ratings.length;
+      let averageRating;
+      if (ratings.length == 0) {
+        averageRating = "0";
+      } else if (ratings.length > 1) {
+        const reducer = (accumulator, currentValue) =>
+          accumulator + currentValue;
+        const sumRatings = ratings.reduce(reducer) / totalData;
+        averageRating = sumRatings.toFixed(1);
+      } else if ((ratings.length = 1)) {
+        averageRating = ratings[0].toString();
+      }
+
+      // update average rating partner
+      let averageRatings = parseFloat(averageRating);
+
+      let update = {
+        avg_rating: averageRatings,
+      };
+
+      let updatedData = await partner.update(update, {
+        where: {
+          id: data.transaction.partner.id,
+        },
       });
 
       // If success

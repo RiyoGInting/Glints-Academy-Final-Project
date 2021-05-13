@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       id_category: DataTypes.INTEGER,
       service_fee: DataTypes.DECIMAL,
       service_description: DataTypes.TEXT,
-      avg_rating: DataTypes.INTEGER,
+      avg_rating: DataTypes.FLOAT,
       brand_service_name: DataTypes.STRING,
       business_address: DataTypes.STRING,
       verified_status: DataTypes.ENUM("not_verified", "verified"),
