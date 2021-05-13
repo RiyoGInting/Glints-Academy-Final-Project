@@ -73,7 +73,7 @@ module.exports = {
         allowNull: true,
       },
       avg_rating: {
-        type: Sequelize.FLOAT,
+        type: Sequelize.INTEGER,
         allowNull: true,
       },
       createdAt: {
