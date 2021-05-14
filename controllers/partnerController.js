@@ -42,7 +42,15 @@ class PartnerController {
           "business_phone",
           "partner_logo",
           "avg_rating",
-        ], // just these attributes that showed
+          "service_description",
+          ["service_fee", "price"],
+        ],
+        include: [
+          {
+            model: category,
+            attributes: [["category_name", "tag service"]],
+          },
+        ],
       })
       .then((data) => {
         // If  not found
