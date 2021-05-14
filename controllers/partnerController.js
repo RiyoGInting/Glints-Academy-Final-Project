@@ -7,6 +7,12 @@ class PartnerController {
     try {
       let data = await partner.findAll({
         where: { verified_status: req.query.verified_status },
+        include: [
+          {
+            model: category,
+            attributes: ["category_name"],
+          },
+        ],
       });
 
       if (data.length === 0) {
