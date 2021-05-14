@@ -1,9 +1,9 @@
-// review controller
 const { review, transaction, user, partner } = require("../models");
 
 class ReviewController {
   async create(req, res) {
     try {
+      
       // create review
       let createdData = await review.create({
         id_transaction: req.query.id_transaction,
