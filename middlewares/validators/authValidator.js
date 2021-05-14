@@ -1,8 +1,28 @@
 const validator = require("validator");
+const { user } = require("../../models");
 
 exports.signup = async (req, res, next) => {
   try {
+    let find = await user.findOne({ where: { email: req.body.email } });
+
+    if (find) {
+      return res.status(400).json({
+        message: "email already in use",
+      });
+    }
+
+    const regexPhoneNumber = /^[+][6][2]\d{8,11}$/;
+    const regexPostalCode = /^\d{5}$/;
+
     let errors = [];
+
+    if (!regexPhoneNumber.test(req.body.phone_number)) {
+      errors.push("Please insert a valid phone number with +62 format");
+    }
+
+    if (!regexPostalCode.test(req.body.postal_code)) {
+      errors.push("Please insert a valid postal code");
+    }
 
     if (!validator.isEmail(req.body.email)) {
       errors.push("Please insert a valid email");
