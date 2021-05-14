@@ -48,7 +48,7 @@ class PartnerController {
         include: [
           {
             model: category,
-            attributes: [["category_name", "tag service"]],
+            attributes: [["category_name", "tag_service"]],
           },
         ],
       })
