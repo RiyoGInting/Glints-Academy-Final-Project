@@ -11,13 +11,26 @@ const transactionValidator = require("../middlewares/validators/transactionValid
 const transactionController = require("../controllers/transactionController");
 
 // Router
+router.route("/handlePayment").post(transactionController.handlePayment);
 router
   .route("/")
-  .post(transactionValidator.validator, transactionController.createPayment);
-router.post("/pay", transactionController.paymentHandle);
-router.put("/status/:id", transactionController.statusUpdate);
+  .post(
+    auth.adminOrUser,
+    transactionValidator.validator,
+    transactionController.create
+  );
 router
   .route("/:id")
-  .put(transactionValidator.validator, transactionController.update);
+  .put(
+    auth.adminOrUser,
+    transactionValidator.validator,
+    transactionController.update
+  );
+router
+  .route("/accept/:id")
+  .post(auth.partner, transactionController.acceptTransaction);
+router
+  .route("/cancel/:id")
+  .put(auth.partner, transactionController.cancelTransaction); //yang bakalan bisa cancel siapa aja? admin? user? partner? atau semuanya? hmmm
 
 module.exports = router; // Export router

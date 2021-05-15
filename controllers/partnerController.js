@@ -7,6 +7,12 @@ class PartnerController {
     try {
       let data = await partner.findAll({
         where: { verified_status: req.query.verified_status },
+        include: [
+          {
+            model: category,
+            attributes: ["category_name"],
+          },
+        ],
       });
 
       if (data.length === 0) {
@@ -42,7 +48,15 @@ class PartnerController {
           "business_phone",
           "partner_logo",
           "avg_rating",
-        ], // just these attributes that showed
+          "service_description",
+          ["service_fee", "price"],
+        ],
+        include: [
+          {
+            model: category,
+            attributes: [["category_name", "tag_service"]],
+          },
+        ],
       })
       .then((data) => {
         // If  not found
@@ -70,7 +84,7 @@ class PartnerController {
   getOnePartnerProfile(req, res) {
     partner
       .findOne({
-        where: { id: req.params.id },
+        where: { id: req.partner.id },
         attributes: [
           "id",
           "brand_service_name",
@@ -153,13 +167,13 @@ class PartnerController {
       //  table update data
       let updatedData = await partner.update(update, {
         where: {
-          id: req.params.id,
+          id: req.partner.id,
         },
       });
 
       // Find the updated
       let data = await partner.findOne({
-        where: { id: req.params.id },
+        where: { id: req.partner.id },
         attributes: ["partner_logo"], // just these attributes that showed
       });
 
@@ -193,13 +207,13 @@ class PartnerController {
       //  table update data
       let updatedData = await partner.update(update, {
         where: {
-          id: req.params.id,
+          id: req.partner.id,
         },
       });
 
       // Find the updated
       let data = await partner.findOne({
-        where: { id: req.params.id },
+        where: { id: req.partner.id },
         attributes: [
           "id",
           "brand_service_name",
@@ -242,13 +256,13 @@ class PartnerController {
       //  table update data
       let updatedData = await partner.update(update, {
         where: {
-          id: req.params.id,
+          id: req.partner.id,
         },
       });
 
       // Find the updated
       let data = await partner.findOne({
-        where: { id: req.params.id },
+        where: { id: req.partner.id },
         attributes: [
           "id",
           "name",
@@ -280,7 +294,7 @@ class PartnerController {
   async searchByName(req, res) {
     try {
       const { page } = req.query;
-      const limit = 12;
+      const limits = 12;
       let data = await partner.findAndCountAll({
         where: {
           [Op.and]: [
@@ -294,17 +308,19 @@ class PartnerController {
             },
           ],
         },
-        limit: parseInt(limit),
-        offset: (parseInt(page) - 1) * parseInt(limit),
+        limit: limits,
+        offset: (parseInt(page) - 1) * limits,
         attributes: [
           "id",
+          "partner_logo",
           "brand_service_name",
           "service_fee",
           "business_address",
+          "avg_rating",
         ],
       });
 
-      if (data.length === 0) {
+      if (data.count == 0) {
         return res.status(404).json({
           message: "Data not found",
         });
@@ -325,7 +341,7 @@ class PartnerController {
   async searchByFilter(req, res) {
     try {
       const { page } = req.query;
-      const limit = 12;
+      const limits = 12;
       let data = await partner.findAndCountAll({
         where: {
           [Op.and]: [
@@ -343,20 +359,27 @@ class PartnerController {
             {
               verified_status: "verified",
             },
-            // { avg_rating: req.body.avg_rating },
+            { avg_rating: { [Sequelize.Op.gte]: req.body.min_rating || 0 } },
+            {
+              avg_rating: {
+                [Sequelize.Op.lte]: req.body.max_rating || 5,
+              },
+            },
           ],
         },
-        limit: parseInt(limit),
-        offset: (parseInt(page) - 1) * parseInt(limit),
+        limit: limits,
+        offset: (parseInt(page) - 1) * limits,
         attributes: [
           "id",
+          "partner_logo",
           "brand_service_name",
           "service_fee",
           "business_address",
+          "avg_rating",
         ],
       });
 
-      if (data.length === 0) {
+      if (data.count == 0) {
         return res.status(404).json({
           message: "Data not found",
         });

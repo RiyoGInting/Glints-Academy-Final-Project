@@ -36,21 +36,14 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
-        let find = await user.findOne({ where: { email: req.body.email } });
-        if (find) {
-          return res.status(409).json({
-            message: "email already in use",
-          });
-        } else {
-          let userSignUp = await user.create(req.body);
+        let userSignUp = await user.create(req.body);
 
-          return done(null, userSignUp, {
-            message: "User can be created",
-          });
-        }
+        return done(null, userSignUp, {
+          message: "User can be created",
+        });
       } catch (e) {
         return done(null, false, {
-          message: "This email is already in use",
+          message: "User can not be created",
         });
       }
     }
@@ -153,7 +146,7 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
-        console.log(req.body.ktp_image)
+        console.log(req.body.ktp_image);
         let partnerSignUp = await partner.create(req.body);
 
         return done(null, partnerSignUp, {
@@ -387,12 +380,12 @@ passport.use(
           where: { id: token.partner.id },
         });
         //if user not admin
-        console.log(`ini ${partnerLogin}`)
+        console.log(`ini ${partnerLogin}`);
         if (
           partnerLogin.role.includes("partner") &&
           partnerLogin.verified_status.includes("verified")
         ) {
-          return done(null, token);
+          return done(null, token.partner);
         }
 
         return done(null, false, {
