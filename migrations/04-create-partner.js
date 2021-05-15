@@ -35,7 +35,7 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      brand: {
+      brand_service_name: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -44,8 +44,8 @@ module.exports = {
         allowNull: true,
       },
       verified_status: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
+        type: Sequelize.ENUM("not_verified", "verified"),
+        defaultValue: "not_verified",
       },
       ktp_image: {
         type: Sequelize.STRING,
@@ -61,10 +61,6 @@ module.exports = {
         unique: true,
       },
       partner_logo: {
-        type: Sequelize.STRING,
-        allowNull: true,
-      },
-      service: {
         type: Sequelize.STRING,
         allowNull: true,
       },

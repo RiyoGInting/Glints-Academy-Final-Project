@@ -16,13 +16,12 @@ module.exports = (sequelize, DataTypes) => {
   Partner.init(
     {
       id_category: DataTypes.INTEGER,
-      service: DataTypes.STRING,
       service_fee: DataTypes.DECIMAL,
       service_description: DataTypes.TEXT,
       avg_rating: DataTypes.INTEGER,
-      brand: DataTypes.STRING,
+      brand_service_name: DataTypes.STRING,
       business_address: DataTypes.STRING,
-      verified_status: DataTypes.BOOLEAN,
+      verified_status: DataTypes.ENUM("not_verified", "verified"),
       ktp_image: {
         type: DataTypes.STRING,
         //Set custom getter for book image using URL
@@ -33,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
             return ktp_image;
           }
 
-          return process.env.S3_URL + "/" + ktp_image;
+          return `${process.env.S3_URL}/${ktp_image}`;
         },
       },
       business_location: {
@@ -53,12 +52,14 @@ module.exports = (sequelize, DataTypes) => {
             return logo;
           }
 
-          return process.env.S3_URL + "/" + logo;
+          return `${process.env.S3_URL}/${logo}`;
         },
       },
       role: DataTypes.STRING,
       name: DataTypes.STRING,
       email: DataTypes.STRING,
+      ktp_address: DataTypes.STRING,
+      owner_address: DataTypes.STRING,
       password: {
         type: DataTypes.STRING,
         set(val) {

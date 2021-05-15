@@ -346,7 +346,7 @@ passport.use(
 
 exports.partner = (req, res, next) => {
   //it will go to ../middlewares/auth/index.js -> passport.user("signup")
-  passport.authorize("partner", (err, user, info) => {
+  passport.authorize("partner", (err, partner, info) => {
     // if error
     if (err) {
       return res.status(500).json({
@@ -382,13 +382,15 @@ passport.use(
     async (token, done) => {
       try {
         console.log(token);
+
         const partnerLogin = await partner.findOne({
           where: { id: token.partner.id },
         });
         //if user not admin
+        console.log(`ini ${partnerLogin}`)
         if (
           partnerLogin.role.includes("partner") &&
-          userLogin.verified_status.includes(1)
+          partnerLogin.verified_status.includes("verified")
         ) {
           return done(null, token);
         }
