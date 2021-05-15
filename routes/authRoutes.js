@@ -11,7 +11,7 @@ const router = express.Router();
 
 router.post(
   "/signup/partner",
-  authValidator.signup,
+  authValidator.signupPartner,
   partnerValidator.create,
   uploadKTP,
   uploadLogo,
