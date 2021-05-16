@@ -211,6 +211,7 @@ class PartnerController {
         },
       });
 
+       console.log(`ini adalah updte ${updatedData}`)
       // Find the updated
       let data = await partner.findOne({
         where: { id: req.partner.id },

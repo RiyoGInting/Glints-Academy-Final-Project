@@ -5,16 +5,16 @@ module.exports.create = async (req, res, next) => {
   try {
     let errors = [];
     // Find Category
-    let findCategory = await category.findOne({
-      where: {
-        id: req.body.id_category,
-      },
-    });
+    // let findCategory = await category.findOne({
+    //   where: {
+    //     id: req.body.id_category,
+    //   },
+    // });
 
-    // category not found
-    if (!findCategory) {
-      errors.push("Category Not Found");
-    }
+    // // category not found
+    // if (!findCategory) {
+    //   errors.push("Category Not Found");
+    // }
 
     // Check harga is number
     if (!validator.isNumeric(req.body.service_fee)) {

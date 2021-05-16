@@ -3,7 +3,7 @@ const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const JWTstrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
-const { user, partner } = require("../../models");
+const { user, partner, category} = require("../../models");
 
 exports.signup = (req, res, next) => {
   passport.authenticate("signup", { session: false }, (err, user, info) => {
@@ -146,11 +146,33 @@ passport.use(
     },
     async (req, email, password, done) => {
       try {
-        console.log(req.body.ktp_image);
-        let partnerSignUp = await partner.create(req.body);
+        let data = await category.findOne({
+          attributes: ["id", "category_name", "description"],
+          where: { category_name: req.body.category_name },
+        });
+
+        let partnerSignUp = await partner.create({
+          name: req.body.name,
+          email: req.body.email,
+          password: req.body.password,
+          confirmPassword: req.body.confirmPassword,
+          brand_service_name: req.body.brand_service_name,
+          phone_number: req.body.phone_number,
+          business_phone: req.body.business_phone,
+          business_address: req.body.business_address,
+          service_fee: req.body.service_fee,
+          ktp_address: req.body.ktp_address,
+          owner_address: req.body.owner_address,
+          ktp_image: req.body.ktp_image,
+          id_category: data.dataValues.id,
+          category_name: req.body.category_name,
+
+
+        });
 
         return done(null, partnerSignUp, {
           message: "User Partner can be created",
+          
         });
       } catch (e) {
         console.log(e);
