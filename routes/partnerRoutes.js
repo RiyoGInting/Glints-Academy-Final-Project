@@ -53,6 +53,7 @@ router.put(
   "/updateLogoPartner/",
   auth.partner,
   partnerValidator.updateLogo,
+  uploadLogo,
   partnerController.updatePhoto
 );
 module.exports = router;
