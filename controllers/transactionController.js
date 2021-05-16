@@ -230,7 +230,7 @@ class TransactionController {
   async acceptTransaction(req, res, next) {
     try {
       // expired time 5 minutes after accepted
-      let expiredPayment = moment(Date.now() + 5 * 60 * 1000)
+      let expiredPayment = moment(Date.now() + 10 * 60 * 1000)
         .tz("UTC")
         .format()
         .replace("T", " ")
@@ -246,6 +246,7 @@ class TransactionController {
         {
           where: {
             id: req.params.id,
+            //id_partner: req.partner.id,
           },
         }
       );
@@ -286,12 +287,12 @@ class TransactionController {
         },
         callbacks: {
           //nanti redirect ke page dari frontend pas transaksi uda success
-          finish: "https://techstop.gabatch11.my.id",
+          finish: "https://techstop.gabatch11.my.id/",
         },
         expiry: {
           //start_time: new Date(Date.now()),
           unit: "minutes",
-          duration: 5,
+          duration: 10,
         },
       };
 
