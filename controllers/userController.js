@@ -38,6 +38,42 @@ class UserController {
       });
   }
 
+  // Get One User
+  getUser(req, res) {
+    user
+      .findOne({
+        where: { id: req.user.id },
+        attributes: [
+          "id",
+          "name",
+          "email",
+          "phone_number",
+          "city_or_regional",
+          "postal_code",
+        ],
+      })
+      .then((data) => {
+        if (!data) {
+          return res.status(404).json({
+            message: "User Not Found",
+          });
+        }
+
+        // If success
+        return res.status(200).json({
+          message: "Success",
+          data: data,
+        });
+      })
+      .catch((e) => {
+        // If error
+        return res.status(500).json({
+          message: "Internal Server Error",
+          error: e.message,
+        });
+      });
+  }
+
   // verify email user
   async verifyEmail(req, res) {
     try {

@@ -15,6 +15,19 @@ module.exports = (sequelize, DataTypes) => {
     {
       category_name: DataTypes.STRING,
       description: DataTypes.TEXT,
+      category_icon: {
+        type: DataTypes.STRING,
+        //Set custom getter for book image using URL
+        get() {
+          const icon = this.getDataValue("category_icon");
+
+          if (!icon) {
+            return icon;
+          }
+
+          return `${process.env.S3_URL}/${icon}`;
+        },
+      },
     },
     {
       sequelize,

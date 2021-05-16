@@ -1,10 +1,18 @@
-const express = require("express"); // Import express
-const router = express.Router(); // Make a router
+// review routes
+const express = require("express");
+const router = express.Router();
 
-// Import controller
+const auth = require("../middlewares/auth");
+const reviewValidator = require("../middlewares/validators/reviewValidator");
 const reviewController = require("../controllers/reviewController");
 
+router.post(
+  "/create",
+  auth.adminOrUser,
+  reviewValidator.create,
+  reviewController.create
+);
+router.get("/averageRating/:id", reviewController.averageRating);
 router.get("/:id", reviewController.getOne);
-router.post("/", reviewController.create)
 
-module.exports = router; // Export router
+module.exports = router;

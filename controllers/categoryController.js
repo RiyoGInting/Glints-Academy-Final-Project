@@ -47,5 +47,39 @@ class CategoryController {
       });
     }
   }
+
+  async updateIcon(req, res) {
+    let update = {
+      category_icon: req.body.category_icon,
+    };
+    console.log(update);
+    try {
+      //  table update data
+      let updatedData = await category.update(update, {
+        where: {
+          id: req.params.id,
+        },
+      });
+
+      // Find the updated
+      let data = await category.findOne({
+        where: { id: req.params.id },
+        attributes: ["category_icon"], // just these attributes that showed
+      });
+
+      // If success
+      return res.status(201).json({
+        message: "Status udpdated",
+        data,
+      });
+    } catch (err) {
+      // If error
+      console.log(err);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: err,
+      });
+    }
+  }
 }
 module.exports = new CategoryController();
