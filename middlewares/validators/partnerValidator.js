@@ -85,15 +85,15 @@ module.exports.update = async (req, res, next) => {
   try {
     let errors = [];
     // Find Partner
-    let findPartner = await partner.findOne({
-      where: {
-        id: req.params.id,
-      },
-    });
+    // let findPartner = await partner.findOne({
+    //   where: {
+    //     id: req.params.id,
+    //   },
+    // });
 
-    if (!findPartner) {
-      errors.push("Partner Not Found");
-    }
+    // if (!findPartner) {
+    //   errors.push("Partner Not Found");
+    // }
 
     if (!validator.isAlpha(req.body.name, ["en-US"], { ignore: " " })) {
       errors.push("Name can not contain number");
@@ -111,8 +111,9 @@ module.exports.update = async (req, res, next) => {
     // It means that will be go to the next middleware
     next();
   } catch (e) {
+    console.log(e)
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: "Internal Server Error at validator",
       error: e.message,
     });
   }

@@ -269,6 +269,7 @@ class PartnerController {
         data,
       });
     } catch (e) {
+      console.log(e)
       // If error
       return res.status(500).json({
         message: "Internal Server Error",
