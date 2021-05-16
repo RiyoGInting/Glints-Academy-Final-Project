@@ -24,14 +24,21 @@ exports.verifyEmail = async (req, res, next) => {
 
 exports.updateUser = async (req, res, next) => {
   try {
+    const regexPhone = /^[+][6][2]\d{8,11}$/;
+    const regexPostal = /^\d{5}$/;
+
     let errors = [];
+
+    if (req.body.phone_number && !regexPhone.test(req.body.phone_number)) {
+      errors.push("Please insert a valid phone number with +62 format");
+    }
+
+    if (req.body.postal_code && !regexPostal.test(req.body.postal_code)) {
+      errors.push("Please insert a valid postal code");
+    }
 
     if (!validator.isAlpha(req.body.name, ["en-US"], { ignore: " " })) {
       errors.push("Name can not contain number");
-    }
-
-    if (req.body.postal_code && !validator.isNumeric(req.body.postal_code)) {
-      errors.push("postal code must be a number");
     }
 
     if (errors.length > 0) {
