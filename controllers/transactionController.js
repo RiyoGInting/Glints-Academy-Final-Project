@@ -2,7 +2,7 @@ const midtransClient = require("midtrans-client");
 const { partner, user, category, transaction } = require("../models");
 
 class TransactionController {
-  // Get all transaction data (for user)
+  // Get all transaction data (of that user)
   async getAllUser(req, res) {
     try {
       let data = await transaction.findAll({
@@ -31,7 +31,7 @@ class TransactionController {
     }
   }
 
-  // Get all transaction data (for partner)
+  // Get all transaction data (fof that partner)
   async getAllPartner(req, res) {
     try {
       let data = await transaction.findAll({
@@ -80,7 +80,7 @@ class TransactionController {
           },
           {
             model: partner,
-            attributes: ["brand", "business_phone"],
+            attributes: ["brand_service_name", "business_phone"],
           },
         ],
       });
@@ -132,7 +132,7 @@ class TransactionController {
           },
           {
             model: partner,
-            attributes: ["brand", "business_phone"],
+            attributes: ["brand_servce_name", "business_phone"],
           },
         ],
       });
@@ -193,7 +193,7 @@ class TransactionController {
               "location",
             ],
           },
-          { model: partner, attributes: ["brand", "business_phone"] },
+          { model: partner, attributes: ["brand_service_name", "business_phone"] },
         ],
       });
 
@@ -251,7 +251,7 @@ class TransactionController {
               "location",
             ],
           },
-          { model: partner, attributes: ["brand", "business_phone"] },
+          { model: partner, attributes: ["brand_service_name", "business_phone"] },
         ],
       });
 
