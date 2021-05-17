@@ -13,5 +13,6 @@ router.post(
   reviewController.create
 );
 router.get("/averageRating/:id", reviewController.averageRating);
+router.put("/update/:id", reviewController.updateReview);
 
 module.exports = router;
