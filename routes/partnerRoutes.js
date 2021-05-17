@@ -20,6 +20,7 @@ router.get(
   partnerController.getOnePartnerProfile
 );
 router.get("/searchByName", partnerController.searchByName);
+router.get("/filterByCategory", partnerController.filterByCategory);
 router.get("/searchByFilter", partnerController.searchByFilter);
 router.post(
   "/verifyEmailPartner",
