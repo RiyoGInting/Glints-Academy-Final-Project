@@ -41,12 +41,12 @@ exports.update = async (req, res, next) => {
     let errors = [];
 
     let check = await review.findOne({
-      where: { id_transaction: req.query.id_transaction },
+      where: { id: req.params.id },
     });
 
-    if (check) {
+    if (!check) {
       return res.status(400).json({
-        message: "You have riviewed this transaction",
+        message: "Invalid transaction ID",
       });
     }
 
@@ -56,6 +56,9 @@ exports.update = async (req, res, next) => {
 
     if (req.body.rating < 0 || req.body.rating > 5) {
       errors.push("Please insert a number between 0 - 5");
+    }
+    if (req.body.review.length <= 0) {
+      errors.push("Review cannot be empty");
     }
 
     if (errors.length > 0) {
