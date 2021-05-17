@@ -21,7 +21,6 @@ router.get("/:id", auth.partner, transactionController.getOnePartner);
 
 router
   .route("/accept/:id")
-  .post(auth.partner, transactionController.acceptTransaction);
 router
   .route("/handlePayment")
   .post(transactionController.handlePayment);
