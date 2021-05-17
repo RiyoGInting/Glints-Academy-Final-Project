@@ -347,24 +347,24 @@ class PartnerController {
       let data = await partner.findAndCountAll({
         where: {
           [Op.and]: [
-            { service_fee: { [Sequelize.Op.gte]: req.body.min_price || 0 } },
+            { service_fee: { [Sequelize.Op.gte]: req.query.min_price || 0 } },
             {
               service_fee: {
-                [Sequelize.Op.lte]: req.body.max_price || 9999999999,
+                [Sequelize.Op.lte]: req.query.max_price || 9999999999,
               },
             },
             {
               business_address: {
-                [Sequelize.Op.like]: `%${req.body.business_address}%`,
+                [Sequelize.Op.like]: `%${req.query.business_address}%`,
               },
             },
             {
               verified_status: "verified",
             },
-            { avg_rating: { [Sequelize.Op.gte]: req.body.min_rating || 0 } },
+            { avg_rating: { [Sequelize.Op.gte]: req.query.min_rating || 0 } },
             {
               avg_rating: {
-                [Sequelize.Op.lte]: req.body.max_rating || 5,
+                [Sequelize.Op.lte]: req.query.max_rating || 5,
               },
             },
           ],
