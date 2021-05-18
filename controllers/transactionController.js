@@ -3,6 +3,160 @@ const moment = require("moment-timezone");
 const { partner, user, transaction } = require("../models");
 
 class TransactionController {
+  // Get all transaction data (of that user)
+  async getAllUser(req, res) {
+    try {
+      let data = await transaction.findAll({
+        where: { id_user: req.user.id },
+        // pagination
+        limit: parseInt(req.query.limit),
+        offset: (parseInt(req.query.page) - 1) * parseInt(req.query.limit),
+      });
+
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "No transactions found",
+        });
+      }
+      // if successful
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error,
+      });
+    }
+  }
+
+  // Get all transaction data (fof that partner)
+  async getAllPartner(req, res) {
+    try {
+      let data = await transaction.findAll({
+        where: { id_partner: req.partner.id },
+        // pagination
+        limit: parseInt(req.query.limit),
+        offset: (parseInt(req.query.page) - 1) * parseInt(req.query.limit),
+      });
+
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "No transactions found",
+        });
+      }
+      // if successful
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error,
+      });
+    }
+  }
+
+  // Get One Transaction (User)
+  async getOneUser(req, res) {
+    try {
+      let data = await transaction.findOne({
+        where: {
+          id: req.params.id,
+        },
+        include: [
+          {
+            model: user,
+            attributes: [
+              "name",
+              "phone_number",
+              "city_or_regional",
+              "postal_code",
+              "location",
+            ],
+          },
+          {
+            model: partner,
+            attributes: ["brand_service_name", "business_phone"],
+          },
+        ],
+      });
+
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "No transaction found",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error,
+      });
+    }
+  }
+
+  // Get One Transaction (Partner)
+  async getOnePartner(req, res) {
+    try {
+      let data = await transaction.findOne({
+        where: {
+          id: req.params.id,
+        },
+        attributes: [
+          "id_user",
+          "id_partner",
+          "appointment_date",
+          "total_fee",
+          "order_status",
+          "payment_status",
+        ],
+        include: [
+          {
+            model: user,
+            attributes: [
+              "name",
+              "phone_number",
+              "city_or_regional",
+              "postal_code",
+              "location",
+            ],
+          },
+          {
+            model: partner,
+            attributes: ["brand_servce_name", "business_phone"],
+          },
+        ],
+      });
+
+      if (data.length === 0) {
+        return res.status(404).json({
+          message: "No transaction found",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error,
+      });
+    }
+  }
+
   // Create Transaction
   async create(req, res) {
     try {
@@ -230,7 +384,7 @@ class TransactionController {
   async acceptTransaction(req, res, next) {
     try {
       // expired time 5 minutes after accepted
-      let expiredPayment = moment(Date.now() + 5 * 60 * 1000)
+      let expiredPayment = moment(Date.now() + 10 * 60 * 1000)
         .tz("UTC")
         .format()
         .replace("T", " ")
@@ -246,6 +400,7 @@ class TransactionController {
         {
           where: {
             id: req.params.id,
+            //id_partner: req.partner.id,
           },
         }
       );
@@ -286,12 +441,12 @@ class TransactionController {
         },
         callbacks: {
           //nanti redirect ke page dari frontend pas transaksi uda success
-          finish: "https://techstop.gabatch11.my.id",
+          finish: "https://techstop.gabatch11.my.id/",
         },
         expiry: {
           //start_time: new Date(Date.now()),
           unit: "minutes",
-          duration: 5,
+          duration: 10,
         },
       };
 
@@ -465,6 +620,75 @@ class TransactionController {
       return res.status(200).json({
         message: "Success",
         updatedData,
+      });
+    } catch (error) {
+      console.log(error);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error,
+      });
+    }
+  }
+
+  //Transaction Done
+  async doneTransaction(req, res) {
+    try {
+      // update status
+      await transaction.update(
+        {
+          order_status: "done",
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+        }
+      );
+
+      // find data
+      let data = await transaction.findOne({
+        where: {
+          id: req.params.id,
+        },
+        attributes: [
+          "id",
+          "createdAt",
+          "appointment_date",
+          "appointment_address",
+          "total_item",
+          "total_fee",
+          "order_status",
+        ],
+        include: [
+          {
+            model: user,
+            attributes: [
+              ["id", "id_user"],
+              "name",
+              "phone_number",
+              "city_or_regional",
+              "postal_code",
+            ],
+          },
+          {
+            model: partner,
+            attributes: [
+              ["id", "id_partner"],
+              "brand_service_name",
+              "business_phone",
+            ],
+          },
+        ],
+      });
+
+      if (!data) {
+        return res.status(404).json({
+          message: "Data not found",
+        });
+      }
+      return res.status(200).json({
+        message: "Success",
+        data,
       });
     } catch (error) {
       console.log(error);
