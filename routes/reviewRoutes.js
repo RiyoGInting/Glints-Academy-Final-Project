@@ -13,6 +13,5 @@ router.post(
   reviewController.create
 );
 router.get("/averageRating/:id", reviewController.averageRating);
-router.get("/:id", reviewController.getOne);
-router.delete("/:id", reviewController.delete)
+
 module.exports = router;
