@@ -118,7 +118,6 @@ class ReviewController {
         ],
       });
 
-      // count average rating
       const transactionData = data[0].transactions;
       const ratings = [];
 
@@ -141,7 +140,6 @@ class ReviewController {
         averageRating = ratings[0].toString();
       }
 
-      // count detail rating
       let detailReview = {
         fiveStar: 0,
         fourStar: 0,
@@ -177,21 +175,21 @@ class ReviewController {
     }
   }
 
-  async delete(req, res) {
+  async deleteReview(req, res) {
     try {
-      // create review
-      let deleteData = await review.destroy({
+      let data = await review.destroy({
         where: { id: req.params.id },
       });
-   
 
-      let data = await review.findOne({
-        where: {
-          id: req.params.id,
-        },
+      if (!data) {
+        return res.status(404).json({
+          message: "Data not found",
+        });
+      }
 
+      let deletedData = await review.findOne({
+        where: { id: req.params.id },
         paranoid: false,
-
         attributes: ["id", "id_transaction", "rating", "review"],
         include: [
           {
@@ -211,9 +209,8 @@ class ReviewController {
         ],
       });
 
-      // // find partner to count average rating
       let dataPartner = await partner.findAll({
-        where: { id: data.transaction.partner.id },
+        where: { id: deletedData.transaction.id_partner },
         attributes: ["brand_service_name", "avg_rating"],
         include: [
           {
@@ -228,7 +225,7 @@ class ReviewController {
           },
         ],
       });
-      // // count average rating
+
       const transactionData = dataPartner[0].transactions;
       const ratings = [];
 
@@ -251,7 +248,6 @@ class ReviewController {
         averageRating = ratings[0].toString();
       }
 
-      // update average rating partner
       let averageRatings = parseFloat(averageRating);
 
       let update = {
@@ -260,67 +256,16 @@ class ReviewController {
 
       let updatedData = await partner.update(update, {
         where: {
-          id: data.transaction.partner.id,
+          id: deletedData.transaction.id_partner,
         },
       });
 
-      // If success
-      return res.status(201).json({
-        message: "Success delete",
-        deleteData,
-        data,
-      });
-    } catch (e) {
-      // If error
-      return res.status(500).json({
-        message: "Internal Server Error at delete",
-        error: e,
-      });
-    }
-  }
-
-  async getOne(req, res) {
-    try {
-      let data = await review.findOne({
-        where: { id: req.params.id },
-        attributes: { exclude: ["updatedAt", "deletedAt"] },
-        include: [
-          {
-            model: transaction,
-            attributes: ["id_user", "id_partner"],
-            include: [
-              {
-                model: user,
-                attributes: [
-                  ["id", "userID"],
-                  ["name", "userName"],
-                ],
-              },
-              {
-                model: partner,
-                attributes: [
-                  ["id", "partnerID"],
-                  ["name", "partnerName"],
-                  "avg_rating",
-                ],
-              },
-            ],
-          },
-        ],
-      });
-
-      if (!data) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
-      }
       return res.status(200).json({
         message: "Success",
-        data,
       });
     } catch (error) {
       return res.status(500).json({
-        message: "Internal Server Error",
+        message: "Internal Server Error controller",
         error,
       });
     }
