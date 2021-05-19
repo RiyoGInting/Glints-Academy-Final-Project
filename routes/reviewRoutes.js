@@ -15,5 +15,6 @@ router.post(
 router.get("/averageRating/:id", reviewController.averageRating);
 router.put("/update/:id",reviewValidator.update, reviewController.updateReview);
 router.get("/:id", reviewController.getOne);
+router.get("/", reviewController.getAll);
 router.delete("/:id", reviewController.delete)
 module.exports = router;

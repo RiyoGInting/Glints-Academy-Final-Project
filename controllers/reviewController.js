@@ -423,5 +423,51 @@ class ReviewController {
       });
     }
   }
+  async getAll(req, res) {
+    try {
+      let data = await review.findAll({
+        // where: { id: req.params.id },
+        attributes: { exclude: ["updatedAt", "deletedAt"] },
+        include: [
+          {
+            model: transaction,
+            attributes: ["id_user", "id_partner"],
+            include: [
+              {
+                model: user,
+                attributes: [
+                  ["id", "userID"],
+                  ["name", "userName"],
+                ],
+              },
+              {
+                model: partner,
+                attributes: [
+                  ["id", "partnerID"],
+                  ["name", "partnerName"],
+                  "avg_rating",
+                ],
+              },
+            ],
+          },
+        ],
+      });
+
+      if (!data) {
+        return res.status(404).json({
+          message: "Data not found",
+        });
+      }
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error,
+      });
+    }
+  }
 }
 module.exports = new ReviewController();
