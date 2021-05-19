@@ -45,8 +45,8 @@ exports.update = async (req, res, next) => {
     });
 
     if (!check) {
-      return res.status(400).json({
-        message: "Invalid transaction ID",
+      return res.status(404).json({
+        message: "Review ID not found",
       });
     }
 
