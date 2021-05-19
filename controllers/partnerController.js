@@ -211,6 +211,7 @@ class PartnerController {
         },
       });
 
+      console.log(`ini adalah updte ${updatedData}`);
       // Find the updated
       let data = await partner.findOne({
         where: { id: req.partner.id },
@@ -283,6 +284,7 @@ class PartnerController {
         data,
       });
     } catch (e) {
+      console.log(e);
       // If error
       return res.status(500).json({
         message: "Internal Server Error",
@@ -345,25 +347,70 @@ class PartnerController {
       let data = await partner.findAndCountAll({
         where: {
           [Op.and]: [
-            { service_fee: { [Sequelize.Op.gte]: req.body.min_price || 0 } },
+            { service_fee: { [Sequelize.Op.gte]: req.query.min_price || 0 } },
             {
               service_fee: {
-                [Sequelize.Op.lte]: req.body.max_price || 9999999999,
+                [Sequelize.Op.lte]: req.query.max_price || 9999999999,
               },
             },
             {
               business_address: {
-                [Sequelize.Op.like]: `%${req.body.business_address}%`,
+                [Sequelize.Op.like]: `%${req.query.business_address}%`,
               },
             },
             {
               verified_status: "verified",
             },
-            { avg_rating: { [Sequelize.Op.gte]: req.body.min_rating || 0 } },
+            { avg_rating: { [Sequelize.Op.gte]: req.query.min_rating || 0 } },
             {
               avg_rating: {
-                [Sequelize.Op.lte]: req.body.max_rating || 5,
+                [Sequelize.Op.lte]: req.query.max_rating || 5,
               },
+            },
+          ],
+        },
+        limit: limits,
+        offset: (parseInt(page) - 1) * limits,
+        attributes: [
+          "id",
+          "partner_logo",
+          "brand_service_name",
+          "service_fee",
+          "business_address",
+          "avg_rating",
+        ],
+      });
+
+      if (data.count == 0) {
+        return res.status(404).json({
+          message: "Data not found",
+        });
+      }
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (err) {
+      console.log(err);
+      return res.status(500).json({
+        message: "Internal Server Error",
+        err,
+      });
+    }
+  }
+
+  async filterByCategory(req, res) {
+    try {
+      const { page } = req.query;
+      const limits = 12;
+      let data = await partner.findAndCountAll({
+        where: {
+          [Op.and]: [
+            {
+              id_category: req.query.id_category,
+            },
+            {
+              verified_status: "verified",
             },
           ],
         },
