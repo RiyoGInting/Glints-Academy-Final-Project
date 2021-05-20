@@ -6,11 +6,42 @@ class TransactionController {
   // Get all transaction data (of that user)
   async getAllUser(req, res) {
     try {
+      let limits = 12;
       let data = await transaction.findAll({
         where: { id_user: req.user.id },
         // pagination
-        limit: parseInt(req.query.limit),
-        offset: (parseInt(req.query.page) - 1) * parseInt(req.query.limit),
+        limit: limits,
+        offset: (parseInt(req.query.page) - 1) * limits,
+        attributes: [
+          "id",
+          "createdAt",
+          "appointment_date",
+          "appointment_address",
+          "total_item",
+          "total_fee",
+          "order_status",
+          "payment_status",
+        ],
+        include: [
+          {
+            model: user,
+            attributes: [
+              ["id", "id_user"],
+              "name",
+              "phone_number",
+              "city_or_regional",
+              "postal_code",
+            ],
+          },
+          {
+            model: partner,
+            attributes: [
+              ["id", "id_partner"],
+              "brand_service_name",
+              "business_phone",
+            ],
+          },
+        ],
       });
 
       if (data.length === 0) {
@@ -35,11 +66,42 @@ class TransactionController {
   // Get all transaction data (fof that partner)
   async getAllPartner(req, res) {
     try {
+      let limits = 12;
       let data = await transaction.findAll({
         where: { id_partner: req.partner.id },
         // pagination
-        limit: parseInt(req.query.limit),
-        offset: (parseInt(req.query.page) - 1) * parseInt(req.query.limit),
+        limit: limits,
+        offset: (parseInt(req.query.page) - 1) * limits,
+        attributes: [
+          "id",
+          "createdAt",
+          "appointment_date",
+          "appointment_address",
+          "total_item",
+          "total_fee",
+          "order_status",
+          "payment_status",
+        ],
+        include: [
+          {
+            model: user,
+            attributes: [
+              ["id", "id_user"],
+              "name",
+              "phone_number",
+              "city_or_regional",
+              "postal_code",
+            ],
+          },
+          {
+            model: partner,
+            attributes: [
+              ["id", "id_partner"],
+              "brand_service_name",
+              "business_phone",
+            ],
+          },
+        ],
       });
 
       if (data.length === 0) {
@@ -67,6 +129,7 @@ class TransactionController {
       let data = await transaction.findOne({
         where: {
           id: req.params.id,
+          id_user: req.user.id,
         },
         include: [
           {
@@ -111,29 +174,35 @@ class TransactionController {
       let data = await transaction.findOne({
         where: {
           id: req.params.id,
+          id_partner: req.partner.id,
         },
         attributes: [
-          "id_user",
-          "id_partner",
+          "id",
+          "createdAt",
           "appointment_date",
+          "appointment_address",
+          "total_item",
           "total_fee",
           "order_status",
-          "payment_status",
         ],
         include: [
           {
             model: user,
             attributes: [
+              ["id", "id_user"],
               "name",
               "phone_number",
               "city_or_regional",
               "postal_code",
-              "location",
             ],
           },
           {
             model: partner,
-            attributes: ["brand_servce_name", "business_phone"],
+            attributes: [
+              ["id", "id_partner"],
+              "brand_service_name",
+              "business_phone",
+            ],
           },
         ],
       });
