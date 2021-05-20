@@ -149,7 +149,7 @@ class TransactionController {
         ],
       });
 
-      if (data.length === 0) {
+      if (!data) {
         return res.status(404).json({
           message: "No transaction found",
         });
@@ -176,38 +176,25 @@ class TransactionController {
           id: req.params.id,
           id_partner: req.partner.id,
         },
-        attributes: [
-          "id",
-          "createdAt",
-          "appointment_date",
-          "appointment_address",
-          "total_item",
-          "total_fee",
-          "order_status",
-        ],
         include: [
           {
             model: user,
             attributes: [
-              ["id", "id_user"],
               "name",
               "phone_number",
               "city_or_regional",
               "postal_code",
+              "location",
             ],
           },
           {
             model: partner,
-            attributes: [
-              ["id", "id_partner"],
-              "brand_service_name",
-              "business_phone",
-            ],
+            attributes: ["brand_service_name", "business_phone"],
           },
         ],
       });
 
-      if (data.length === 0) {
+      if (!data) {
         return res.status(404).json({
           message: "No transaction found",
         });
@@ -247,6 +234,7 @@ class TransactionController {
         total_item: req.body.total_item,
         total_fee: total,
         order_status: "waiting",
+        payment_status: "pending",
       });
 
       // show created data
@@ -262,6 +250,7 @@ class TransactionController {
           "total_item",
           "total_fee",
           "order_status",
+          "payment_status",
         ],
         include: [
           {
@@ -339,6 +328,7 @@ class TransactionController {
           "total_item",
           "total_fee",
           "order_status",
+          "payment_status",
         ],
         include: [
           {
@@ -408,6 +398,7 @@ class TransactionController {
           "total_item",
           "total_fee",
           "order_status",
+          "payment_status",
         ],
         include: [
           {
@@ -546,6 +537,7 @@ class TransactionController {
           "total_item",
           "total_fee",
           "order_status",
+          "payment_status",
           "expired_payment",
           "token",
           "redirect_url",
@@ -727,6 +719,7 @@ class TransactionController {
           "total_item",
           "total_fee",
           "order_status",
+          "payment_status",
         ],
         include: [
           {
