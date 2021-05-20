@@ -15,7 +15,7 @@ router.get("/", partnerController.getAll);
 router.get("/adminVerified/", auth.admin, partnerController.getAll);
 router.get("/getOne/:id", auth.adminOrUser, partnerController.getOnePartner);
 router.get(
-  "/profileService/:id",
+  "/getPartner",
   auth.partner,
   partnerController.getOnePartnerProfile
 );
