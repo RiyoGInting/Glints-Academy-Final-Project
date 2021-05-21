@@ -38,7 +38,6 @@ router.put(
   "/updateService/",
   auth.partner,
   partnerValidator.updateService,
-  uploadLogo,
   partnerController.updateProfileService
 );
 
@@ -46,7 +45,6 @@ router.put(
   "/updateProfile/",
   auth.partner,
   partnerValidator.update,
-  uploadLogo,
   partnerController.updateProfile
 );
 
