@@ -13,7 +13,7 @@ const blogController = require("../controllers/blogController");
 // Get All, Get One, Create, Update, Delete
 router.get("/", blogController.getAll);
 router.get("/:id", blogController.getOne);
-router.post("/", /*auth.admin, blogUpload,*/ blogValidator.create, uploadBlogImage, blogController.create);
+router.post("/", auth.admin, blogValidator.create, uploadBlogImage, blogController.create);
 router.put("/:id", /*auth.admin,*/ blogValidator.update, blogController.update);
 router.delete("/:id", auth.admin, blogController.delete);
 

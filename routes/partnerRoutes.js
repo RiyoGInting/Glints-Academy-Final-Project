@@ -15,7 +15,7 @@ router.get("/", partnerController.getAll);
 router.get("/adminVerified/", auth.admin, partnerController.getAll);
 router.get("/getOne/:id", auth.adminOrUser, partnerController.getOnePartner);
 router.get(
-  "/profileService/:id",
+  "/getPartner",
   auth.partner,
   partnerController.getOnePartnerProfile
 );
@@ -38,7 +38,6 @@ router.put(
   "/updateService/",
   auth.partner,
   partnerValidator.updateService,
-  uploadLogo,
   partnerController.updateProfileService
 );
 
@@ -46,7 +45,6 @@ router.put(
   "/updateProfile/",
   auth.partner,
   partnerValidator.update,
-  uploadLogo,
   partnerController.updateProfile
 );
 

@@ -200,7 +200,7 @@ class PartnerController {
       service_description: req.body.service_description,
       business_address: req.body.business_address,
       business_phone: req.body.business_phone,
-      partner_logo: req.body.partner_logo,
+      
     };
 
     try {
@@ -250,7 +250,7 @@ class PartnerController {
       phone_number: req.body.phone_number,
       ktp_address: req.body.ktp_address,
       owner_address: req.body.owner_address,
-      partner_logo: req.body.partner_logo,
+     
     };
 
     try {
