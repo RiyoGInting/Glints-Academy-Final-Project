@@ -88,12 +88,20 @@ class PartnerController {
         attributes: [
           "id",
           "brand_service_name",
-          "service_fee",
+          "email",
+          ["phone_number", "owner_phone_number"],
+          "business_address",
+          "business_phone",
+          "partner_logo",
+          "avg_rating",
           "service_description",
-        ], // just these attributes that showed
+          ["service_fee", "price"],
+        ],
         include: [
-          // Include is join
-          { model: category, attributes: ["category_name"] },
+          {
+            model: category,
+            attributes: [["category_name", "tag_service"]],
+          },
         ],
       })
       .then((data) => {
