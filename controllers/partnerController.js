@@ -85,18 +85,19 @@ class PartnerController {
     partner
       .findOne({
         where: { id: req.partner.id },
-        attributes: [
-          "id",
-          "brand_service_name",
-          "email",
-          ["phone_number", "owner_phone_number"],
-          "business_address",
-          "business_phone",
-          "partner_logo",
-          "avg_rating",
-          "service_description",
-          ["service_fee", "price"],
-        ],
+        // attributes: [
+        //   "id",
+        //   "name",
+        //   "brand_service_name",
+        //   "email",
+        //   ["phone_number", "owner_phone_number"],
+        //   "business_address",
+        //   "business_phone",
+        //   "partner_logo",
+        //   "avg_rating",
+        //   "service_description",
+        //   ["service_fee", "price"],
+        // ],
         include: [
           {
             model: category,
