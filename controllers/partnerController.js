@@ -202,28 +202,33 @@ class PartnerController {
   }
 
   async updateProfileService(req, res) {
+    let data = await category.findOne({
+      attributes: ["id", "category_name", "description"],
+      where: { category_name: req.body.category_name },
+    });
+
     let update = {
-      id_category: req.body.id_category,
+      id_category: data.dataValues.id,
+      category_name: req.body.category_name,
       brand_service_name: req.body.brand_service_name,
       service_fee: req.body.service_fee,
       service_description: req.body.service_description,
       business_address: req.body.business_address,
       business_phone: req.body.business_phone,
-      
     };
 
     try {
       //  table update data
       let updatedData = await partner.update(update, {
         where: {
-          id: req.partner.id,
+          id: req.params.id,
         },
       });
 
       console.log(`ini adalah updte ${updatedData}`);
       // Find the updated
-      let data = await partner.findOne({
-        where: { id: req.partner.id },
+      let dataUpdate = await partner.findOne({
+        where: { id: req.params.id },
         attributes: [
           "id",
           "brand_service_name",
@@ -242,10 +247,11 @@ class PartnerController {
       // If success
       return res.status(201).json({
         message: "Success",
-        data,
+        dataUpdate,
       });
     } catch (e) {
       // If error
+      console.log(e)
       return res.status(500).json({
         message: "Internal Server Error",
         error: e.message,
@@ -259,7 +265,6 @@ class PartnerController {
       phone_number: req.body.phone_number,
       ktp_address: req.body.ktp_address,
       owner_address: req.body.owner_address,
-     
     };
 
     try {

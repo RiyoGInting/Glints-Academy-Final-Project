@@ -35,7 +35,7 @@ router.put(
 );
 
 router.put(
-  "/updateService/",
+  "/updateService/:id",
   auth.partner,
   partnerValidator.updateService,
   partnerController.updateProfileService
