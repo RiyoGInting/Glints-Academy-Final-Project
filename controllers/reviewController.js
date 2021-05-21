@@ -370,6 +370,7 @@ class ReviewController {
       });
     }
   }
+
   async getOne(req, res) {
     try {
       let data = await review.findOne({
@@ -416,10 +417,10 @@ class ReviewController {
       });
     }
   }
-  async getAll(req, res) {
+  async getAllByUser(req, res) {
     try {
       let data = await review.findAll({
-        // where: { id: req.params.id },
+        // where: { id: req.params.id }, //req.user.id
         attributes: { exclude: ["updatedAt", "deletedAt"] },
         include: [
           {
@@ -445,15 +446,71 @@ class ReviewController {
           },
         ],
       });
-
-      if (!data) {
+      const resultData = [];
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].transaction.id_user == req.user.id) {
+          resultData.push(data[i]);
+        }
+      }
+      if (resultData.length <= 0) {
         return res.status(404).json({
           message: "Data not found",
         });
       }
       return res.status(200).json({
         message: "Success",
-        data,
+        resultData,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error,
+      });
+    }
+  }
+  async getAllByPartner(req, res) {
+    try {
+      let data = await review.findAll({
+        // where: { id: req.params.id }, //req.user.id
+        attributes: { exclude: ["updatedAt", "deletedAt"] },
+        include: [
+          {
+            model: transaction,
+            attributes: ["id_user", "id_partner"],
+            include: [
+              {
+                model: user,
+                attributes: [
+                  ["id", "userID"],
+                  ["name", "userName"],
+                ],
+              },
+              {
+                model: partner,
+                attributes: [
+                  ["id", "partnerID"],
+                  ["name", "partnerName"],
+                  "avg_rating",
+                ],
+              },
+            ],
+          },
+        ],
+      });
+      const resultData = [];
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].transaction.id_partner == req.params.id) {
+          resultData.push(data[i]);
+        }
+      }
+      if (!resultData) {
+        return res.status(404).json({
+          message: "Data not found",
+        });
+      }
+      return res.status(200).json({
+        message: "Success",
+        resultData,
       });
     } catch (error) {
       return res.status(500).json({

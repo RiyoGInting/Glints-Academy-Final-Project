@@ -14,7 +14,8 @@ router.post(
 );
 router.get("/averageRating/:id", reviewController.averageRating);
 router.put("/update/:id",reviewValidator.update, reviewController.updateReview);
+router.get("/get/partner/:id", reviewController.getAllByPartner);
+router.get("/get/user", auth.adminOrUser, reviewController.getAllByUser);
 router.get("/:id", reviewController.getOne);
-router.get("/", reviewController.getAll);
-router.delete("/:id", reviewController.delete)
+router.delete("/:id", reviewController.deleteReview)
 module.exports = router;
