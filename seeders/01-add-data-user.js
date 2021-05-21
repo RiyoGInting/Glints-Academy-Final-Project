@@ -5,7 +5,7 @@ module.exports = {
     return queryInterface.bulkInsert("users", [
       {
         role: "user",
-        name: "Abah",
+        name: "Abah1",
         email: "user@cobamail.com",
         password: "qwerty",
         phone_number: "081234567890",
@@ -28,6 +28,28 @@ module.exports = {
       {
         role: "user",
         name: "Abah3",
+        email: "user3@cobamail.com",
+        password: "qwerty",
+        phone_number: "081234567892",
+        city_or_regional: "medan",
+        postal_code: 123123,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        role: "user",
+        name: "Abah4",
+        email: "user3@cobamail.com",
+        password: "qwerty",
+        phone_number: "081234567892",
+        city_or_regional: "medan",
+        postal_code: 123123,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        role: "user",
+        name: "Abah5",
         email: "user3@cobamail.com",
         password: "qwerty",
         phone_number: "081234567892",

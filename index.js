@@ -24,6 +24,7 @@ const authRoutes = require("./routes/authRoutes");
 const transactionRoutes = require("./routes/transactionRoute");
 const categoryRoute = require("./routes/categoryRoute");
 const blogRoutes = require("./routes/blogRoutes");
+const reviewRoutes = require("./routes/reviewRoutes");
 
 // CORS
 app.use(cors());
@@ -59,8 +60,6 @@ app.use(
   })
 );
 
-
-
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 } else {
@@ -88,6 +87,7 @@ app.use("/partner", partnerRoutes);
 app.use("/category", categoryRoute);
 app.use("/transaction", transactionRoutes);
 app.use("/blog", blogRoutes);
+app.use("/review", reviewRoutes);
 
 // Server running
 if (process.env.NODE_ENV !== "test") {
