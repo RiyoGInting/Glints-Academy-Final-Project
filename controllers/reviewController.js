@@ -177,6 +177,104 @@ class ReviewController {
     }
   }
 
+  async updateReview(req, res) {
+    try {
+      let updated = {
+        rating: req.body.rating,
+        review: req.body.review,
+      };
+      // update review
+      let updatedReview = await review.update(updated, {
+        where: { id: req.params.id },
+      });
+      let data = await review.findOne({
+        where: { id: req.params.id },
+        attributes: ["id", "id_transaction", "rating", "review"],
+        include: [
+          {
+            model: transaction,
+            attributes: ["id_user", "id_partner"],
+            include: [
+              {
+                model: user,
+                attributes: ["name"],
+              },
+              {
+                model: partner,
+                attributes: ["id", "name"],
+              },
+            ],
+          },
+        ],
+      });
+
+      // find partner to count average rating
+      let dataPartner = await partner.findAll({
+        where: { id: data.transaction.partner.id },
+        attributes: ["brand_service_name", "avg_rating"],
+        include: [
+          {
+            model: transaction,
+            attributes: ["id"],
+            include: [
+              {
+                model: review,
+                attributes: ["rating"],
+              },
+            ],
+          },
+        ],
+      });
+      // // count average rating
+      const transactionData = dataPartner[0].transactions;
+      const ratings = [];
+
+      transactionData.forEach((element) => {
+        if (element.review != null) {
+          ratings.push(element.review.rating);
+        }
+      });
+
+      const totalData = ratings.length;
+      let averageRating;
+      if (ratings.length == 0) {
+        averageRating = "0";
+      } else if (ratings.length > 1) {
+        const reducer = (accumulator, currentValue) =>
+          accumulator + currentValue;
+        const sumRatings = ratings.reduce(reducer) / totalData;
+        averageRating = sumRatings.toFixed(1);
+      } else if ((ratings.length = 1)) {
+        averageRating = ratings[0].toString();
+      }
+
+      // update average rating partner
+      let averageRatings = parseFloat(averageRating);
+
+      let update = {
+        avg_rating: averageRatings,
+      };
+
+      let updatedData = await partner.update(update, {
+        where: {
+          id: data.transaction.partner.id,
+        },
+      });
+
+      // If success
+      return res.status(201).json({
+        message: "Success",
+        data,
+      });
+    } catch (e) {
+      // If error
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error: e,
+      });
+    }
+  }
+
   async deleteReview(req, res) {
     try {
       let data = await review.destroy({
@@ -272,11 +370,56 @@ class ReviewController {
       });
     }
   }
-
   async getOne(req, res) {
     try {
       let data = await review.findOne({
         where: { id: req.params.id },
+        attributes: { exclude: ["updatedAt", "deletedAt"] },
+        include: [
+          {
+            model: transaction,
+            attributes: ["id_user", "id_partner"],
+            include: [
+              {
+                model: user,
+                attributes: [
+                  ["id", "userID"],
+                  ["name", "userName"],
+                ],
+              },
+              {
+                model: partner,
+                attributes: [
+                  ["id", "partnerID"],
+                  ["name", "partnerName"],
+                  "avg_rating",
+                ],
+              },
+            ],
+          },
+        ],
+      });
+
+      if (!data) {
+        return res.status(404).json({
+          message: "Data not found",
+        });
+      }
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Internal Server Error",
+        error,
+      });
+    }
+  }
+  async getAll(req, res) {
+    try {
+      let data = await review.findAll({
+        // where: { id: req.params.id },
         attributes: { exclude: ["updatedAt", "deletedAt"] },
         include: [
           {
