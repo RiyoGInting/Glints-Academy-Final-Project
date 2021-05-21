@@ -43,17 +43,11 @@ module.exports.create = async (req, res, next) => {
 
 module.exports.updateService = async (req, res, next) => {
   try {
+    const regexPhoneNumber = /^[+][6][2]\d{8,11}$/;
     let errors = [];
-    // Find Category
-    let findDataUpdate = await Promise.all([
-      category.findOne({
-        where: { id: req.body.id_category },
-      }),
-      
-    ]);
-
-    if (!findDataUpdate[0]) {
-      errors.push("Category not found");
+  
+    if (!regexPhoneNumber.test(req.body.phone_number)) {
+      errors.push("Please insert a valid phone number with +62 format");
     }
 
     // Check harga is number
@@ -75,7 +69,7 @@ module.exports.updateService = async (req, res, next) => {
     next();
   } catch (e) {
     return res.status(500).json({
-      message: "Internal Server Error",
+      message: "Internal Server Error coy",
       error: e.message,
     });
   }

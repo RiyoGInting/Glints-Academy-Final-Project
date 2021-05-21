@@ -15,11 +15,12 @@ router.get("/", partnerController.getAll);
 router.get("/adminVerified/", auth.admin, partnerController.getAll);
 router.get("/getOne/:id", auth.adminOrUser, partnerController.getOnePartner);
 router.get(
-  "/profileService/:id",
+  "/getPartner",
   auth.partner,
   partnerController.getOnePartnerProfile
 );
 router.get("/searchByName", partnerController.searchByName);
+router.get("/filterByCategory", partnerController.filterByCategory);
 router.get("/searchByFilter", partnerController.searchByFilter);
 router.post(
   "/verifyEmailPartner",
@@ -34,10 +35,9 @@ router.put(
 );
 
 router.put(
-  "/updateService/",
+  "/updateService/:id",
   auth.partner,
   partnerValidator.updateService,
-  uploadLogo,
   partnerController.updateProfileService
 );
 
@@ -45,7 +45,6 @@ router.put(
   "/updateProfile/",
   auth.partner,
   partnerValidator.update,
-  uploadLogo,
   partnerController.updateProfile
 );
 
