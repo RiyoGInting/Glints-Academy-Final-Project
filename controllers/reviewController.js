@@ -453,12 +453,10 @@ class ReviewController {
       });
       const resultData = [];
       for (let i = 0; i < data.length; i++) {
-        if (data[i].transaction.id_user == 1) {
-          //6==>req.user
+        if (data[i].transaction.id_user == req.user.id) {
           resultData.push(data[i]);
         }
       }
-      console.log(resultData);
       if (resultData.length <= 0) {
         return res.status(404).json({
           message: "Data not found",
@@ -506,8 +504,7 @@ class ReviewController {
       });
       const resultData = [];
       for (let i = 0; i < data.length; i++) {
-        if (data[i].transaction.id_partner == 1) {
-          //6==>req.user
+        if (data[i].transaction.id_partner == req.params.id) {
           resultData.push(data[i]);
         }
       }
