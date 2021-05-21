@@ -11,7 +11,7 @@ exports.create = async (req, res, next) => {
 
     if (check) {
       return res.status(400).json({
-        message: "You have riviewed this transaction",
+        message: "You have reviewed this transaction",
       });
     }
 
