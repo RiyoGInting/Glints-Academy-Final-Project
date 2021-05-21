@@ -370,6 +370,7 @@ class ReviewController {
       });
     }
   }
+
   async getOne(req, res) {
     try {
       let data = await review.findOne({
