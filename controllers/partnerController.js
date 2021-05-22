@@ -221,14 +221,14 @@ class PartnerController {
       //  table update data
       let updatedData = await partner.update(update, {
         where: {
-          id: req.params.id,
+          id: req.partner.id,
         },
       });
 
       console.log(`ini adalah updte ${updatedData}`);
       // Find the updated
       let dataUpdate = await partner.findOne({
-        where: { id: req.params.id },
+        where: { id: req.partner.id },
         attributes: [
           "id",
           "brand_service_name",
@@ -251,7 +251,7 @@ class PartnerController {
       });
     } catch (e) {
       // If error
-      console.log(e)
+      console.log(e);
       return res.status(500).json({
         message: "Internal Server Error",
         error: e.message,
