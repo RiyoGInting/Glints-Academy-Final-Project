@@ -1,5 +1,9 @@
 const { user } = require("../models");
 const nodemailer = require("nodemailer");
+const fs = require("fs");
+const messageForUser = fs.readFileSync(__dirname + "/emailUser/index.html", {
+  encoding: "utf-8",
+});
 
 class UserController {
   // Get One User
@@ -91,9 +95,8 @@ class UserController {
       let mailOptions = {
         from: "Admin",
         to: `${email}`,
-        subject: "email verification",
-        text: `Please click on this link to continue your registrations
-      https://tech-stop.herokuapp.com/UserFormRegistration`,
+        subject: "Email verification",
+        html: messageForUser,
       };
 
       // send mail with defined transport object
