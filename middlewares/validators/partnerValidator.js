@@ -45,8 +45,11 @@ module.exports.updateService = async (req, res, next) => {
   try {
     const regexPhoneNumber = /^[+][6][2]\d{8,11}$/;
     let errors = [];
-  
-    if (!regexPhoneNumber.test(req.body.phone_number)) {
+
+    if (
+      req.body.phone_number &&
+      !regexPhoneNumber.test(req.body.phone_number)
+    ) {
       errors.push("Please insert a valid phone number with +62 format");
     }
 
@@ -105,7 +108,7 @@ module.exports.update = async (req, res, next) => {
     // It means that will be go to the next middleware
     next();
   } catch (e) {
-    console.log(e)
+    console.log(e);
     return res.status(500).json({
       message: "Internal Server Error at validator",
       error: e.message,
