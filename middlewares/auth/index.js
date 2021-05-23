@@ -3,21 +3,16 @@ const LocalStrategy = require("passport-local").Strategy;
 const bcrypt = require("bcrypt");
 const JWTstrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
-const { user, partner, category} = require("../../models");
+const { user, partner, category } = require("../../models");
 
 exports.signup = (req, res, next) => {
   passport.authenticate("signup", { session: false }, (err, user, info) => {
     if (err) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err,
-      });
+      return next(err);
     }
 
     if (!user) {
-      return res.status(401).json({
-        message: info.message,
-      });
+      return next({ message: info.message, statusCode: 401 });
     }
 
     req.user = user;
@@ -53,16 +48,11 @@ passport.use(
 exports.signin = (req, res, next) => {
   passport.authenticate("signin", { session: false }, (err, user, info) => {
     if (err) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err,
-      });
+      return next(err);
     }
 
     if (!user) {
-      return res.status(401).json({
-        message: info.message,
-      });
+      return next({ message: info.message, statusCode: 401 });
     }
 
     req.user = user;
@@ -166,13 +156,10 @@ passport.use(
           ktp_image: req.body.ktp_image,
           id_category: data.dataValues.id,
           category_name: req.body.category_name,
-
-
         });
 
         return done(null, partnerSignUp, {
           message: "User Partner can be created",
-          
         });
       } catch (e) {
         console.log(e);
@@ -252,16 +239,11 @@ passport.use(
 exports.adminOrUser = (req, res, next) => {
   passport.authorize("adminOrUser", (err, user, info) => {
     if (err) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err.message,
-      });
+      return next(err);
     }
 
     if (!user) {
-      return res.status(403).json({
-        message: info.message,
-      });
+      return next({ message: info.message, statusCode: 403 });
     }
 
     req.user = user;

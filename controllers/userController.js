@@ -22,11 +22,7 @@ class UserController {
       })
       .then((data) => {
         if (!data) {
-          let err = {
-            message: "User Not Found",
-            statusCode: 404,
-          };
-          next(err);
+          return next({ message: "User Not Found", statusCode: 404 });
         }
 
         // If success
@@ -56,11 +52,7 @@ class UserController {
       })
       .then((data) => {
         if (!data) {
-          let err = {
-            message: "User Not Found",
-            statusCode: 404,
-          };
-          next(err);
+          return next({ message: "User Not Found", statusCode: 404 });
         }
 
         // If success
