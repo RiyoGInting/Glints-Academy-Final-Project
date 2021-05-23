@@ -4,3 +4,4 @@ coverage/
 .env.test
 package-lock.json
 yarn.lock
+access.log
