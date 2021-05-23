@@ -77,30 +77,30 @@ describe("/signin POST", () => {
     token = res.body.token;
   });
 
-    it("It should get email or password error", async () => {
-      const res = await request(app).post("/auth/signin").send({
-        email: "user",
-        password: "user",
-      });
-      expect(res.statusCode).toEqual(401);
-      expect(res.body).toBeInstanceOf(Object);
-      expect(res.body.message).toEqual("Email or password is wrong");
+  it("It should get email or password error", async () => {
+    const res = await request(app).post("/auth/signin").send({
+      email: "user",
+      password: "user",
     });
+    expect(res.statusCode).toEqual(401);
+    expect(res.body).toBeInstanceOf(Object);
+    expect(res.body.message).toEqual("Email or password is wrong");
+  });
 });
 
 // user test
-describe("User Test", () => {
-  // describe("/user/", () => {
-    it("It should get one user", async () => {
-      const res = await request(app)
-        .get("/user/1")
-        .set("Authorization", `bearer ${token}`)
-        .send({});
+// describe("User Test", () => {
+//   // describe("/user/", () => {
+//     it("It should get one user", async () => {
+//       const res = await request(app)
+//         .get("/user/1")
+//         .set("Authorization", `bearer ${token}`)
+//         .send({});
 
-      expect(res.statusCode).toEqual(200);
-      expect(res.body).toBeInstanceOf(Object);
-      expect(res.body.message).toEqual("Success");
-      expect(res.body).toHaveProperty("data");
-    });
-  // });
-});
+//       expect(res.statusCode).toEqual(200);
+//       expect(res.body).toBeInstanceOf(Object);
+//       expect(res.body.message).toEqual("Success");
+//       expect(res.body).toHaveProperty("data");
+//     });
+//   // });
+// });
