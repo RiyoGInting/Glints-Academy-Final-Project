@@ -6,6 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const express = require("express");
 const fileUpload = require("express-fileupload");
+const errorHandler = require("./middlewares/errorHandler");
 
 //const mongoSanitize = require("express-mongo-sanitize");
 const xss = require("xss-clean");
@@ -88,6 +89,8 @@ app.use("/category", categoryRoute);
 app.use("/transaction", transactionRoutes);
 app.use("/blog", blogRoutes);
 app.use("/review", reviewRoutes);
+
+app.use(errorHandler);
 
 // Server running
 if (process.env.NODE_ENV !== "test") {
