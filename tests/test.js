@@ -63,30 +63,30 @@ describe("Auth Test", () => {
   });
 });
 
-// describe("/signin POST", () => {
-//   it("It should get a token", async () => {
-//     const res = await request(app).post("/auth/signin").send({
-//       email: "user@gmail.com",
-//       password: "User123#",
-//     });
-//     expect(res.statusCode).toEqual(200);
-//     expect(res.body).toBeInstanceOf(Object);
-//     expect(res.body.message).toEqual("Success");
-//     expect(res.body).toHaveProperty("token");
+describe("/signin POST", () => {
+  it("It should get a token", async () => {
+    const res = await request(app).post("/auth/signin").send({
+      email: "user@gmail.com",
+      password: "User123#",
+    });
+    expect(res.statusCode).toEqual(200);
+    expect(res.body).toBeInstanceOf(Object);
+    expect(res.body.message).toEqual("Success");
+    expect(res.body).toHaveProperty("token");
 
-//     token = res.body.token;
-//   });
+    token = res.body.token;
+  });
 
-//   it("It should get email or password error", async () => {
-//     const res = await request(app).post("/auth/signin").send({
-//       email: "user",
-//       password: "user",
-//     });
-//     expect(res.statusCode).toEqual(401);
-//     expect(res.body).toBeInstanceOf(Object);
-//     expect(res.body.message).toEqual("Email or password is wrong");
-//   });
-// });
+  //   it("It should get email or password error", async () => {
+  //     const res = await request(app).post("/auth/signin").send({
+  //       email: "user",
+  //       password: "user",
+  //     });
+  //     expect(res.statusCode).toEqual(401);
+  //     expect(res.body).toBeInstanceOf(Object);
+  //     expect(res.body.message).toEqual("Email or password is wrong");
+  //   });
+});
 
 // // user test
 // describe("User Test", () => {
