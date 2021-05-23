@@ -90,7 +90,7 @@ describe("/signin POST", () => {
 
 // user test
 describe("User Test", () => {
-  describe("/user/", () => {
+  // describe("/user/", () => {
     it("It should get one user", async () => {
       const res = await request(app)
         .get("/user/1")
@@ -102,5 +102,5 @@ describe("User Test", () => {
       expect(res.body.message).toEqual("Success");
       expect(res.body).toHaveProperty("data");
     });
-  });
+  // });
 });
