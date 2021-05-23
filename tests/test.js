@@ -88,19 +88,19 @@ describe("/signin POST", () => {
     });
 });
 
-// // user test
-// describe("User Test", () => {
-//   describe("/user/", () => {
-//     it("It should get one user", async () => {
-//       const res = await request(app)
-//         .get("/user/1")
-//         .set("Authorization", `bearer ${token}`)
-//         .send({});
+// user test
+describe("User Test", () => {
+  describe("/user/", () => {
+    it("It should get one user", async () => {
+      const res = await request(app)
+        .get("/user/1")
+        .set("Authorization", `bearer ${token}`)
+        .send({});
 
-//       expect(res.statusCode).toEqual(200);
-//       expect(res.body).toBeInstanceOf(Object);
-//       expect(res.body.message).toEqual("Success");
-//       expect(res.body).toHaveProperty("data");
-//     });
-//   });
-// });
+      expect(res.statusCode).toEqual(200);
+      expect(res.body).toBeInstanceOf(Object);
+      expect(res.body.message).toEqual("Success");
+      expect(res.body).toHaveProperty("data");
+    });
+  });
+});
