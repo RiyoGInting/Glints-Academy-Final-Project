@@ -1,7 +1,7 @@
 const { user } = require("../models");
 const nodemailer = require("nodemailer");
 const fs = require("fs");
-const messageForUser = fs.readFileSync(__dirname + "/emailUser/index.html", {
+const htmlUser = fs.readFileSync(__dirname + "/emailUser/index.html", {
   encoding: "utf-8",
 });
 
@@ -81,10 +81,10 @@ class UserController {
       });
 
       let mailOptions = {
-        from: "Admin",
+        from: process.env.EMAIL,
         to: `${email}`,
         subject: "Email verification",
-        html: messageForUser,
+        html: htmlUser,
       };
 
       // send mail with defined transport object

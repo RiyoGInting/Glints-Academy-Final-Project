@@ -1,6 +1,10 @@
 const { partner, category, Sequelize } = require("../models");
 const { Op } = require("sequelize");
 const nodemailer = require("nodemailer");
+const fs = require("fs");
+const htmlPartner = fs.readFileSync(__dirname + "/emailPartner/index.html", {
+  encoding: "utf-8",
+});
 
 class PartnerController {
   async getAll(req, res, next) {
@@ -405,11 +409,10 @@ class PartnerController {
       });
 
       let mailOptions = {
-        from: "Admin",
+        from: process.env.EMAIL,
         to: `${email}`,
-        subject: "email verification",
-        text: `Please click on this link to continue your registrations as a partner
-        https://tech-stop.herokuapp.com/PartnerFormRegistration`,
+        subject: "Email verification",
+        html: htmlPartner,
       };
 
       // send mail with defined transport object
