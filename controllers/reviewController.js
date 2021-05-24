@@ -2,7 +2,7 @@ const { review, transaction, user, partner } = require("../models");
 const { Op } = require("sequelize");
 
 class ReviewController {
-  async create(req, res) {
+  async create(req, res, next) {
     try {
       // create review
       let createdData = await review.create({
@@ -91,15 +91,11 @@ class ReviewController {
         data,
       });
     } catch (e) {
-      // If error
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: e,
-      });
+      next;
     }
   }
 
-  async averageRating(req, res) {
+  async averageRating(req, res, next) {
     try {
       let data = await partner.findAll({
         where: { id: req.params.id },
@@ -169,15 +165,12 @@ class ReviewController {
         averageRating,
         detailReview,
       });
-    } catch (err) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
-  async updateReview(req, res) {
+  async updateReview(req, res, next) {
     try {
       let updated = {
         rating: req.body.rating,
@@ -267,24 +260,18 @@ class ReviewController {
         data,
       });
     } catch (e) {
-      // If error
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: e,
-      });
+      return next(e);
     }
   }
 
-  async deleteReview(req, res) {
+  async deleteReview(req, res, next) {
     try {
       let data = await review.destroy({
         where: { id: req.params.id },
       });
 
       if (!data) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
 
       let deletedData = await review.findOne({
@@ -371,7 +358,7 @@ class ReviewController {
     }
   }
 
-  async getOne(req, res) {
+  async getOne(req, res, next) {
     try {
       let data = await review.findOne({
         where: { id: req.params.id },
@@ -402,22 +389,17 @@ class ReviewController {
       });
 
       if (!data) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
-  async getAllByUser(req, res) {
+  async getAllByUser(req, res, next) {
     try {
       let data = await review.findAll({
         // where: { id: req.params.id }, //req.user.id
@@ -461,14 +443,11 @@ class ReviewController {
         message: "Success",
         resultData,
       });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
-  async getAllByPartner(req, res) {
+  async getAllByPartner(req, res, next) {
     try {
       let data = await review.findAll({
         // where: { id: req.params.id }, //req.user.id
@@ -512,11 +491,8 @@ class ReviewController {
         message: "Success",
         resultData,
       });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 }
