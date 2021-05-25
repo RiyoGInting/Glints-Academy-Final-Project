@@ -1,8 +1,14 @@
 const request = require("supertest"); // Import supertest
 const app = require("../index"); // Import app
-const { user, partner, category, blog, transaction, review } = require("../models"); // Import all models
-let token;
-let tokenUser, tokenPartner;
+const {
+  user,
+  partner,
+  category,
+  blog,
+  transaction,
+  review,
+} = require("../models"); // Import all models
+let token, tokenPartner;
 
 beforeAll(async () => {
   await user.destroy({ where: {}, force: true });
@@ -106,16 +112,31 @@ describe("/signin POST", () => {
 //   // });
 // });
 
-
 // transaction test
 describe("Transaction Test", () => {
   describe("/transaction/", () => {
-    it("get all transaction by partner error unauthorized", async ()=> {
-      const res = await request(app).get('/transaction/partner').send({})
-      expect(res.statusCode).toEqual(200)
-      expect(res.body).toBeInstanceOf(Object)
-      expect(res.body.message).toEqual("Success")
-      expect(res.body).toHaveProperty("result")
-    })
-  })
-})
+    it("get all transaction by user - internal server error", async () => {
+      const res = await request(app)
+        .get("/transaction/")
+        .set("Authorization", `bearer ${token}`);
+      expect(res.statusCode).toEqual(500);
+      expect(res.body).toBeInstanceOf(Object);
+    });
+    it("get all transaction by user - error no data", async () => {
+      const res = await request(app)
+        .get("/transaction?page=1")
+        .set("Authorization", `bearer ${token}`);
+      expect(res.statusCode).toEqual(404);
+      expect(res.body).toBeInstanceOf(Object);
+      expect(res.body.message).toEqual("Data not found");
+    });
+    it("get one transaction by user - error no data", async () => {
+      const res = await request(app)
+        .get("/transaction/1")
+        .set("Authorization", `bearer ${token}`);
+      expect(res.statusCode).toEqual(404);
+      expect(res.body).toBeInstanceOf(Object);
+      expect(res.body.message).toEqual("Data not found");
+    });
+  });
+});
