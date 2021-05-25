@@ -45,7 +45,7 @@ class TransactionController {
       });
 
       if (data.length === 0) {
-        return next({ message: "No transactions found", statusCode: 404 });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       // if successful
       return res.status(200).json({
@@ -99,7 +99,7 @@ class TransactionController {
       });
 
       if (data.length === 0) {
-        return next({ message: "No transactions found", statusCode: 404 });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       // if successful
       return res.status(200).json({
@@ -138,7 +138,7 @@ class TransactionController {
       });
 
       if (!data) {
-        return next({ message: "No transactions found", statusCode: 404 });
+        return next({ message: "Data not found", statusCode: 404 });
       }
 
       return res.status(200).json({
@@ -177,7 +177,7 @@ class TransactionController {
       });
 
       if (!data) {
-        return next({ message: "No transactions found", statusCode: 404 });
+        return next({ message: "Data not found", statusCode: 404 });
       }
 
       return res.status(200).json({
@@ -409,7 +409,7 @@ class TransactionController {
         .format()
         .replace("T", " ")
         .replace("Z", "");
-      console.log(expiredPayment);
+      //console.log(expiredPayment);
 
       // update status
       await transaction.update(
@@ -542,9 +542,9 @@ class TransactionController {
       let fraudStatus = req.body.fraud_status;
       let data;
 
-      console.log(
-        `Transaction notification received. Order ID: ${orderId}. Transaction status: ${transactionStatus}. Fraud status: ${fraudStatus}`
-      );
+      // console.log(
+      //   `Transaction notification received. Order ID: ${orderId}. Transaction status: ${transactionStatus}. Fraud status: ${fraudStatus}`
+      // );
 
       // Sample transactionStatus handling logic
 

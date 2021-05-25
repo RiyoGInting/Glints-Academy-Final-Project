@@ -1,7 +1,8 @@
 const request = require("supertest"); // Import supertest
 const app = require("../index"); // Import app
-const { user } = require("../models"); // Import user and transaksi models
+const { user, partner, category, blog, transaction, review } = require("../models"); // Import all models
 let token;
+let tokenUser, tokenPartner;
 
 beforeAll(async () => {
   await user.destroy({ where: {}, force: true });
@@ -104,3 +105,17 @@ describe("/signin POST", () => {
 //     });
 //   // });
 // });
+
+
+// transaction test
+describe("Transaction Test", () => {
+  describe("/transaction/", () => {
+    it("get all transaction by partner error unauthorized", async ()=> {
+      const res = await request(app).get('/transaction/partner').send({})
+      expect(res.statusCode).toEqual(200)
+      expect(res.body).toBeInstanceOf(Object)
+      expect(res.body.message).toEqual("Success")
+      expect(res.body).toHaveProperty("result")
+    })
+  })
+})
