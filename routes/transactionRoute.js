@@ -35,9 +35,9 @@ router
   .post(auth.adminOrUser, transactionController.doneTransaction);
 router
   .route("/accept/:id")
-  .post(auth.partner, transactionController.acceptTransaction);
+  .post(transactionController.acceptTransaction);
 router
   .route("/cancel/:id")
-  .put(auth.partner, transactionController.cancelTransaction);
+  .put(transactionController.cancelTransaction);
 
 module.exports = router; // Export router
