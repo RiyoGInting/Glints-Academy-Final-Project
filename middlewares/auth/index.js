@@ -1,9 +1,10 @@
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const bcrypt = require("bcrypt");
 const JWTstrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
-const { user, partner, category} = require("../../models");
+const { user, partner, category } = require("../../models");
 
 exports.signup = (req, res, next) => {
   passport.authenticate("signup", { session: false }, (err, user, info) => {
@@ -166,13 +167,10 @@ passport.use(
           ktp_image: req.body.ktp_image,
           id_category: data.dataValues.id,
           category_name: req.body.category_name,
-
-
         });
 
         return done(null, partnerSignUp, {
           message: "User Partner can be created",
-          
         });
       } catch (e) {
         console.log(e);
@@ -417,6 +415,37 @@ passport.use(
         //find user
         return done(null, false, {
           message: "You're Not Authorized",
+        });
+      }
+    }
+  )
+);
+passport.use(
+  "google",
+  new GoogleStrategy(
+    {
+      //option for google strategy
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+      //end of google id strategy
+    },
+    async (req, accessToken, refreshToken, profile, done) => {
+      try {
+        let googleUser = await user.findOrCreate({
+          where: { email: profile.emails[0].value },
+          defaults: {
+            role: "user",
+            photo_profile: profile.photos[0].value,
+            name: profile.displayName,
+          },
+
+          // email: profile.emails[0].value,
+        });
+        return done(null, googleUser[0]);
+      } catch (error) {
+        return done(null, false, {
+          message: "You're not authorized",
         });
       }
     }

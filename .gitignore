@@ -1,6 +1,7 @@
 node_modules/
 coverage/
 .env.development
+.env.development.tech
 .env.test
 package-lock.json
 yarn.lock

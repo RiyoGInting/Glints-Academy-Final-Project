@@ -160,7 +160,7 @@ describe("Get All Test", () => {
 describe("Get All Test", () => {
   describe("GET /review/user ", () => {
     it("It should get All review from an user", async () => {
-        await login();
+      await login();
       await nullifyData();
       const data1 = await createReview();
       const data2 = await request(app)
