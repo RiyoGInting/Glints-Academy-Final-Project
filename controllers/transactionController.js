@@ -463,7 +463,7 @@ class TransactionController {
         },
         callbacks: {
           //nanti redirect ke page dari frontend pas transaksi uda success
-          finish: "https://techstop.gabatch11.my.id/",
+          finish: "http://tech-stop.herokuapp.com/TransactionCustomerPage",
         },
         expiry: {
           //start_time: new Date(Date.now()),
