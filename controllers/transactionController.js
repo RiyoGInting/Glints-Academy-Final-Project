@@ -405,8 +405,8 @@ class TransactionController {
   // Accept Transaction
   async acceptTransaction(req, res, next) {
     try {
-      // expired time 5 minutes after accepted
-      let expiredPayment = moment(Date.now() + 10 * 60 * 1000)
+      // expired time 24 hours after accepted
+      let expiredPayment = moment(Date.now() + 24 * 60 * 60 * 1000)
         .tz("UTC")
         .format()
         .replace("T", " ")
@@ -468,7 +468,7 @@ class TransactionController {
         expiry: {
           //start_time: new Date(Date.now()),
           unit: "minutes",
-          duration: 10,
+          duration: 1440,
         },
       };
 
