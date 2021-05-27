@@ -2,7 +2,7 @@ const { blog, user } = require("../models"); // Import all models
 
 class BlogController {
   // Get All blog data
-  async getAll(req, res) {
+  async getAll(req, res, next) {
     try {
       let data = await blog.findAll({
         // pagination (still need to edit)
@@ -11,9 +11,7 @@ class BlogController {
       });
 
       if (data.length === 0) {
-        return res.status(404).json({
-          message: "No articles not found",
-        });
+        return next({ message: "No articles not found", statusCode: 404 });
       }
       // if successful
       return res.status(200).json({
@@ -22,15 +20,12 @@ class BlogController {
       });
     } catch (e) {
       // If error
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: e,
-      });
+      return next(e);
     }
   }
 
   // Get One blog
-  async getOne(req, res) {
+  async getOne(req, res, next) {
     try {
       let data = await blog.findOne({
         where: {
@@ -44,26 +39,20 @@ class BlogController {
         ],
       });
 
-      if (data.length === 0) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+      if (!data) {
+        return next({ message: "Data not found", statusCode: 404 });
       }
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   } // end of Get One
 
-
   // Create Data
-  async create(req, res) {
+  async create(req, res, next) {
     try {
       // Create data
       let newBlog = await blog.create(req.body);
@@ -86,15 +75,12 @@ class BlogController {
       });
     } catch (e) {
       // If error
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: e,
-      });
+      return next(e);
     }
   } // end of create
 
   // Update data
-  async update(req, res) {
+  async update(req, res, next) {
     try {
       let updatedBlog = await blog.update(req.body, {
         where: {
@@ -116,32 +102,25 @@ class BlogController {
 
       // if article not found
       if (!data) {
-        return res.status(404).json({
-          message: "Article not found",
-        });
+        return next({ message: "Article not found", statusCode: 404 });
       }
       return res.status(201).json({
         message: "Successfully updated",
         data,
       });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   } // End of Update
 
   // Delete blog Data
-  async delete(req, res) {
+  async delete(req, res, next) {
     try {
       // Delete data
       let data = await blog.destroy({ where: { id: req.params.id } });
 
       if (!data) {
-        return res.status(404).json({
-          message: "Articles not found",
-        });
+        return next({ message: "Articles not found", statusCode: 404 });
       }
 
       // If successful
@@ -149,11 +128,7 @@ class BlogController {
         message: "Article successfully deleted",
       });
     } catch (e) {
-      // If error
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: e,
-      });
+      return next(e);
     }
   } // end of Delete
 }

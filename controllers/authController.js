@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 
 class AuthController {
-  async getToken(req, res) {
+  async getToken(req, res, next) {
     try {
       const body = {
         user: {
@@ -18,10 +18,7 @@ class AuthController {
         token,
       });
     } catch (e) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: e,
-      });
+      return next(e);
     }
   }
 
@@ -42,10 +39,7 @@ class AuthController {
         token,
       });
     } catch (e) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: e,
-      });
+      return next(e);
     }
   }
 }

@@ -9,16 +9,11 @@ const { user, partner, category } = require("../../models");
 exports.signup = (req, res, next) => {
   passport.authenticate("signup", { session: false }, (err, user, info) => {
     if (err) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err,
-      });
+      return next(err);
     }
 
     if (!user) {
-      return res.status(401).json({
-        message: info.message,
-      });
+      return next({ message: info.message, statusCode: 401 });
     }
 
     req.user = user;
@@ -54,16 +49,11 @@ passport.use(
 exports.signin = (req, res, next) => {
   passport.authenticate("signin", { session: false }, (err, user, info) => {
     if (err) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err,
-      });
+      return next(err);
     }
 
     if (!user) {
-      return res.status(401).json({
-        message: info.message,
-      });
+      return next({ message: info.message, statusCode: 401 });
     }
 
     req.user = user;
@@ -250,16 +240,11 @@ passport.use(
 exports.adminOrUser = (req, res, next) => {
   passport.authorize("adminOrUser", (err, user, info) => {
     if (err) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err.message,
-      });
+      return next(err);
     }
 
     if (!user) {
-      return res.status(403).json({
-        message: info.message,
-      });
+      return next({ message: info.message, statusCode: 403 });
     }
 
     req.user = user;

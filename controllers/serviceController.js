@@ -2,7 +2,7 @@ const { partner, service, category, Sequelize } = require("../models");
 
 class ServiceController {
   // Get all Service
-  async getAll(req, res) {
+  async getAll(req, res, next) {
     try {
       //pagination
       let data = await service.findAll({
@@ -11,24 +11,19 @@ class ServiceController {
       });
 
       if (data.length === 0) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   // Get one Service
-  async getOne(req, res) {
+  async getOne(req, res, next) {
     try {
       let data = await service.findOne({
         where: {
@@ -44,24 +39,19 @@ class ServiceController {
       });
 
       if (data.length === 0) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   // Get all Service by a Partner
-  async getAllByPartner(req, res) {
+  async getAllByPartner(req, res, next) {
     try {
       let data = await service.findAll({
         where: {
@@ -72,24 +62,19 @@ class ServiceController {
       });
 
       if (data.length === 0) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   // Get all Service by a Category
-  async getAllByCategory(req, res) {
+  async getAllByCategory(req, res, next) {
     try {
       let data = await service.findAll({
         where: {
@@ -100,24 +85,19 @@ class ServiceController {
       });
 
       if (data.length === 0) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   //  Get all Service by a Name/Keyword(search)
-  async searchByName(req, res) {
+  async searchByName(req, res, next) {
     try {
       let data = await service.findAll({
         where: {
@@ -128,25 +108,19 @@ class ServiceController {
       });
 
       if (data.length === 0) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   // Create Service
-  async create(req, res) {
+  async create(req, res, next) {
     try {
       let newData = await service.create(req.body);
 
@@ -167,16 +141,13 @@ class ServiceController {
         message: "Success",
         data,
       });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   // Update Service
-  async update(req, res) {
+  async update(req, res, next) {
     try {
       let newData = await service.update(req.body, {
         where: {
@@ -198,19 +169,14 @@ class ServiceController {
       });
 
       if (!data) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
@@ -222,18 +188,13 @@ class ServiceController {
       });
 
       if (!data) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       return res.status(200).json({
         message: "Success",
       });
-    } catch (error) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 }
