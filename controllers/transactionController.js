@@ -21,6 +21,8 @@ class TransactionController {
           "total_fee",
           "order_status",
           "payment_status",
+          "payment_type",
+          "redirect_url",
         ],
         include: [
           {
