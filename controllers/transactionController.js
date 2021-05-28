@@ -15,6 +15,7 @@ class TransactionController {
           // pagination
           limit: limits,
           offset: (parseInt(req.query.page) - 1) * limits,
+          order: [["updatedAt", "DESC"]],
           attributes: [
             "id",
             "createdAt",
@@ -135,6 +136,7 @@ class TransactionController {
           // pagination
           limit: limits,
           offset: (parseInt(req.query.page) - 1) * limits,
+          order: [["updatedAt", "DESC"]],
           attributes: [
             "id",
             "createdAt",
@@ -706,7 +708,7 @@ class TransactionController {
       return next(e);
     }
   }
-  
+
   //Transaction Complete
   async completeTransaction(req, res, next) {
     try {
@@ -883,7 +885,6 @@ class TransactionController {
       return next(e);
     }
   }
-
 }
 
 module.exports = new TransactionController();
