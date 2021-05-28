@@ -28,7 +28,35 @@ exports.updateUser = async (req, res, next) => {
     const regexPostal = /^\d{5}$/;
 
     let errors = [];
+    if (req.files) {
+      const file = req.files.photo_profile;
 
+      // Make sure image is photo
+      if (!file.mimetype.startsWith("image")) {
+        errors.push("File must be an image");
+      }
+
+      // If errors length > 0, it will make errors message
+      if (errors.length > 0) {
+        // Because bad request
+        return res.status(400).json({
+          message: errors.join(", "),
+        });
+      }
+
+      // Check file size (max 1MB)
+      if (file.size > 1000000) {
+        errors.push("Image must be less than 1MB");
+      }
+
+      // If errors length > 0, it will make errors message
+      if (errors.length > 0) {
+        // Because bad request
+        return res.status(400).json({
+          message: errors.join(", "),
+        });
+      }
+    }
     if (req.body.phone_number && !regexPhone.test(req.body.phone_number)) {
       errors.push("Please insert a valid phone number with +62 format");
     }
@@ -47,6 +75,7 @@ exports.updateUser = async (req, res, next) => {
       });
     }
     req.body.directory = "user";
+
     next();
   } catch (error) {
     return res.status(500).json({
