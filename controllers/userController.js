@@ -1,9 +1,13 @@
 const { user } = require("../models");
 const nodemailer = require("nodemailer");
+const fs = require("fs");
+const htmlUser = fs.readFileSync(__dirname + "/emailUser/index.html", {
+  encoding: "utf-8",
+});
 
 class UserController {
   // Get One User
-  getOne(req, res) {
+  getOne(req, res, next) {
     user
       .findOne({
         where: { id: req.params.id },
@@ -18,9 +22,7 @@ class UserController {
       })
       .then((data) => {
         if (!data) {
-          return res.status(404).json({
-            message: "User Not Found",
-          });
+          return next({ message: "User Not Found", statusCode: 404 });
         }
 
         // If success
@@ -29,17 +31,13 @@ class UserController {
           data: data,
         });
       })
-      .catch((e) => {
-        // If error
-        return res.status(500).json({
-          message: "Internal Server Error",
-          error: e.message,
-        });
+      .catch((err) => {
+        return next(e);
       });
   }
 
   // Get One User
-  getUser(req, res) {
+  getUser(req, res, next) {
     user
       .findOne({
         where: { id: req.user.id },
@@ -54,9 +52,7 @@ class UserController {
       })
       .then((data) => {
         if (!data) {
-          return res.status(404).json({
-            message: "User Not Found",
-          });
+          return next({ message: "User Not Found", statusCode: 404 });
         }
 
         // If success
@@ -66,16 +62,12 @@ class UserController {
         });
       })
       .catch((e) => {
-        // If error
-        return res.status(500).json({
-          message: "Internal Server Error",
-          error: e.message,
-        });
+        return next(e);
       });
   }
 
   // verify email user
-  async verifyEmail(req, res) {
+  async verifyEmail(req, res, next) {
     try {
       const { email } = req.body;
 
@@ -89,11 +81,10 @@ class UserController {
       });
 
       let mailOptions = {
-        from: "Admin",
+        from: process.env.EMAIL,
         to: `${email}`,
-        subject: "email verification",
-        text: `Please click on this link to continue your registrations
-      https://tech-stop.herokuapp.com/UserFormRegistration`,
+        subject: "Email verification",
+        html: htmlUser,
       };
 
       // send mail with defined transport object
@@ -102,16 +93,13 @@ class UserController {
       return res.status(200).json({
         message: `Email has been sent to ${email} please check your email or spam to continue registration`,
       });
-    } catch (err) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   // Update data user
-  async update(req, res) {
+  async update(req, res, next) {
     let update = {
       name: req.body.name,
       phone_number: req.body.phone_number,
@@ -144,12 +132,8 @@ class UserController {
         message: "Profile udpdated",
         data,
       });
-    } catch (err) {
-      // If error
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err,
-      });
+    } catch (e) {
+      next(e);
     }
   }
 }

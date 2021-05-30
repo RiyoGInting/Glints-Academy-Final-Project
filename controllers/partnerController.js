@@ -1,9 +1,13 @@
 const { partner, category, Sequelize } = require("../models");
 const { Op } = require("sequelize");
 const nodemailer = require("nodemailer");
+const fs = require("fs");
+const htmlPartner = fs.readFileSync(__dirname + "/emailPartner/index.html", {
+  encoding: "utf-8",
+});
 
 class PartnerController {
-  async getAll(req, res) {
+  async getAll(req, res, next) {
     try {
       let data = await partner.findAll({
         where: { verified_status: req.query.verified_status },
@@ -16,9 +20,7 @@ class PartnerController {
       });
 
       if (data.length === 0) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
 
       return res.status(200).json({
@@ -26,16 +28,12 @@ class PartnerController {
         data,
       });
     } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+      return next(e);
     }
   }
 
   // Get One
-  getOnePartner(req, res) {
+  getOnePartner(req, res, next) {
     partner
       .findOne({
         where: { id: req.params.id },
@@ -61,9 +59,7 @@ class PartnerController {
       .then((data) => {
         // If  not found
         if (!data) {
-          return res.status(404).json({
-            message: "Partner Not Found",
-          });
+          return next({ message: "Partner Not Found", statusCode: 404 });
         }
 
         // If success
@@ -74,30 +70,15 @@ class PartnerController {
       })
       .catch((e) => {
         // If error
-        return res.status(500).json({
-          message: "Internal Server Error",
-          error: e.message,
-        });
+        return next(e);
       });
   }
 
-  getOnePartnerProfile(req, res) {
+  getOnePartnerProfile(req, res, next) {
     partner
       .findOne({
         where: { id: req.partner.id },
-        // attributes: [
-        //   "id",
-        //   "name",
-        //   "brand_service_name",
-        //   "email",
-        //   ["phone_number", "owner_phone_number"],
-        //   "business_address",
-        //   "business_phone",
-        //   "partner_logo",
-        //   "avg_rating",
-        //   "service_description",
-        //   ["service_fee", "price"],
-        // ],
+
         include: [
           {
             model: category,
@@ -108,9 +89,7 @@ class PartnerController {
       .then((data) => {
         // If  not found
         if (!data) {
-          return res.status(404).json({
-            message: "Partner Not Found",
-          });
+          return next({ message: "Partner Not Found", statusCode: 404 });
         }
 
         // If success
@@ -120,20 +99,16 @@ class PartnerController {
         });
       })
       .catch((e) => {
-        // If error
-        return res.status(500).json({
-          message: "Internal Server Error",
-          error: e.message,
-        });
+        return next(e);
       });
   }
 
   // Update data
-  async updateVerifiedPartner(req, res) {
+  async updateVerifiedPartner(req, res, next) {
     let update = {
       verified_status: req.body.verified_status,
     };
-    console.log(update);
+
     try {
       //  table update data
       let updatedData = await partner.update(update, {
@@ -157,21 +132,16 @@ class PartnerController {
         message: "Status udpdated",
         data,
       });
-    } catch (err) {
-      // If error
-      console.log(err);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
-  async updatePhoto(req, res) {
+  async updatePhoto(req, res, next) {
     let update = {
       partner_logo: req.body.partner_logo,
     };
-    console.log(update);
+
     try {
       //  table update data
       let updatedData = await partner.update(update, {
@@ -191,17 +161,12 @@ class PartnerController {
         message: "Status udpdated",
         data,
       });
-    } catch (err) {
-      // If error
-      console.log(err);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
-  async updateProfileService(req, res) {
+  async updateProfileService(req, res, next) {
     let data = await category.findOne({
       attributes: ["id", "category_name", "description"],
       where: { category_name: req.body.category_name },
@@ -221,14 +186,13 @@ class PartnerController {
       //  table update data
       let updatedData = await partner.update(update, {
         where: {
-          id: req.params.id,
+          id: req.partner.id,
         },
       });
 
-      console.log(`ini adalah updte ${updatedData}`);
       // Find the updated
       let dataUpdate = await partner.findOne({
-        where: { id: req.params.id },
+        where: { id: req.partner.id },
         attributes: [
           "id",
           "brand_service_name",
@@ -250,16 +214,11 @@ class PartnerController {
         dataUpdate,
       });
     } catch (e) {
-      // If error
-      console.log(e)
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: e.message,
-      });
+      return next(e);
     }
   }
 
-  async updateProfile(req, res) {
+  async updateProfile(req, res, next) {
     let update = {
       name: req.body.name,
       phone_number: req.body.phone_number,
@@ -298,16 +257,11 @@ class PartnerController {
         data,
       });
     } catch (e) {
-      console.log(e);
-      // If error
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: e.message,
-      });
+      return next(e);
     }
   }
 
-  async searchByName(req, res) {
+  async searchByName(req, res, next) {
     try {
       const { page } = req.query;
       const limits = 12;
@@ -337,24 +291,18 @@ class PartnerController {
       });
 
       if (data.count == 0) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        err,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
-  async searchByFilter(req, res) {
+  async searchByFilter(req, res, next) {
     try {
       const { page } = req.query;
       const limits = 12;
@@ -396,24 +344,18 @@ class PartnerController {
       });
 
       if (data.count == 0) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        err,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
-  async filterByCategory(req, res) {
+  async filterByCategory(req, res, next) {
     try {
       const { page } = req.query;
       const limits = 12;
@@ -441,25 +383,19 @@ class PartnerController {
       });
 
       if (data.count == 0) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (err) {
-      console.log(err);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        err,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   // verify email partner
-  async verifyEmailPartner(req, res) {
+  async verifyEmailPartner(req, res, next) {
     try {
       const { email } = req.body;
 
@@ -473,11 +409,10 @@ class PartnerController {
       });
 
       let mailOptions = {
-        from: "Admin",
+        from: process.env.EMAIL,
         to: `${email}`,
-        subject: "email verification",
-        text: `Please click on this link to continue your registrations as a partner
-        https://tech-stop.herokuapp.com/PartnerFormRegistration`,
+        subject: "Email verification",
+        html: htmlPartner,
       };
 
       // send mail with defined transport object
@@ -486,11 +421,8 @@ class PartnerController {
       return res.status(200).json({
         message: `Email has been sent to ${email} please check your email or spam to continue registration`,
       });
-    } catch (err) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: err,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 }

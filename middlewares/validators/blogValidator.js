@@ -3,6 +3,38 @@ const validator = require("validator"); // Import validator
 
 module.exports.create = async (req, res, next) => {
   try {
+    // Initialita
+    let errors = [];
+
+    // If image was uploaded
+    if (req.files) {
+      const file = req.files.blog_image;
+      console.log(file);
+      // Make sure image is photo
+      if (!file.mimetype.startsWith("image")) {
+        errors.push("File must be an image");
+      }
+
+      // If errors length > 0, it will make errors message
+      if (errors.length > 0) {
+        // Because bad request
+        return res.status(400).json({
+          message: errors.join(", "),
+        });
+      }
+
+      // Check file size (max 1MB)
+      if (file.size > 1000000) {
+        errors.push("Image must be less than 1MB");
+      }
+
+      // If errors length > 0, it will make errors message
+      if (errors.length > 0) {
+        // Because bad request
+        return res.status(400).json({
+          message: errors.join(", "),
+        });
+      }}
     // Find user
     let findData = await Promise.all([
       user.findOne({
@@ -12,9 +44,7 @@ module.exports.create = async (req, res, next) => {
 
     // If errors length > 0, it will make errors message
     if (!findData) {
-      return res.status(400).json({
-        message: "User not found",
-      });
+      errors.push("Data not found")
     }
 
     req.body.directory = "blog";

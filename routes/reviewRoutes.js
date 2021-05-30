@@ -12,10 +12,14 @@ router.post(
   reviewValidator.create,
   reviewController.create
 );
-router.get("/averageRating/:id", reviewController.averageRating);
-router.put("/update/:id",reviewValidator.update, reviewController.updateReview);
+
+router.put(
+  "/update/:id",
+  reviewValidator.update,
+  reviewController.updateReview
+);
 router.get("/partner/:id", reviewController.getAllByPartner);
 router.get("/user", auth.adminOrUser, reviewController.getAllByUser);
 router.get("/:id", reviewController.getOne);
-router.delete("/:id", reviewController.deleteReview)
+router.delete("/:id", reviewController.deleteReview);
 module.exports = router;

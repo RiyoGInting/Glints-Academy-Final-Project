@@ -16,6 +16,66 @@ module.exports.create = async (req, res, next) => {
     //   errors.push("Category Not Found");
     // }
 
+    if (req.files.ktp_image) {
+      const file = req.files.ktp_image;
+
+      // Make sure image is photo
+      if (!file.mimetype.startsWith("image")) {
+        errors.push("File must be an image");
+      }
+
+      // If errors length > 0, it will make errors message
+      if (errors.length > 0) {
+        // Because bad request
+        return res.status(400).json({
+          message: errors.join(", "),
+        });
+      }
+
+      // Check file size (max 1MB)
+      if (file.size > 1000000) {
+        errors.push("Image must be less than 1MB");
+      }
+
+      // If errors length > 0, it will make errors message
+      if (errors.length > 0) {
+        // Because bad request
+        return res.status(400).json({
+          message: errors.join(", "),
+        });
+      }
+    }
+    // If image was uploaded
+    if (req.files.partner_logo) {
+      const file = req.files.partner_logo;
+
+      // Make sure image is photo
+      if (!file.mimetype.startsWith("image")) {
+        errors.push("File must be an image");
+      }
+
+      // If errors length > 0, it will make errors message
+      if (errors.length > 0) {
+        // Because bad request
+        return res.status(400).json({
+          message: errors.join(", "),
+        });
+      }
+
+      // Check file size (max 1MB)
+      if (file.size > 1000000) {
+        errors.push("Image must be less than 1MB");
+      }
+
+      // If errors length > 0, it will make errors message
+      if (errors.length > 0) {
+        // Because bad request
+        return res.status(400).json({
+          message: errors.join(", "),
+        });
+      }
+    }
+
     // Check harga is number
     if (!validator.isNumeric(req.body.service_fee)) {
       errors.push("Service Fee must be a number");
@@ -45,8 +105,11 @@ module.exports.updateService = async (req, res, next) => {
   try {
     const regexPhoneNumber = /^[+][6][2]\d{8,11}$/;
     let errors = [];
-  
-    if (!regexPhoneNumber.test(req.body.phone_number)) {
+
+    if (
+      req.body.phone_number &&
+      !regexPhoneNumber.test(req.body.phone_number)
+    ) {
       errors.push("Please insert a valid phone number with +62 format");
     }
 
@@ -105,7 +168,7 @@ module.exports.update = async (req, res, next) => {
     // It means that will be go to the next middleware
     next();
   } catch (e) {
-    console.log(e)
+    console.log(e);
     return res.status(500).json({
       message: "Internal Server Error at validator",
       error: e.message,

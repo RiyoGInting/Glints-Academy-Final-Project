@@ -3,134 +3,270 @@ const moment = require("moment-timezone");
 const { partner, user, transaction } = require("../models");
 
 class TransactionController {
-  // Get all transaction data (of that user)
-  async getAllUser(req, res) {
+  // Get all and get all transaction data by order status (of that user)
+  async getAllUser(req, res, next) {
     try {
       let limits = 12;
-      let data = await transaction.findAll({
-        where: { id_user: req.user.id },
-        // pagination
-        limit: limits,
-        offset: (parseInt(req.query.page) - 1) * limits,
-        attributes: [
-          "id",
-          "createdAt",
-          "appointment_date",
-          "appointment_address",
-          "total_item",
-          "total_fee",
-          "order_status",
-          "payment_status",
-        ],
-        include: [
-          {
-            model: user,
-            attributes: [
-              ["id", "id_user"],
-              "name",
-              "phone_number",
-              "city_or_regional",
-              "postal_code",
-            ],
+      if (req.query.order_status === "all") {
+        let data = await transaction.findAll({
+          where: {
+            id_user: req.user.id,
           },
-          {
-            model: partner,
-            attributes: [
-              ["id", "id_partner"],
-              "brand_service_name",
-              "business_phone",
-            ],
-          },
-        ],
-      });
+          // pagination
+          limit: limits,
+          offset: (parseInt(req.query.page) - 1) * limits,
+          order: [["updatedAt", "DESC"]],
+          attributes: [
+            "id",
+            "createdAt",
+            "appointment_date",
+            "appointment_address",
+            "total_item",
+            "total_fee",
+            "order_status",
+            "payment_status",
+            "payment_type",
+            "redirect_url",
+            "expired_payment",
+            "token",
+          ],
+          include: [
+            {
+              model: user,
+              attributes: [
+                ["id", "id_user"],
+                "name",
+                "phone_number",
+                "city_or_regional",
+                "postal_code",
+              ],
+            },
+            {
+              model: partner,
+              attributes: [
+                ["id", "id_partner"],
+                "brand_service_name",
+                "business_phone",
+              ],
+            },
+          ],
+        });
 
-      if (data.length === 0) {
-        return res.status(404).json({
-          message: "No transactions found",
+        if (data.length === 0) {
+          return next({ message: "Data not found", statusCode: 404 });
+        }
+        // if successful
+        return res.status(200).json({
+          message: "Success",
+          data,
+        });
+      } else if (
+        req.query.order_status === "waiting" ||
+        "accepted" ||
+        "cancelled" ||
+        "on process" ||
+        "done"
+      ) {
+        let data = await transaction.findAll({
+          where: {
+            id_user: req.user.id,
+            order_status: req.query.order_status,
+          },
+          // pagination
+          limit: limits,
+          offset: (parseInt(req.query.page) - 1) * limits,
+          attributes: [
+            "id",
+            "createdAt",
+            "appointment_date",
+            "appointment_address",
+            "total_item",
+            "total_fee",
+            "order_status",
+            "payment_status",
+            "payment_type",
+            "redirect_url",
+            "expired_payment",
+            "token",
+          ],
+          include: [
+            {
+              model: user,
+              attributes: [
+                ["id", "id_user"],
+                "name",
+                "phone_number",
+                "city_or_regional",
+                "postal_code",
+              ],
+            },
+            {
+              model: partner,
+              attributes: [
+                ["id", "id_partner"],
+                "brand_service_name",
+                "business_phone",
+              ],
+            },
+          ],
+        });
+        if (data.length === 0) {
+          return next({ message: "Data not found", statusCode: 404 });
+        }
+        // if successful
+        return res.status(200).json({
+          message: "Success",
+          data,
         });
       }
-      // if successful
-      return res.status(200).json({
-        message: "Success",
-        data,
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
-  // Get all transaction data (for that partner)
-  async getAllPartner(req, res) {
+  // Get all and get all transaction data by order status (of that partner)
+  async getAllPartner(req, res, next) {
     try {
       let limits = 12;
-      let data = await transaction.findAll({
-        where: { id_partner: req.partner.id },
-        // pagination
-        limit: limits,
-        offset: (parseInt(req.query.page) - 1) * limits,
-        attributes: [
-          "id",
-          "createdAt",
-          "appointment_date",
-          "appointment_address",
-          "total_item",
-          "total_fee",
-          "order_status",
-          "payment_status",
-        ],
-        include: [
-          {
-            model: user,
-            attributes: [
-              ["id", "id_user"],
-              "name",
-              "phone_number",
-              "city_or_regional",
-              "postal_code",
-            ],
+      if (req.query.order_status === "all") {
+        let data = await transaction.findAll({
+          where: {
+            id_partner: req.partner.id,
           },
-          {
-            model: partner,
-            attributes: [
-              ["id", "id_partner"],
-              "brand_service_name",
-              "business_phone",
-            ],
-          },
-        ],
-      });
+          // pagination
+          limit: limits,
+          offset: (parseInt(req.query.page) - 1) * limits,
+          order: [["updatedAt", "DESC"]],
+          attributes: [
+            "id",
+            "createdAt",
+            "appointment_date",
+            "appointment_address",
+            "total_item",
+            "total_fee",
+            "order_status",
+            "payment_status",
+            "payment_type",
+            "redirect_url",
+            "expired_payment",
+            "token",
+          ],
+          include: [
+            {
+              model: user,
+              attributes: [
+                ["id", "id_user"],
+                "name",
+                "phone_number",
+                "city_or_regional",
+                "postal_code",
+              ],
+            },
+            {
+              model: partner,
+              attributes: [
+                ["id", "id_partner"],
+                "brand_service_name",
+                "business_phone",
+              ],
+            },
+          ],
+        });
 
-      if (data.length === 0) {
-        return res.status(404).json({
-          message: "No transactions found",
+        if (data.length === 0) {
+          return next({ message: "Data not found", statusCode: 404 });
+        }
+        // if successful
+        return res.status(200).json({
+          message: "Success",
+          data,
+        });
+      } else if (
+        req.query.order_status === "waiting" ||
+        "accepted" ||
+        "cancelled" ||
+        "on process" ||
+        "done"
+      ) {
+        let data = await transaction.findAll({
+          where: {
+            id_partner: req.partner.id,
+            order_status: req.query.order_status,
+          },
+          // pagination
+          limit: limits,
+          offset: (parseInt(req.query.page) - 1) * limits,
+          attributes: [
+            "id",
+            "createdAt",
+            "appointment_date",
+            "appointment_address",
+            "total_item",
+            "total_fee",
+            "order_status",
+            "payment_status",
+            "payment_type",
+            "redirect_url",
+            "expired_payment",
+            "token",
+          ],
+          include: [
+            {
+              model: user,
+              attributes: [
+                ["id", "id_user"],
+                "name",
+                "phone_number",
+                "city_or_regional",
+                "postal_code",
+              ],
+            },
+            {
+              model: partner,
+              attributes: [
+                ["id", "id_partner"],
+                "brand_service_name",
+                "business_phone",
+              ],
+            },
+          ],
+        });
+        if (data.length === 0) {
+          return next({ message: "Data not found", statusCode: 404 });
+        }
+        // if successful
+        return res.status(200).json({
+          message: "Success",
+          data,
         });
       }
-      // if successful
-      return res.status(200).json({
-        message: "Success",
-        data,
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   // Get One Transaction (User)
-  async getOneUser(req, res) {
+  async getOneUser(req, res, next) {
     try {
       let data = await transaction.findOne({
         where: {
           id: req.params.id,
           id_user: req.user.id,
         },
+        attributes: [
+          "id",
+          "createdAt",
+          "appointment_date",
+          "appointment_address",
+          "total_item",
+          "total_fee",
+          "order_status",
+          "payment_status",
+          "payment_type",
+          "redirect_url",
+          "expired_payment",
+          "token",
+        ],
         include: [
           {
             model: user,
@@ -150,32 +286,40 @@ class TransactionController {
       });
 
       if (!data) {
-        return res.status(404).json({
-          message: "No transaction found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
 
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   // Get One Transaction (Partner)
-  async getOnePartner(req, res) {
+  async getOnePartner(req, res, next) {
     try {
       let data = await transaction.findOne({
         where: {
           id: req.params.id,
           id_partner: req.partner.id,
         },
+        attributes: [
+          "id",
+          "createdAt",
+          "appointment_date",
+          "appointment_address",
+          "total_item",
+          "total_fee",
+          "order_status",
+          "payment_status",
+          "payment_type",
+          "redirect_url",
+          "expired_payment",
+          "token",
+        ],
         include: [
           {
             model: user,
@@ -195,26 +339,20 @@ class TransactionController {
       });
 
       if (!data) {
-        return res.status(404).json({
-          message: "No transaction found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
 
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   // Create Transaction
-  async create(req, res) {
+  async create(req, res, next) {
     try {
       // find service_fee for total_fee
       let findPartner = await partner.findOne({
@@ -251,6 +389,10 @@ class TransactionController {
           "total_fee",
           "order_status",
           "payment_status",
+          "payment_type",
+          "redirect_url",
+          "expired_payment",
+          "token",
         ],
         include: [
           {
@@ -278,17 +420,13 @@ class TransactionController {
         message: "Success",
         data,
       });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   // Update Transaction
-  async update(req, res) {
+  async update(req, res, next) {
     try {
       // find service_fee for total_fee
       let findPartner = await partner.findOne({
@@ -329,6 +467,10 @@ class TransactionController {
           "total_fee",
           "order_status",
           "payment_status",
+          "payment_type",
+          "redirect_url",
+          "expired_payment",
+          "token",
         ],
         include: [
           {
@@ -353,25 +495,19 @@ class TransactionController {
       });
 
       if (!data) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   // Cancel Transaction
-  async cancelTransaction(req, res) {
+  async cancelTransaction(req, res, next) {
     try {
       // update status
       await transaction.update(
@@ -399,6 +535,10 @@ class TransactionController {
           "total_fee",
           "order_status",
           "payment_status",
+          "payment_type",
+          "redirect_url",
+          "expired_payment",
+          "token",
         ],
         include: [
           {
@@ -423,33 +563,27 @@ class TransactionController {
       });
 
       if (!data) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
+        return next({ message: "Data not found", statusCode: 404 });
       }
       return res.status(200).json({
         message: "Success",
         data,
       });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   // Accept Transaction
   async acceptTransaction(req, res, next) {
     try {
-      // expired time 5 minutes after accepted
-      let expiredPayment = moment(Date.now() + 10 * 60 * 1000)
+      // expired time 24 hours after accepted
+      let expiredPayment = moment(Date.now() + 24 * 60 * 60 * 1000)
         .tz("UTC")
         .format()
         .replace("T", " ")
         .replace("Z", "");
-      console.log(expiredPayment);
+      //console.log(expiredPayment);
 
       // update status
       await transaction.update(
@@ -501,12 +635,12 @@ class TransactionController {
         },
         callbacks: {
           //nanti redirect ke page dari frontend pas transaksi uda success
-          finish: "https://techstop.gabatch11.my.id/",
+          finish: "http://tech-stop.herokuapp.com/TransactionCustomerPage",
         },
         expiry: {
           //start_time: new Date(Date.now()),
           unit: "minutes",
-          duration: 10,
+          duration: 1440,
         },
       };
 
@@ -538,9 +672,10 @@ class TransactionController {
           "total_fee",
           "order_status",
           "payment_status",
+          "payment_type",
+          "redirect_url",
           "expired_payment",
           "token",
-          "redirect_url",
         ],
         include: [
           {
@@ -569,26 +704,90 @@ class TransactionController {
         message: "Success",
         data,
       });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
+    } catch (e) {
+      return next(e);
+    }
+  }
+
+  //Transaction Complete
+  async completeTransaction(req, res, next) {
+    try {
+      // update status
+      await transaction.update(
+        {
+          order_status: "done",
+        },
+        {
+          where: {
+            id: req.params.id,
+          },
+        }
+      );
+
+      // find data
+      let data = await transaction.findOne({
+        where: {
+          id: req.params.id,
+        },
+        attributes: [
+          "id",
+          "createdAt",
+          "appointment_date",
+          "appointment_address",
+          "total_item",
+          "total_fee",
+          "order_status",
+          "payment_status",
+          "payment_type",
+          "redirect_url",
+          "expired_payment",
+          "token",
+        ],
+        include: [
+          {
+            model: user,
+            attributes: [
+              ["id", "id_user"],
+              "name",
+              "phone_number",
+              "city_or_regional",
+              "postal_code",
+            ],
+          },
+          {
+            model: partner,
+            attributes: [
+              ["id", "id_partner"],
+              "brand_service_name",
+              "business_phone",
+            ],
+          },
+        ],
       });
+
+      if (!data) {
+        return next({ message: "Data not found", statusCode: 404 });
+      }
+      return res.status(200).json({
+        message: "Success",
+        data,
+      });
+    } catch (e) {
+      return next(e);
     }
   }
 
   //handle payment gateway
-  async handlePayment(req, res) {
+  async handlePayment(req, res, next) {
     try {
       let orderId = req.body.order_id;
       let transactionStatus = req.body.transaction_status;
       let fraudStatus = req.body.fraud_status;
       let data;
 
-      console.log(
-        `Transaction notification received. Order ID: ${orderId}. Transaction status: ${transactionStatus}. Fraud status: ${fraudStatus}`
-      );
+      // console.log(
+      //   `Transaction notification received. Order ID: ${orderId}. Transaction status: ${transactionStatus}. Fraud status: ${fraudStatus}`
+      // );
 
       // Sample transactionStatus handling logic
 
@@ -682,82 +881,8 @@ class TransactionController {
         message: "Success",
         updatedData,
       });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
-    }
-  }
-
-  //Transaction Done
-  async doneTransaction(req, res) {
-    try {
-      // update status
-      await transaction.update(
-        {
-          order_status: "done",
-        },
-        {
-          where: {
-            id: req.params.id,
-          },
-        }
-      );
-
-      // find data
-      let data = await transaction.findOne({
-        where: {
-          id: req.params.id,
-        },
-        attributes: [
-          "id",
-          "createdAt",
-          "appointment_date",
-          "appointment_address",
-          "total_item",
-          "total_fee",
-          "order_status",
-          "payment_status",
-        ],
-        include: [
-          {
-            model: user,
-            attributes: [
-              ["id", "id_user"],
-              "name",
-              "phone_number",
-              "city_or_regional",
-              "postal_code",
-            ],
-          },
-          {
-            model: partner,
-            attributes: [
-              ["id", "id_partner"],
-              "brand_service_name",
-              "business_phone",
-            ],
-          },
-        ],
-      });
-
-      if (!data) {
-        return res.status(404).json({
-          message: "Data not found",
-        });
-      }
-      return res.status(200).json({
-        message: "Success",
-        data,
-      });
-    } catch (error) {
-      console.log(error);
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error,
-      });
+    } catch (e) {
+      return next(e);
     }
   }
 }
