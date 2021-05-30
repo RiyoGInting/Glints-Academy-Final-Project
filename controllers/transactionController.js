@@ -1,6 +1,6 @@
 const midtransClient = require("midtrans-client");
 const moment = require("moment-timezone");
-const { partner, user, transaction } = require("../models");
+const { partner, user, transaction, category } = require("../models");
 
 class TransactionController {
   // Get all and get all transaction data by order status (of that user)
@@ -47,6 +47,13 @@ class TransactionController {
                 ["id", "id_partner"],
                 "brand_service_name",
                 "business_phone",
+                "partner_logo",
+              ],
+              include: [
+                {
+                  model: category,
+                  attributes: ["category_name"],
+                },
               ],
             },
           ],
@@ -106,6 +113,13 @@ class TransactionController {
                 ["id", "id_partner"],
                 "brand_service_name",
                 "business_phone",
+                "partner_logo",
+              ],
+              include: [
+                {
+                  model: category,
+                  attributes: ["category_name"],
+                },
               ],
             },
           ],
@@ -168,6 +182,13 @@ class TransactionController {
                 ["id", "id_partner"],
                 "brand_service_name",
                 "business_phone",
+                "partner_logo",
+              ],
+              include: [
+                {
+                  model: category,
+                  attributes: ["category_name"],
+                },
               ],
             },
           ],
@@ -227,6 +248,13 @@ class TransactionController {
                 ["id", "id_partner"],
                 "brand_service_name",
                 "business_phone",
+                "partner_logo",
+              ],
+              include: [
+                {
+                  model: category,
+                  attributes: ["category_name"],
+                },
               ],
             },
           ],
@@ -635,7 +663,7 @@ class TransactionController {
         },
         callbacks: {
           //nanti redirect ke page dari frontend pas transaksi uda success
-          finish: "http://tech-stop.herokuapp.com/TransactionCustomerPage",
+          finish: "http://tech-stop.herokuapp.com/",
         },
         expiry: {
           //start_time: new Date(Date.now()),
