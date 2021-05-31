@@ -4,3 +4,5 @@ coverage/
 .env.test
 package-lock.json
 yarn.lock
+/tests/koala.jpg
+/tests/transaction.test.js

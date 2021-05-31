@@ -379,7 +379,6 @@ class TransactionController {
             attributes: [
               "brand_service_name",
               "business_phone",
-              ,
               "business_address",
               "partner_logo",
             ],
@@ -465,7 +464,6 @@ class TransactionController {
             attributes: [
               "brand_service_name",
               "business_phone",
-              ,
               "business_address",
               "partner_logo",
             ],
@@ -551,7 +549,6 @@ class TransactionController {
             attributes: [
               "brand_service_name",
               "business_phone",
-              ,
               "business_address",
               "partner_logo",
             ],
@@ -627,7 +624,6 @@ class TransactionController {
             attributes: [
               "brand_service_name",
               "business_phone",
-              ,
               "business_address",
               "partner_logo",
             ],
@@ -772,7 +768,6 @@ class TransactionController {
             attributes: [
               "brand_service_name",
               "business_phone",
-              ,
               "business_address",
               "partner_logo",
             ],
@@ -846,7 +841,6 @@ class TransactionController {
             attributes: [
               "brand_service_name",
               "business_phone",
-              ,
               "business_address",
               "partner_logo",
             ],
