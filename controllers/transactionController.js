@@ -47,6 +47,7 @@ class TransactionController {
                 ["id", "id_partner"],
                 "brand_service_name",
                 "business_phone",
+                "business_address",
                 "partner_logo",
               ],
               include: [
@@ -113,6 +114,7 @@ class TransactionController {
                 ["id", "id_partner"],
                 "brand_service_name",
                 "business_phone",
+                "business_address",
                 "partner_logo",
               ],
               include: [
@@ -182,6 +184,7 @@ class TransactionController {
                 ["id", "id_partner"],
                 "brand_service_name",
                 "business_phone",
+                "business_address",
                 "partner_logo",
               ],
               include: [
@@ -248,6 +251,7 @@ class TransactionController {
                 ["id", "id_partner"],
                 "brand_service_name",
                 "business_phone",
+                "business_address",
                 "partner_logo",
               ],
               include: [
@@ -308,7 +312,18 @@ class TransactionController {
           },
           {
             model: partner,
-            attributes: ["brand_service_name", "business_phone"],
+            attributes: [
+              "brand_service_name",
+              "business_phone",
+              "business_address",
+              "partner_logo",
+            ],
+            include: [
+              {
+                model: category,
+                attributes: ["category_name"],
+              },
+            ],
           },
         ],
       });
@@ -361,7 +376,19 @@ class TransactionController {
           },
           {
             model: partner,
-            attributes: ["brand_service_name", "business_phone"],
+            attributes: [
+              "brand_service_name",
+              "business_phone",
+              ,
+              "business_address",
+              "partner_logo",
+            ],
+            include: [
+              {
+                model: category,
+                attributes: ["category_name"],
+              },
+            ],
           },
         ],
       });
@@ -426,19 +453,27 @@ class TransactionController {
           {
             model: user,
             attributes: [
-              ["id", "id_user"],
               "name",
               "phone_number",
               "city_or_regional",
               "postal_code",
+              "location",
             ],
           },
           {
             model: partner,
             attributes: [
-              ["id", "id_partner"],
               "brand_service_name",
               "business_phone",
+              ,
+              "business_address",
+              "partner_logo",
+            ],
+            include: [
+              {
+                model: category,
+                attributes: ["category_name"],
+              },
             ],
           },
         ],
@@ -504,19 +539,27 @@ class TransactionController {
           {
             model: user,
             attributes: [
-              ["id", "id_user"],
               "name",
               "phone_number",
               "city_or_regional",
               "postal_code",
+              "location",
             ],
           },
           {
             model: partner,
             attributes: [
-              ["id", "id_partner"],
               "brand_service_name",
               "business_phone",
+              ,
+              "business_address",
+              "partner_logo",
+            ],
+            include: [
+              {
+                model: category,
+                attributes: ["category_name"],
+              },
             ],
           },
         ],
@@ -572,19 +615,27 @@ class TransactionController {
           {
             model: user,
             attributes: [
-              ["id", "id_user"],
               "name",
               "phone_number",
               "city_or_regional",
               "postal_code",
+              "location",
             ],
           },
           {
             model: partner,
             attributes: [
-              ["id", "id_partner"],
               "brand_service_name",
               "business_phone",
+              ,
+              "business_address",
+              "partner_logo",
+            ],
+            include: [
+              {
+                model: category,
+                attributes: ["category_name"],
+              },
             ],
           },
         ],
@@ -709,19 +760,27 @@ class TransactionController {
           {
             model: user,
             attributes: [
-              ["id", "id_user"],
               "name",
               "phone_number",
               "city_or_regional",
               "postal_code",
+              "location",
             ],
           },
           {
             model: partner,
             attributes: [
-              ["id", "id_partner"],
               "brand_service_name",
               "business_phone",
+              ,
+              "business_address",
+              "partner_logo",
+            ],
+            include: [
+              {
+                model: category,
+                attributes: ["category_name"],
+              },
             ],
           },
         ],
@@ -775,19 +834,27 @@ class TransactionController {
           {
             model: user,
             attributes: [
-              ["id", "id_user"],
               "name",
               "phone_number",
               "city_or_regional",
               "postal_code",
+              "location",
             ],
           },
           {
             model: partner,
             attributes: [
-              ["id", "id_partner"],
               "brand_service_name",
               "business_phone",
+              ,
+              "business_address",
+              "partner_logo",
+            ],
+            include: [
+              {
+                model: category,
+                attributes: ["category_name"],
+              },
             ],
           },
         ],
