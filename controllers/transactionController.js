@@ -699,7 +699,7 @@ class TransactionController {
 
       let parameter = {
         transaction_details: {
-          order_id: `INV${req.params.id}`,
+          order_id: req.params.id,
           gross_amount: findTransaction.total_fee,
         },
         customer_details: {
