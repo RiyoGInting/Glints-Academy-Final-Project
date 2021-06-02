@@ -394,6 +394,45 @@ class PartnerController {
     }
   }
 
+  // async filterByRatings(req, res, next) {
+  //   try {
+  //     const { page } = req.query;
+  //     const limits = 12;
+  //     let data = await partner.findAndCountAll({
+  //       where: {
+  //         [Op.and]: [
+  //           {
+  //             avg_rating: req.query.avg_rating
+  //           },
+  //           {
+  //             verified_status: "verified",
+  //           },
+  //         ],
+  //       },
+  //       limit: limits,
+  //       offset: (parseInt(page) - 1) * limits,
+  //       attributes: [
+  //         "id",
+  //         "partner_logo",
+  //         "brand_service_name",
+  //         "service_fee",
+  //         "business_address",
+  //         "avg_rating",
+  //       ],
+  //     });
+
+  //     if (data.count == 0) {
+  //       return next({ message: "Data not found", statusCode: 404 });
+  //     }
+  //     return res.status(200).json({
+  //       message: "Success",
+  //       data,
+  //     });
+  //   } catch (e) {
+  //     return next(e);
+  //   }
+  // }
+
   // verify email partner
   async verifyEmailPartner(req, res, next) {
     try {

@@ -19,6 +19,7 @@ router.put(
   reviewController.updateReview
 );
 router.get("/partner/:id", reviewController.getAllByPartner);
+router.get("/filter/byRating", reviewController.filterReviewByRating);
 router.get("/user", auth.adminOrUser, reviewController.getAllByUser);
 router.get("/:id", reviewController.getOne);
 router.delete("/:id", reviewController.deleteReview);
