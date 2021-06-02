@@ -83,6 +83,7 @@ class TransactionController {
           // pagination
           limit: limits,
           offset: (parseInt(req.query.page) - 1) * limits,
+          order: [["updatedAt", "DESC"]],
           attributes: [
             "id",
             "createdAt",
@@ -220,6 +221,7 @@ class TransactionController {
           // pagination
           limit: limits,
           offset: (parseInt(req.query.page) - 1) * limits,
+          order: [["updatedAt", "DESC"]],
           attributes: [
             "id",
             "createdAt",
@@ -697,7 +699,7 @@ class TransactionController {
 
       let parameter = {
         transaction_details: {
-          order_id: req.params.id,
+          order_id: `INV${req.params.id}`,
           gross_amount: findTransaction.total_fee,
         },
         customer_details: {
