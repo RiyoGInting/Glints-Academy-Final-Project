@@ -21,6 +21,7 @@ router.get(
 );
 router.get("/searchByName", partnerController.searchByName);
 router.get("/filterByCategory", partnerController.filterByCategory);
+//router.get("/filterByRating", partnerController.filterByRatings);
 router.get("/searchByFilter", partnerController.searchByFilter);
 router.post(
   "/verifyEmailPartner",

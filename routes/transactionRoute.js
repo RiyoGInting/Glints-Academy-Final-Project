@@ -30,14 +30,8 @@ router
     transactionValidator.validator,
     transactionController.update
   );
-router
-  .route("/done/:id")
-  .post(auth.adminOrUser, transactionController.doneTransaction);
-router
-  .route("/accept/:id")
-  .post(transactionController.acceptTransaction);
-router
-  .route("/cancel/:id")
-  .put(transactionController.cancelTransaction);
+router.route("/accept/:id").post(transactionController.acceptTransaction);
+router.route("/cancel/:id").put(transactionController.cancelTransaction);
+router.route("/complete/:id").put(transactionController.completeTransaction);
 
 module.exports = router; // Export router

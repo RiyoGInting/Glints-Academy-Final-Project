@@ -157,6 +157,7 @@ passport.use(
           ktp_image: req.body.ktp_image,
           id_category: data.dataValues.id,
           category_name: req.body.category_name,
+          partner_logo: req.body.partner_logo,
         });
 
         return done(null, partnerSignUp, {
