@@ -1,11 +1,11 @@
-// // const request = require("supertest"); // Import supertest
-// // const app = require("../index"); // Import app
-// // const { user } = require("../models"); // Import user and transaksi models
-// // let token;
+const request = require("supertest"); // Import supertest
+const app = require("../index"); // Import app
+const { user } = require("../models"); // Import user and transaksi models
+let token;
 
-// // beforeAll(async () => {
-// //   await user.destroy({ where: {}, force: true });
-// // });
+beforeAll(async () => {
+  await user.destroy({ where: {}, force: true });
+});
 
 // auth test
 describe("Auth Test", () => {
