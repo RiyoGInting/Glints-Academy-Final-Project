@@ -6,4 +6,5 @@ coverage/
 package-lock.json
 yarn.lock
 /tests/koala.jpg
+/tests/q.jpg
 /tests/transaction.test.js
