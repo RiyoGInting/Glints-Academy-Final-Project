@@ -57,26 +57,26 @@ module.exports = reviewTest = () => {
   async function register() {
     const reg = await request(app).post("/auth/signup").send(userReg);
   }
-  // async function partnerRegister() {
-  //   const partReg = await request(app)
-  //     .post("/auth/signup/partner")
-  //     .field({
-  //       name: "Ebit",
-  //       email: "ebit@gmails.com",
-  //       password: "Test123.",
-  //       confirmPassword: "Test123.",
-  //       brand_service_name: "Ebit hardware",
-  //       phone_number: "+6212344501",
-  //       business_phone: "+62123344501",
-  //       business_address: "Jakarta Barat Selatan",
-  //       category_name: "Computer",
-  //       service_fee: "75100",
-  //       ktp_address: "jln. mangga kel buah kec kebun jakarta barat",
-  //       owner_address: "jln. mangga kel buah kec kebun jakarta barat",
-  //     })
-  //     .attach("ktp_image", "tests/q.jpg")
-  //     .attach("partner_logo", "tests/q.jpg");
-  // }
+  async function partnerRegister() {
+    const partReg = await request(app)
+      .post("/auth/signup/partner")
+      .field({
+        name: "Ebit",
+        email: "ebits@gmail.com",
+        password: "Test123.",
+        confirmPassword: "Test123.",
+        brand_service_name: "Ebit hardware",
+        phone_number: "+6212174501",
+        business_phone: "+6212174501",
+        business_address: "Jakarta Barat Selatan",
+        category_name: "Computer",
+        service_fee: "75900",
+        ktp_address: "jln. mangga kel buah kec kebun jakarta barat",
+        owner_address: "jln. mangga kel buah kec kebun jakarta barat",
+      })
+      .attach("ktp_image", "tests/q.jpg")
+      .attach("partner_logo", "tests/q.jpg");
+  }
   async function login() {
     const resp = await request(app).post("/auth/signin").send(userData);
     return (token = resp.body.token);
@@ -121,7 +121,7 @@ module.exports = reviewTest = () => {
   describe("Create Review Test", () => {
     describe("POST /review/create?id_transaction ", () => {
       it("It should create a review", async () => {
-        // await partnerRegister();
+        await partnerRegister();
         const id = await partnerLogin();
         partner_obj = jwt.decode(id);
         partner_id = partner_obj.partner.id;
@@ -133,23 +133,12 @@ module.exports = reviewTest = () => {
         expect(res.statusCode).toEqual(201);
         expect(res.body.message).toEqual("Success");
       });
-    });
-  });
-  //Create Review Error 400 (duplicate review)
-  describe("Create Review Test", () => {
-    describe("POST /review/create?id_transaction ", () => {
-      it("It should Error", async () => {
+      it("It should Error 400 alredy reviewed", async () => {
         const res = await createReview(id_transaction);
         expect(res.statusCode).toEqual(400);
         expect(res.body.message).toEqual("You have reviewed this transaction");
       });
-    });
-  });
-
-  //Create Review Error 400 (invalid rating)
-  describe("Create Review Test", () => {
-    describe("POST /review/create?id_transaction ", () => {
-      it("It should Error", async () => {
+      it("It should Error 400 invalid rating range inpu", async () => {
         await nullifyData();
         const res = await request(app)
           .post(`/review/create?id_transaction=${id_transaction}`)
@@ -163,12 +152,7 @@ module.exports = reviewTest = () => {
           "Please insert a number between 0 - 5"
         );
       });
-    });
-  });
-  //Create Review Error 400 (invalid rating for non number)
-  describe("Create Review Test", () => {
-    describe("POST /review/create?id_transaction ", () => {
-      it("It should Error", async () => {
+      it("It should Error 400 invalid rating input", async () => {
         await nullifyData();
         const res = await request(app)
           .post(`/review/create?id_transaction=${id_transaction}`)
@@ -198,11 +182,6 @@ module.exports = reviewTest = () => {
         expect(res.body).toBeInstanceOf(Object);
         expect(res.body.message).toEqual("Success");
       });
-    });
-  });
-  // Get one review test data not found
-  describe("Get One Test", () => {
-    describe("GET /review/:review_id ", () => {
       it("It should error data not found ", async () => {
         await nullifyData();
         id_review = 1;
@@ -215,6 +194,7 @@ module.exports = reviewTest = () => {
       });
     });
   });
+  ////=======get ALL Test========================////////
   // Get All review by user test(Error data not found)
   describe("Get All Test", () => {
     describe("GET /review/user ", () => {
@@ -227,11 +207,6 @@ module.exports = reviewTest = () => {
         expect(res.body).toBeInstanceOf(Object);
         expect(res.body.message).toEqual("Data not found");
       });
-    });
-  });
-  // Get All review by user test
-  describe("Get All Test", () => {
-    describe("GET /review/user ", () => {
       it("It should get All review from an user", async () => {
         await nullifyData();
         await createReview(id_transaction);
@@ -260,11 +235,6 @@ module.exports = reviewTest = () => {
         expect(res.body).toBeInstanceOf(Object);
         expect(res.body.message).toEqual("Data not found");
       });
-    });
-  });
-  // Get All review by partner test
-  describe("Get All Test", () => {
-    describe("GET /review/partner/:partner_id ", () => {
       it("It should get All review from a partner", async () => {
         await makeTransaction(token, partner_id);
         await makeTransaction(token, partner_id);
@@ -291,25 +261,14 @@ module.exports = reviewTest = () => {
         expect(res.body).toBeInstanceOf(Object);
         expect(res.body.message).toEqual("Success");
       });
-    });
-  });
-  // Update review test (invalid review ID)
-  describe("Update Review Test", () => {
-    describe("PUT /review/update/:review_id ", () => {
-      it("It should Error", async () => {
+      it("It should Error ID not found", async () => {
         const bad_id_review = 10101010;
         res = await updateReview(bad_id_review);
         expect(res.statusCode).toEqual(404);
         expect(res.body).toBeInstanceOf(Object);
         expect(res.body.message).toEqual("Review ID not found");
       });
-    });
-  });
-
-  // Update review test (invalid rating for non number)
-  describe("Update Review Test", () => {
-    describe("PUT /review/update/:review_id ", () => {
-      it("It should Error", async () => {
+      it("It should Error invalid rating", async () => {
         const id_review = created.body.data.id;
         const res = await request(app)
           .put(`/review/update/${id_review}`)
@@ -319,12 +278,7 @@ module.exports = reviewTest = () => {
         expect(res.body).toBeInstanceOf(Object);
         expect(res.body.message).toEqual("Please insert a valid number");
       });
-    });
-  });
-  // Update review test (invalid rating for ,<0 or >5)
-  describe("Update Review Test", () => {
-    describe("PUT /review/update/:review_id ", () => {
-      it("It should Error ", async () => {
+      it("It should Error invalid range rating", async () => {
         const id_review = created.body.data.id;
         const res = await request(app)
           .put(`/review/update/${id_review}`)
@@ -336,12 +290,7 @@ module.exports = reviewTest = () => {
           "Please insert a number between 0 - 5"
         );
       });
-    });
-  });
-  // Update review test (empty review)
-  describe("Update Review Test", () => {
-    describe("PUT /review/update/:review_id ", () => {
-      it("It should Error ", async () => {
+      it("It should Error empty review", async () => {
         const id_review = created.body.data.id;
         const res = await request(app)
           .put(`/review/update/${id_review}`)
@@ -351,11 +300,6 @@ module.exports = reviewTest = () => {
         expect(res.body).toBeInstanceOf(Object);
         expect(res.body.message).toEqual("Review cannot be empty");
       });
-    });
-  });
-  // Update review test (empty review and invalid number rating)
-  describe("Update Review Test", () => {
-    describe("PUT /review/update/:review_id ", () => {
       it("It should Error ", async () => {
         const id_review = created.body.data.id;
         const res = await request(app)
@@ -383,11 +327,6 @@ module.exports = reviewTest = () => {
         expect(res.body).toBeInstanceOf(Object);
         expect(res.body.message).toEqual("Success");
       });
-    });
-  });
-  // Delete review test (data not found)
-  describe("Delete Review Test", () => {
-    describe("Delete /review/:review_id ", () => {
       it("It should error 404  ", async () => {
         const id_review = created.body.data.id;
         res = await request(app)
@@ -399,11 +338,11 @@ module.exports = reviewTest = () => {
       });
     });
   });
-  ////=======Review averageRating Test================////////////////////////////////
-  // Get average rating test data not found
+  ////=======Review by Rating Test================////////////////////////////////
+  // Get all review by rating test success
   describe("Get review by rating", () => {
     describe("GET /review/filter/byRating ", () => {
-      it("It should get rating and star's details  ", async () => {
+      it("It should get all review by rating  ", async () => {
         await nullifyData();
         await createReview(id_transaction);
         await makeTransaction(token, partner_id);
@@ -425,7 +364,15 @@ module.exports = reviewTest = () => {
         expect(res.statusCode).toEqual(200);
         expect(res.body).toBeInstanceOf(Object);
         expect(res.body.message).toEqual("Success");
-        expect(res.body).toHaveProperty('filterdata')
+        expect(res.body).toHaveProperty("filterdata");
+      });
+      it("It should error not found  ", async () => {
+        res = await request(app).get(
+          `/review/filter/byRating?id_partner=${0}&rating=${5}`
+        );
+        expect(res.statusCode).toEqual(404);
+        expect(res.body).toBeInstanceOf(Object);
+        expect(res.body.message).toEqual("Data not found");
       });
     });
   });
