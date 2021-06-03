@@ -3,7 +3,6 @@ module.exports = reviewTest = () => {
   const app = require("../index"); // Import app
   const { user, review, transaction } = require("../models"); // Import user and transaksi models
   const jwt = require("jsonwebtoken");
-  const path = require("path");
   let id_transaction;
   let token;
   let partnerToken;
