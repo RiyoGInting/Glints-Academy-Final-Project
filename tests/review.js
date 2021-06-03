@@ -85,7 +85,8 @@ module.exports = reviewTest = () => {
     const resp = await request(app)
       .post("/auth/signin/partner")
       .send(partnerData);
-    return (partnerToken = resp.body.token);
+    const partnerToken = resp.body.token;
+    return partnerToken;
   }
   const nullifyData = async () => {
     await review.destroy({ where: {}, force: true });
@@ -113,7 +114,6 @@ module.exports = reviewTest = () => {
         id_partner: partner_id,
       })
       .set({ Authorization: `Bearer ${token}` });
-    // console.log(transData);
     return (id_transaction = trans.body.data.id);
   }
   ////=======Create Review TEST================////////
@@ -123,8 +123,7 @@ module.exports = reviewTest = () => {
       it("It should create a review", async () => {
         await partnerRegister();
         const id = await partnerLogin();
-        partner_obj = jwt.decode(id);
-        partner_id = partner_obj.partner.id;
+        partner_id = jwt.decode(id).partner.id;
         await register();
         token = await login();
         await makeTransaction(token, partner_id);

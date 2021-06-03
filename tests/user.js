@@ -3,6 +3,7 @@ module.exports = userTest = () => {
   const app = require("../index"); // Import app
   const { user } = require("../models"); // Import user and transaksi models
   let token;
+  const jwt = require("jsonwebtoken");
 
   beforeAll(async () => {
     await user.destroy({ where: {}, force: true });
@@ -90,19 +91,18 @@ module.exports = userTest = () => {
   });
 
   // user test
-  // describe("User Test", () => {
-  //   // describe("/user/", () => {
-  //     it("It should get one user", async () => {
-  //       const res = await request(app)
-  //         .get("/user/1")
-  //         .set("Authorization", `bearer ${token}`)
-  //         .send({});
-
-  //       expect(res.statusCode).toEqual(200);
-  //       expect(res.body).toBeInstanceOf(Object);
-  //       expect(res.body.message).toEqual("Success");
-  //       expect(res.body).toHaveProperty("data");
-  //     });
-  //   // });
-  // });
+  describe("User Test", () => {
+    describe("/user/", () => {
+      it("It should get one user", async () => {
+        const id_user = (jwt.decode(token)).user.id;
+        const res = await request(app)
+          .get(`/user/${id_user}`)
+          .set("Authorization", `bearer ${token}`);
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toBeInstanceOf(Object);
+        expect(res.body.message).toEqual("Success");
+        expect(res.body).toHaveProperty("data");
+      });
+    });
+  });
 };
