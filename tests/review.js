@@ -21,7 +21,7 @@ module.exports = reviewTest = () => {
     password: "Test1234.",
   };
   const partnerData = {
-    email: "ebit@gmails.com",
+    email: "ebits@gmail.com",
     password: "Test123.",
   };
   const userReg = {
@@ -32,20 +32,6 @@ module.exports = reviewTest = () => {
     phone_number: "+625243534310",
     city_or_regional: "Jakarta",
     postal_code: "43922",
-  };
-  const partnerReg = {
-    name: "Ebit",
-    email: "ebit@gmails.com",
-    password: "Test123.",
-    confirmPassword: "Test123.",
-    brand_service_name: "Ebit hardware",
-    phone_number: "+6212344501",
-    business_phone: "+62123344501",
-    business_address: "Jakarta Barat Selatan",
-    category_name: "Computer",
-    service_fee: "75000",
-    ktp_address: "jln. mangga kel buah kec kebun jakarta barat",
-    owner_address: "jln. mangga kel buah kec kebun jakarta barat",
   };
   const transData = {
     // id_partner: partner_id,
