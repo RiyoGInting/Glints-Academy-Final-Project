@@ -148,6 +148,7 @@ class ReviewController {
                 attributes: [
                   ["id", "userID"],
                   ["name", "userName"],
+                  "photo_profile",
                 ],
               },
               {
@@ -155,6 +156,7 @@ class ReviewController {
                 attributes: [
                   ["id", "partnerID"],
                   ["name", "partnerName"],
+                  "partner_logo",
                   "avg_rating",
                 ],
               },
@@ -189,6 +191,7 @@ class ReviewController {
                 attributes: [
                   ["id", "userID"],
                   ["name", "userName"],
+                  "photo_profile",
                 ],
               },
               {
@@ -196,6 +199,7 @@ class ReviewController {
                 attributes: [
                   ["id", "partnerID"],
                   ["name", "partnerName"],
+                  "partner_logo",
                   "avg_rating",
                 ],
               },
@@ -237,6 +241,7 @@ class ReviewController {
                 attributes: [
                   ["id", "userID"],
                   ["name", "userName"],
+                  "photo_profile",
                 ],
               },
               {
@@ -244,6 +249,7 @@ class ReviewController {
                 attributes: [
                   ["id", "partnerID"],
                   ["name", "partnerName"],
+                  "partner_logo",
                   "avg_rating",
                 ],
               },
@@ -286,6 +292,7 @@ class ReviewController {
                 attributes: [
                   ["id", "userID"],
                   ["name", "userName"],
+                  "photo_profile",
                 ],
               },
               {
@@ -293,6 +300,7 @@ class ReviewController {
                 attributes: [
                   ["id", "partnerID"],
                   ["name", "partnerName"],
+                  "partner_logo",
                   "avg_rating",
                 ],
               },
