@@ -257,11 +257,7 @@ class ReviewController {
           resultData.push(data[i]);
         }
       }
-<<<<<<< HEAD
-      if (resultData <= 0) {
-=======
       if (resultData.length === 0) {
->>>>>>> 0ea847316fa59a4f9819531df38aa4a2d3b9c6b8
         return res.status(404).json({
           message: "Data not found",
         });
