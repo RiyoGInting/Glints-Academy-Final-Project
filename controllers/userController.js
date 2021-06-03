@@ -44,7 +44,6 @@ class UserController {
         attributes: [
           "id",
           "name",
-          "photo_profile",
           "email",
           "phone_number",
           "city_or_regional",
