@@ -33,7 +33,7 @@ test:
     - npm run test
   # Defines the names of branches and tags the job runs for
   only:
-    - master
+    - ebit
 
 # Deploy job
 deploy:
