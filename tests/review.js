@@ -1,14 +1,14 @@
 module.exports = reviewTest = () => {
   const request = require("supertest"); // Import supertest
   const app = require("../index"); // Import app
-  const { user, review } = require("../models"); // Import user and transaksi models
+  const { user, review, transaction } = require("../models"); // Import user and transaksi models
   const jwt = require("jsonwebtoken");
   const path = require("path");
   let id_transaction;
   let token;
   let partnerToken;
   let id_review;
-  let id_partner;
+  let partner_id;
   const reviewData = {
     rating: "3",
     review: "There are 186,860 articles on the Create TEST Wikipedia.",
@@ -49,7 +49,7 @@ module.exports = reviewTest = () => {
     owner_address: "jln. mangga kel buah kec kebun jakarta barat",
   };
   const transData = {
-    id_partner: id_partner,
+    // id_partner: partner_id,
     appointment_date: "02-02-2021",
     appointment_address: "jl.jalan",
     total_item: "3",
@@ -93,7 +93,7 @@ module.exports = reviewTest = () => {
   const createReview = async (id_transaction) => {
     const res = await request(app)
       .post(`/review/create?id_transaction=${id_transaction}`)
-      .send(reviewData).send()
+      .send(reviewData)
       .set({ Authorization: `Bearer ${token}` });
     return res;
   };
@@ -104,13 +104,15 @@ module.exports = reviewTest = () => {
       .set({ Authorization: `Bearer ${token}` });
     return res;
   };
-  async function makeTransaction(token) {
+  async function makeTransaction(token, partner_id) {
     // const token = await login();
     const trans = await request(app)
       .post("/transaction")
       .send(transData)
+      .send({
+        id_partner: partner_id,
+      })
       .set({ Authorization: `Bearer ${token}` });
-    console.log(trans.body)
     // console.log(transData);
     return (id_transaction = trans.body.data.id);
   }
@@ -121,10 +123,11 @@ module.exports = reviewTest = () => {
       it("It should create a review", async () => {
         // await partnerRegister();
         const id = await partnerLogin();
-        id_partner = jwt.decode(id);
+        partner_obj = jwt.decode(id);
+        partner_id = partner_obj.partner.id;
         await register();
         token = await login();
-        await makeTransaction(token);
+        await makeTransaction(token, partner_id);
         await nullifyData();
         const res = await createReview(id_transaction);
         expect(res.statusCode).toEqual(201);
@@ -137,7 +140,6 @@ module.exports = reviewTest = () => {
     describe("POST /review/create?id_transaction ", () => {
       it("It should Error", async () => {
         const res = await createReview(id_transaction);
-        console.log(token);
         expect(res.statusCode).toEqual(400);
         expect(res.body.message).toEqual("You have reviewed this transaction");
       });
@@ -233,7 +235,7 @@ module.exports = reviewTest = () => {
       it("It should get All review from an user", async () => {
         await nullifyData();
         await createReview(id_transaction);
-        await makeTransaction(token);
+        await makeTransaction(token, partner_id);
         await createReview(id_transaction);
         const res = await request(app)
           .get(`/review/user`)
@@ -264,10 +266,10 @@ module.exports = reviewTest = () => {
   describe("Get All Test", () => {
     describe("GET /review/partner/:partner_id ", () => {
       it("It should get All review from a partner", async () => {
-        await makeTransaction(token);
-        await makeTransaction(token);
+        await makeTransaction(token, partner_id);
+        await makeTransaction(token, partner_id);
         res = await request(app)
-          .get(`/review/partner/${id_partner}`)
+          .get(`/review/partner/${partner_id}`)
           .set({ Authorization: `Bearer ${partnerToken}` });
         expect(res.statusCode).toEqual(200);
         expect(res.body.resultData.length).toBeGreaterThan(1);
@@ -399,17 +401,31 @@ module.exports = reviewTest = () => {
   });
   ////=======Review averageRating Test================////////////////////////////////
   // Get average rating test data not found
-  describe("Get average rating", () => {
-    describe("GET /review/:review_id ", () => {
+  describe("Get review by rating", () => {
+    describe("GET /review/filter/byRating ", () => {
       it("It should get rating and star's details  ", async () => {
         await nullifyData();
+        await createReview(id_transaction);
+        await makeTransaction(token, partner_id);
         const created = await createReview(id_transaction);
-        const id_partner = created.body.data.transaction.id_partner;
-        res = await request(app).get(`/review/averageRating/${id_partner}`);
+        await makeTransaction(token, partner_id);
+        await request(app)
+          .post(`/review/create?id_transaction=${id_transaction}`)
+          .send({
+            rating: "4",
+            review: "There are 186,860 articles on the Create TEST Wikipedia.",
+          })
+          .set({ Authorization: `Bearer ${token}` });
+
+        const created_partner_id = created.body.data.transaction.id_partner;
+        const createdRating = created.body.data.rating;
+        res = await request(app).get(
+          `/review/filter/byRating?id_partner=${created_partner_id}&rating=${createdRating}`
+        );
         expect(res.statusCode).toEqual(200);
         expect(res.body).toBeInstanceOf(Object);
-        expect(typeof parseInt(res.body.averageRating)).toBe("number");
         expect(res.body.message).toEqual("Success");
+        expect(res.body).toHaveProperty('filterdata')
       });
     });
   });
