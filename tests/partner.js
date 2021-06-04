@@ -1,3 +1,5 @@
+const e = require("express");
+
 module.exports = partnerTest = () => {
   const request = require("supertest"); // Import supertest
   const app = require("../index"); // Import app
@@ -88,6 +90,54 @@ module.exports = partnerTest = () => {
         expect(res.body.message).toEqual("Status udpdated");
         expect(res.body).toHaveProperty("data");
       });
+
+      it("It should update partner logo", async () => {
+        const res = await request(app)
+          .put(`/partner/updateLogoPartner/`)
+          .set("Authorization", `bearer ${tokenPartner}`)
+          .attach("partner_logo", "tests/q.jpg");
+
+        expect(res.statusCode).toEqual(201);
+        expect(res.body).toBeInstanceOf(Object);
+        expect(res.body.message).toEqual("Status udpdated");
+        expect(res.body).toHaveProperty("data");
+      });
+
+      // it("It should update partner service", async () => {
+      //   const res = await request(app)
+      //     .put(`/partner/updateService`)
+      //     .set("Authorization", `bearer ${tokenPartner}`)
+      //     .send({
+      //       category_name: "Automotive",
+      //       brand_service_name: "Service Computer",
+      //       service_fee: 800000,
+      //       service_description: "Service Description",
+      //       business_address: "jalan business address",
+      //       business_phone: "+6285731853324",
+      //     });
+
+      //   expect(res.statusCode).toEqual(201);
+      //   expect(res.body).toBeInstanceOf(Object);
+      //   expect(res.body.message).toEqual("Success");
+      //   expect(res.body).toHaveProperty("dataUpdate");
+      // });
+
+      it("It should update partner profile", async () => {
+        const res = await request(app)
+          .put(`/partner/updateProfile`)
+          .set("Authorization", `bearer ${tokenPartner}`)
+          .send({
+            name: "name partner",
+            phone_number: "+6285731853324",
+            ktp_address: "ktp_address",
+            owner_address: "owner_address",
+          });
+
+        expect(res.statusCode).toEqual(201);
+        expect(res.body).toBeInstanceOf(Object);
+        expect(res.body.message).toEqual("Success");
+        expect(res.body).toHaveProperty("data");
+      });
     });
 
     describe("/partner GET", () => {
@@ -115,6 +165,36 @@ module.exports = partnerTest = () => {
         const res = await request(app)
           .get(`/partner/getPartner`)
           .set("Authorization", `bearer ${tokenPartner}`);
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toBeInstanceOf(Object);
+        expect(res.body.message).toEqual("Success");
+        expect(res.body).toHaveProperty("data");
+      });
+
+      it("It should get all partner by search name", async () => {
+        const res = await request(app).get(
+          `/partner/searchByName?brand_service_name=service&page=1`
+        );
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toBeInstanceOf(Object);
+        expect(res.body.message).toEqual("Success");
+        expect(res.body).toHaveProperty("data");
+      });
+
+      it("It should get all partner by category", async () => {
+        const res = await request(app).get(
+          `/partner/filterByCategory?id_category=2&page=1`
+        );
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toBeInstanceOf(Object);
+        expect(res.body.message).toEqual("Success");
+        expect(res.body).toHaveProperty("data");
+      });
+
+      it("It should get all partner by filter", async () => {
+        const res = await request(app).get(
+          `/partner/searchByFilter?page=1&min_price=&max_price=&min_rating=&max_rating=4&business_address=jalan`
+        );
         expect(res.statusCode).toEqual(200);
         expect(res.body).toBeInstanceOf(Object);
         expect(res.body.message).toEqual("Success");
