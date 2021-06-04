@@ -229,7 +229,7 @@ class ReviewController {
   async getAllByPartner(req, res, next) {
     try {
       let data = await review.findAll({
-        // where: { id: req.params.id }, //req.user.id
+        // where: { deletedAt: null }, //req.user.id
         attributes: { exclude: ["updatedAt", "deletedAt"] },
         include: [
           {
@@ -257,12 +257,14 @@ class ReviewController {
           },
         ],
       });
+      // console.log(data[0].transaction);
       const resultData = [];
       for (let i = 0; i < data.length; i++) {
         if (data[i].transaction.id_partner == req.params.id) {
           resultData.push(data[i]);
         }
       }
+      // resultData.push(req.params.id);
       if (resultData.length === 0) {
         return res.status(404).json({
           message: "Data not found",

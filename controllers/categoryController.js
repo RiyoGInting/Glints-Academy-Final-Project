@@ -59,7 +59,7 @@ class CategoryController {
 
       // If success
       return res.status(201).json({
-        message: "Status udpdated",
+        message: "Status updated",
         data,
       });
     } catch (e) {

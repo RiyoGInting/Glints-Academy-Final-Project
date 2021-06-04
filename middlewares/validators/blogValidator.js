@@ -44,7 +44,7 @@ module.exports.create = async (req, res, next) => {
 
     // If errors length > 0, it will make errors message
     if (!findData) {
-      errors.push("Data not found")
+      errors.push("User not found")
     }
 
     req.body.directory = "blog";
@@ -77,11 +77,6 @@ module.exports.update = async (req, res, next) => {
     // If user not found
     if (!findData[0]) {
       errors.push("User not found");
-    }
-
-    // If transaksi not found
-    if (!findData[1]) {
-      errors.push("Article not found");
     }
 
     // If errors length > 0, it will make errors message
