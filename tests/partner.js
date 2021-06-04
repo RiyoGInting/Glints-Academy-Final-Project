@@ -171,35 +171,35 @@ module.exports = partnerTest = () => {
         expect(res.body).toHaveProperty("data");
       });
 
-      it("It should get all partner by search name", async () => {
-        const res = await request(app).get(
-          `/partner/searchByName?brand_service_name=service&page=1`
-        );
-        expect(res.statusCode).toEqual(200);
-        expect(res.body).toBeInstanceOf(Object);
-        expect(res.body.message).toEqual("Success");
-        expect(res.body).toHaveProperty("data");
-      });
+      // it("It should get all partner by search name", async () => {
+      //   const res = await request(app).get(
+      //     `/partner/searchByName?brand_service_name=service&page=1`
+      //   );
+      //   expect(res.statusCode).toEqual(200);
+      //   expect(res.body).toBeInstanceOf(Object);
+      //   expect(res.body.message).toEqual("Success");
+      //   expect(res.body).toHaveProperty("data");
+      // });
 
-      it("It should get all partner by category", async () => {
-        const res = await request(app).get(
-          `/partner/filterByCategory?id_category=2&page=1`
-        );
-        expect(res.statusCode).toEqual(200);
-        expect(res.body).toBeInstanceOf(Object);
-        expect(res.body.message).toEqual("Success");
-        expect(res.body).toHaveProperty("data");
-      });
+      // it("It should get all partner by category", async () => {
+      //   const res = await request(app).get(
+      //     `/partner/filterByCategory?id_category=2&page=1`
+      //   );
+      //   expect(res.statusCode).toEqual(200);
+      //   expect(res.body).toBeInstanceOf(Object);
+      //   expect(res.body.message).toEqual("Success");
+      //   expect(res.body).toHaveProperty("data");
+      // });
 
-      it("It should get all partner by filter", async () => {
-        const res = await request(app).get(
-          `/partner/searchByFilter?page=1&min_price=&max_price=&min_rating=&max_rating=4&business_address=jalan`
-        );
-        expect(res.statusCode).toEqual(200);
-        expect(res.body).toBeInstanceOf(Object);
-        expect(res.body.message).toEqual("Success");
-        expect(res.body).toHaveProperty("data");
-      });
+      // it("It should get all partner by filter", async () => {
+      //   const res = await request(app).get(
+      //     `/partner/searchByFilter?page=1&min_price=&max_price=&min_rating=&max_rating=4&business_address=jalan`
+      //   );
+      //   expect(res.statusCode).toEqual(200);
+      //   expect(res.body).toBeInstanceOf(Object);
+      //   expect(res.body.message).toEqual("Success");
+      //   expect(res.body).toHaveProperty("data");
+      // });
     });
   });
 };
