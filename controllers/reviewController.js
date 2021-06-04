@@ -264,7 +264,7 @@ class ReviewController {
       //     resultData.push(data[i]);
       //   }
       // }
-      resultData.push(data[0].transaction);
+      resultData.push(data[0].transaction.id_partner);
       if (resultData.length === 0) {
         return res.status(404).json({
           message: "Data not found",
