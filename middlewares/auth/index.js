@@ -232,6 +232,7 @@ passport.use(
       } catch (e) {
         return done(null, false, {
           message: "User Partner can't sign in catch",
+          e,
         });
       }
     }
