@@ -1,5 +1,5 @@
 const validator = require("validator");
-const { review } = require("../../models");
+const { review, partner } = require("../../models");
 
 exports.create = async (req, res, next) => {
   try {
@@ -68,9 +68,21 @@ exports.update = async (req, res, next) => {
     }
     next();
   } catch (error) {
-    return res.status(500).json({
-      message: "Internal Server Error",
-      error,
+    return next(error);
+  }
+};
+exports.get = async (req, res, next) => {
+  try {
+    const check = await partner.findOne({
+      where: { id: req.params.id },
     });
+    if (!check) {
+      return res.status(404).json({
+        message: "Partner Not Found",
+      });
+    }
+    next();
+  } catch (error) {
+    return next(error);
   }
 };

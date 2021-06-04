@@ -18,7 +18,11 @@ router.put(
   reviewValidator.update,
   reviewController.updateReview
 );
-router.get("/partner/:id", reviewController.getAllByPartner);
+router.get(
+  "/partner/:id",
+  reviewValidator.get,
+  reviewController.getAllByPartner
+);
 router.get("/filter/byRating", reviewController.filterReviewByRating);
 router.get("/user", auth.adminOrUser, reviewController.getAllByUser);
 router.get("/:id", reviewController.getOne);
