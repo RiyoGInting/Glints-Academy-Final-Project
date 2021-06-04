@@ -77,6 +77,7 @@ describe("Category Test", ()=> {
 
       // Update category - success
       it("update category - success", async () => {
+        id_user = jwt.decode(token).user.id;
         const res = await request(app)
           .put(`/category/${id_category.id}`)
           .set("Authorization", `bearer ${token}`)
@@ -91,6 +92,7 @@ describe("Category Test", ()=> {
 
       // Update category - file must be an image
       it("update category - internal server error", async () => {
+        id_user = jwt.decode(token).user.id;
         const res = await request(app)
           .put(`/category/${idTransaction.id}`)
           .set("Authorization", `bearer ${token}`)
@@ -105,6 +107,7 @@ describe("Category Test", ()=> {
 
       // Update category - file must be less than 1 MB
       it("update category - internal server error", async () => {
+        id_user = jwt.decode(token).user.id;
         const res = await request(app)
           .put(`/category/${idTransaction.id}`)
           .set("Authorization", `bearer ${token}`)
