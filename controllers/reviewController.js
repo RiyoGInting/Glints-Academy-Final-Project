@@ -229,7 +229,7 @@ class ReviewController {
   async getAllByPartner(req, res, next) {
     try {
       let data = await review.findAll({
-        where: { deletedAt: null }, //req.user.id
+        // where: { deletedAt: null }, //req.user.id
         attributes: { exclude: ["updatedAt", "deletedAt"] },
         include: [
           {
@@ -261,7 +261,7 @@ class ReviewController {
       const resultData = [];
       for (let i = 0; i < data.length; i++) {
         if (data[i]) {
-          resultData.push(data[i].transaction.id_partner);
+          resultData.push(data[i].transaction);
         }
       }
       resultData.push(req.params.id);
