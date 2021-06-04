@@ -261,7 +261,7 @@ class ReviewController {
       const resultData = [];
       for (let i = 0; i < data.length; i++) {
         if (data) {
-          resultData.push(data[i]);
+          resultData.push(data[i].transaction);
         }
       }
       resultData.push(req.params.id);
