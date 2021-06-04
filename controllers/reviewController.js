@@ -259,7 +259,7 @@ class ReviewController {
       });
       const resultData = [];
       for (let i = 0; i < data.length; i++) {
-        if (data[i].transaction.id_partner == req.query.id_partner) {
+        if (data[i].transaction.id_partner == req.params.id) {
           resultData.push(data[i]);
         }
       }
