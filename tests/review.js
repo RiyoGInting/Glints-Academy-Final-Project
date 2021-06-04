@@ -61,7 +61,7 @@ module.exports = reviewTest = () => {
       })
       .attach("ktp_image", "tests/q.jpg")
       .attach("partner_logo", "tests/q.jpg");
-      console.log(partReg.body)
+    console.log(partReg.body);
   }
   async function login() {
     const resp = await request(app).post("/auth/signin").send(userData);
@@ -72,7 +72,7 @@ module.exports = reviewTest = () => {
       .post("/auth/signin/partner")
       .send(partnerData);
     const partnerToken = resp.body.token;
-    console.log(resp.body)
+    console.log(resp.body);
     return partnerToken;
   }
   const nullifyData = async () => {
@@ -110,7 +110,7 @@ module.exports = reviewTest = () => {
       it("It should create a review", async () => {
         await partnerRegister();
         const id = await partnerLogin();
-        partner_id = (jwt.decode(id)).partner.id;
+        partner_id = jwt.decode(id).partner.id;
         await register();
         token = await login();
         await makeTransaction(token, partner_id);
@@ -224,9 +224,8 @@ module.exports = reviewTest = () => {
       it("It should get All review from a partner", async () => {
         await makeTransaction(token, partner_id);
         await makeTransaction(token, partner_id);
-        res = await request(app)
-          .get(`/review/partner/${partner_id}`)
-          .set({ Authorization: `Bearer ${partnerToken}` });
+        res = await request(app).get(`/review/partner/${partner_id}`);
+        // .set({ Authorization: `Bearer ${partnerToken}` });
         expect(res.statusCode).toEqual(200);
         expect(res.body.resultData.length).toBeGreaterThan(1);
         expect(res.body).toBeInstanceOf(Object);
