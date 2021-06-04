@@ -259,12 +259,12 @@ class ReviewController {
       });
       console.log(data[0].transaction);
       const resultData = [];
-      // for (let i = 0; i < data.length; i++) {
-      //   if (data[i].transaction.dataValues.id_partner == req.params.id) {
-      //     resultData.push(data[i]);
-      //   }
-      // }
-      resultData.push(data[0].transaction.id_partner);
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].transaction.dataValues.id_partner == req.params.id) {
+          resultData.push(data[i]);
+        }
+      }
+      resultData.push(req.params.id);
       if (resultData.length === 0) {
         return res.status(404).json({
           message: "Data not found",
