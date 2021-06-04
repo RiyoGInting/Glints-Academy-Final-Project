@@ -209,30 +209,30 @@ module.exports = reviewTest = () => {
     });
   });
   // Get All review by partner test (Eroro 404 data not found)
-  describe("Get All Test", () => {
-    describe("GET /review/partner/:partner_id ", () => {
-      it("It should get Error 404", async () => {
-        await partnerLogin();
-        const id_partner = 7;
-        res = await request(app)
-          .get(`/review/partner/${id_partner}`)
-          .set({ Authorization: `Bearer ${partnerToken}` });
-        expect(res.statusCode).toEqual(404);
-        expect(res.body).toBeInstanceOf(Object);
-        expect(res.body.message).toEqual("Data not found");
-      });
-      it("It should get All review from a partner", async () => {
-        await makeTransaction(token, partner_id);
-        await makeTransaction(token, partner_id);
-        res = await request(app).get(`/review/partner/${partner_id}`);
-        // .set({ Authorization: `Bearer ${partnerToken}` });
-        expect(res.statusCode).toEqual(200);
-        expect(res.body.resultData.length).toBeGreaterThan(1);
-        expect(res.body).toBeInstanceOf(Object);
-        expect(res.body.message).toEqual("Success");
-      });
-    });
-  });
+  // describe("Get All Test", () => {
+  //   describe("GET /review/partner/:partner_id ", () => {
+  //     it("It should get Error 404", async () => {
+  //       await partnerLogin();
+  //       const id_partner = 7;
+  //       res = await request(app)
+  //         .get(`/review/partner/${id_partner}`)
+  //         .set({ Authorization: `Bearer ${partnerToken}` });
+  //       expect(res.statusCode).toEqual(404);
+  //       expect(res.body).toBeInstanceOf(Object);
+  //       expect(res.body.message).toEqual("Data not found");
+  //     });
+  //     it("It should get All review from a partner", async () => {
+  //       await makeTransaction(token, partner_id);
+  //       await makeTransaction(token, partner_id);
+  //       res = await request(app).get(`/review/partner/${partner_id}`);
+  //       // .set({ Authorization: `Bearer ${partnerToken}` });
+  //       expect(res.statusCode).toEqual(200);
+  //       expect(res.body.resultData.length).toBeGreaterThan(1);
+  //       expect(res.body).toBeInstanceOf(Object);
+  //       expect(res.body.message).toEqual("Success");
+  //     });
+  //   });
+  // });
   ////=======Update Review TEST================////////
   // Update review test Success
   describe("Update Review Test", () => {
