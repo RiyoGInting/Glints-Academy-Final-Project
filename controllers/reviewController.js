@@ -276,7 +276,7 @@ class ReviewController {
     } catch (e) {
       return res.status(500).json({
         message: "Internal Server Error",
-        error: e,
+        error: data,
       });
       // return next(e);
     }
