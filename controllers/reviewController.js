@@ -257,7 +257,7 @@ class ReviewController {
           },
         ],
       });
-      console.log(data[0].transaction)
+      console.log(data[0].transaction);
       const resultData = [];
       for (let i = 0; i < data.length; i++) {
         if (data[i].transaction.dataValues.id_partner == req.params.id) {
@@ -276,8 +276,8 @@ class ReviewController {
     } catch (e) {
       return res.status(500).json({
         message: "Internal Server Error",
-        data,
-      })
+        error: e,
+      });
       // return next(e);
     }
   }
