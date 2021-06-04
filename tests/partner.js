@@ -100,6 +100,26 @@ module.exports = partnerTest = () => {
         expect(res.body.message).toEqual("Success");
         expect(res.body).toHaveProperty("data");
       });
+
+      it("It should get one partner verified", async () => {
+        const res = await request(app)
+          .get(`/partner/getOne/${id_partner}`)
+          .set("Authorization", `bearer ${token}`);
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toBeInstanceOf(Object);
+        expect(res.body.message).toEqual("Success");
+        expect(res.body).toHaveProperty("data");
+      });
+
+      it("It should get one partner verified profile", async () => {
+        const res = await request(app)
+          .get(`/partner/getPartner`)
+          .set("Authorization", `bearer ${tokenPartner}`);
+        expect(res.statusCode).toEqual(200);
+        expect(res.body).toBeInstanceOf(Object);
+        expect(res.body.message).toEqual("Success");
+        expect(res.body).toHaveProperty("data");
+      });
     });
   });
 };
