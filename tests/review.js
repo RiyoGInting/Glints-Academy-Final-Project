@@ -20,10 +20,6 @@ module.exports = reviewTest = () => {
     email: "stacks@mail.com",
     password: "Test1234.",
   };
-  const partnerData = {
-    email: "ebits@gmail.com",
-    password: "Test123.",
-  };
   const userReg = {
     name: "stacks",
     email: "stacks@mail.com",
@@ -42,6 +38,10 @@ module.exports = reviewTest = () => {
   async function register() {
     const reg = await request(app).post("/auth/signup").send(userReg);
   }
+  const partnerData = {
+    email: "ebits@gmail.com",
+    password: "Test123.",
+  };
   async function partnerRegister() {
     const partReg = await request(app)
       .post("/auth/signup/partner")
@@ -61,6 +61,7 @@ module.exports = reviewTest = () => {
       })
       .attach("ktp_image", "tests/q.jpg")
       .attach("partner_logo", "tests/q.jpg");
+      console.log(partReg.body)
   }
   async function login() {
     const resp = await request(app).post("/auth/signin").send(userData);
@@ -71,6 +72,7 @@ module.exports = reviewTest = () => {
       .post("/auth/signin/partner")
       .send(partnerData);
     const partnerToken = resp.body.token;
+    console.log(resp.body)
     return partnerToken;
   }
   const nullifyData = async () => {
@@ -108,7 +110,7 @@ module.exports = reviewTest = () => {
       it("It should create a review", async () => {
         await partnerRegister();
         const id = await partnerLogin();
-        partner_id = jwt.decode(id).partner.id;
+        partner_id = (jwt.decode(id)).partner.id;
         await register();
         token = await login();
         await makeTransaction(token, partner_id);

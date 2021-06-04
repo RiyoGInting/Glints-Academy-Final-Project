@@ -26,6 +26,7 @@ module.exports = blogTest = () => {
           postal_code: 12345,
           role: "admin",
         });
+        // console.log(res.body)
         expect(res.statusCode).toEqual(200);
         expect(res.body).toBeInstanceOf(Object);
         expect(res.body.message).toEqual("Success");
@@ -37,6 +38,16 @@ module.exports = blogTest = () => {
 
   describe("Blog Test", () => {
     describe("/blog/ GET", () => {
+      // Get All blogs -data not found
+      it("get all blogs - data not found", async () => {
+        const res = await request(app)
+          .get("/blog/")
+          .query({ limit: 3, page: 1 });
+        expect(res.statusCode).toEqual(404);
+        expect(res.body).toBeInstanceOf(Object);
+        expect(res.body.message).toEqual("No articles not found");
+      });
+
       // Create Blog - Success
       it("Create Blog - Success ", async () => {
         id_user = jwt.decode(token).user.id;
@@ -49,7 +60,7 @@ module.exports = blogTest = () => {
             article: "Narnia itu khayalan doang, bro.",
           })
           .attach("blog_image", "tests/q.jpg");
-        console.log(res.body);
+        // console.log(res.body);
         expect(res.statusCode).toEqual(201);
         expect(res.body).toBeInstanceOf(Object);
         expect(res.body.message).toEqual("Article successfully posted");
@@ -60,8 +71,78 @@ module.exports = blogTest = () => {
         });
       });
 
-      // Get All
-      it("get all blogs (1st page) - success", async () => {
+      // Create Blog - File must be an image
+      it("Create Blog - File must be an image ", async () => {
+        id_user = jwt.decode(token).user.id;
+        const res = await request(app)
+          .post("/blog/")
+          .set("Authorization", `bearer ${token}`)
+          .field({
+            id_user: id_user,
+            title: "15 Laundry Terbaik di Narnia!",
+            article: "Narnia itu khayalan doang, bro.",
+          })
+          .attach("blog_image", "tests/tech.pdf");
+        // console.log(res.body);
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toBeInstanceOf(Object);
+        expect(res.body.message).toEqual("File must be an image");
+        id_blog = await blog.findOne({
+          where: {
+            id_user: id_user,
+          },
+        });
+      });
+
+      // Create Blog - Image must be less than 1 MB
+      it("Create Blog - Image must be less than 1 MB", async () => {
+        id_user = jwt.decode(token).user.id;
+        const res = await request(app)
+          .post("/blog/")
+          .set("Authorization", `bearer ${token}`)
+          .field({
+            id_user: id_user,
+            title: "15 Laundry Terbaik di Narnia!",
+            article: "Narnia itu khayalan doang, bro.",
+          })
+          .attach("blog_image", "tests/mega.jpg");
+        // console.log(res.body);
+        expect(res.statusCode).toEqual(400);
+        expect(res.body).toBeInstanceOf(Object);
+        expect(res.body.message).toEqual("Image must be less than 1MB");
+        id_blog = await blog.findOne({
+          where: {
+            id_user: id_user,
+          },
+        });
+      });
+
+      // Create Blog - User not found
+      // it("Create Blog - User not found", async () => {
+      //   id_user = (jwt.decode(token)).user.id + 9999;
+      //   const res = await request(app)
+      //     .post("/blog/")
+      //     .set("Authorization", `bearer ${token}`)
+      //     .field({
+      //       id_user: id_user,
+      //       title: "15 Laundry Terbaik di Narnia!",
+      //       article: "Narnia itu khayalan doang, bro.",
+      //     })
+      //     .attach("blog_image", "tests/q.jpg");
+      //     console.log(id_user)
+      //   console.log(res.body);
+      //   expect(res.statusCode).toEqual(400);
+      //   expect(res.body).toBeInstanceOf(Object);
+      //   expect(res.body.message).toEqual("User not found");
+      //   id_blog = await blog.findOne({
+      //     where: {
+      //       id_user: id_user,
+      //     },
+      //   });
+      // });
+
+      // Get All blogs - success
+      it("get all blogs - success", async () => {
         const res = await request(app)
           .get("/blog/")
           .query({ limit: 3, page: 1 });
@@ -84,41 +165,69 @@ module.exports = blogTest = () => {
         expect(res.body.message).toEqual("Data not found");
       });
 
-      // // Update Blog - Success
-      // it("Update Blog - Success ", async ()=> {
-      //   const id_blog = created.body.data.id;
+      // Update Blog - Success
+      it("update blog - success", async () => {
+        id_user = jwt.decode(token).user.id;
+        const res = await request(app)
+          .put(`/blog/${id_blog.id}`)
+          .set("Authorization", `bearer ${token}`)
+          .field({
+            id_user: id_user,
+            title: "20 Laundry Terbaik di Narnia!",
+            article: "Tambah 20.",
+          })
+          .attach("blog_image", "tests/q.jpg");
+        expect(res.statusCode).toEqual(201);
+        expect(res.body).toBeInstanceOf(Object);
+        expect(res.body.message).toEqual("Successfully updated");
+      });
+      // Update blog - blog not found
+      it("update blog - blog not found", async () => {
+        id_user = jwt.decode(token).user.id;
+        const res = await request(app)
+          .put(`/blog/100`)
+          .set("Authorization", `bearer ${token}`)
+          .field({
+            id_user: id_user,
+            title: "20 Laundry Terbaik di Narnia!",
+            article: "Tambah 20.",
+          })
+          .attach("blog_image", "tests/q.jpg");
+        expect(res.statusCode).toEqual(404);
+        expect(res.body).toBeInstanceOf(Object);
+        expect(res.body.message).toEqual("Article not found");
+      });
+
+      // Update blog - User not found
+      // it("update blog - user not found", async () => {
+      //   id_user = jwt.decode(token).user.id + 1;
       //   const res = await request(app)
-      //   .put('/blog/${id_blog}')
-      //   .set('Authorization', `bearer ${token}`)
-      //   .send({
-      //     id_user: "15",
-      //     title: "20 Laundry Terbaik di Narnia!",
-      //     article: "Tambahin 5 lagi, Walaupun Narnia itu khayalan doang, bro.",
-      //   })
-      //   .attach("blog_image", "tests/Stardust.jpg");
-
-      //   expect(res.statusCode).toEqual(201)
-      //   expect(res.body).toBeInstanceOf(Object)
-      //   expect(res.body.message).toEqual("Successfully updated")
+      //     .put(`/blog/${id_blog.id}`)
+      //     .set("Authorization", `bearer ${token}`)
+      //     .field({
+      //       id_blog: id_blog.id,
+      //       title: "20 Laundry Terbaik di Narnia!",
+      //       article: "Tambah 20.",
+      //     })
+      //     .attach("blog_image", "tests/q.jpg");
+      //   expect(res.statusCode).toEqual(400);
+      //   expect(res.body).toBeInstanceOf(Object);
+      //   expect(res.body.message).toEqual("User not found");
       // });
-
-      // // Update Blog - Blog not found
-      // it("Update Blog - Blog not found", async ()=> {
-      //   const id_blog = created.body.data.id;
-      //   const res = await request(app)
-      //   .put('/blog/${id_blog}')
-      //   .set('Authorization', `bearer ${token}`)
-      //   .send({
-      //     id_user: "15",
-      //     title: "20 Laundry Terbaik di Narnia!",
-      //     article: "Tambahin 5 lagi deh, walaupun Narnia itu khayalan doang, bro.",
-      //   })
-      //   .attach("blog_image", "tests/Stardust.jpg");
-
-      //   expect(res.statusCode).toEqual(404)
-      //   expect(res.body).toBeInstanceOf(Object)
-      //   expect(res.body.message).toEqual("Article not found")
-      // });
+      // Update Blog - Internal Server Error
+      it("update blog - success", async () => {
+        const res = await request(app)
+          .put(`/blog/${id_blog.id}`)
+          .set("Authorization", `bearer ${token}`)
+          .field({
+            id_blog: id_blog.id,
+            title: "20 Laundry Terbaik di Narnia!",
+            article: "Tambah 20.",
+          })
+          .attach("blog_image", "tests/q.jpg");
+        expect(res.statusCode).toEqual(500);
+        expect(res.body).toBeInstanceOf(Object);
+      });
 
       // Delete Blog - Success
       it("Delete Blog - Success", async () => {
