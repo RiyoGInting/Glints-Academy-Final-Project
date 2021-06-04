@@ -260,7 +260,7 @@ class ReviewController {
       console.log(data[0].transaction);
       const resultData = [];
       for (let i = 0; i < data.length; i++) {
-        if ((data[i].transaction.id_partner) == req.params.id) {
+        if ((data[i].transaction.id_partner) == 10) {
           resultData.push(data[i]);
         }
       }
