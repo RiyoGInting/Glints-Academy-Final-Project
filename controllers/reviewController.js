@@ -260,8 +260,8 @@ class ReviewController {
       console.log(data[0].transaction);
       const resultData = [];
       for (let i = 0; i < data.length; i++) {
-        if (data) {
-          resultData.push(data[0].transaction.id_partner);
+        if (data[i] && data[i] != null) {
+          resultData.push(data[i].transaction.id_partner);
         }
       }
       resultData.push(req.params.id);
