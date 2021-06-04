@@ -259,11 +259,12 @@ class ReviewController {
       });
       console.log(data[0].transaction);
       const resultData = [];
-      for (let i = 0; i < data.length; i++) {
-        if (data[i].transaction.dataValues.id_partner == req.params.id) {
-          resultData.push(data[i]);
-        }
-      }
+      // for (let i = 0; i < data.length; i++) {
+      //   if (data[i].transaction.dataValues.id_partner == req.params.id) {
+      //     resultData.push(data[i]);
+      //   }
+      // }
+      resultData.push(data);
       if (resultData.length === 0) {
         return res.status(404).json({
           message: "Data not found",
@@ -274,11 +275,7 @@ class ReviewController {
         resultData,
       });
     } catch (e) {
-      return res.status(500).json({
-        message: "Internal Server Error",
-        error: data,
-      });
-      // return next(e);
+      return next(e);
     }
   }
 
